@@ -1,3 +1,5 @@
+import { ToggleRight } from 'lucide-react';
+
 function Navbar() {
 
      return (
@@ -10,9 +12,11 @@ function Navbar() {
 
                <div className="profile flex gap-5">
 
-                    <span>🔔</span>
+                    <span className="text-xl"><ToggleRight size={24} /></span>
 
-                    <span>👤 Student</span>
+                    <span className="text-xl">🔔</span>
+
+                    <span className="text-xl">👤 Student</span>
 
                </div>
 

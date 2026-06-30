@@ -18,6 +18,7 @@ function StudentDashboard() {
       <h3>Ask your Doubt</h3>
       <button>Ask Question</button>
       <hr />
+      
 
       <QuestionList
         questions={questions}
