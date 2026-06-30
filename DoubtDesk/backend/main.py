@@ -1,0 +1,41 @@
+from fastapi import FastAPI,Depends,HTTPException
+from sqlalchemy.orm import Session
+from database import Base, engine , get_db
+import models
+import schemas
+
+app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
+
+@app.get("/")
+def home():
+    return {"message": "Welcome to DoubtDesk!"}
+
+
+@app.post("/register")
+def register_student(
+    students: schemas.createStudent,
+    db: Session = Depends(get_db)
+):
+    
+    if not students.email.endswith("@ncit.edu.np"):
+        raise HTTPException(status_code=400, detail="Email must be a valid NCIT email address")
+
+    new_student = models.Student(
+        name=students.name,
+        email=students.email,
+        password_hash=students.password
+    )
+
+    db.add(new_student)
+    db.commit()
+    db.refresh(new_student)
+
+    return {
+        "message": f"{new_student.name} has been registered successfully",
+        "student_id": new_student.student_id,
+        "name": new_student.name,
+        "email": new_student.email
+    }
+
