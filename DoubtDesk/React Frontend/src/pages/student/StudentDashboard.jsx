@@ -6,7 +6,7 @@ function StudentDashboard() {
     {
       id: 1,
       text: "Explain normalization in DBMS?",
-      subject: "DBMS",
+      subject: ["DBMS"],
       answers: 5
     },
   ]

@@ -51,13 +51,7 @@ function Sidebar() {
                {
                     menu.map((item, index) => (
                          <div
-                              className="menu-item flex
-                                   items-center
-                                   gap-3
-                                   p-3
-                                   rounded-lg
-                                   hover:bg-gray-100
-                                   cursor-pointer"
+                              className="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer"
                               key={index}
                          >
 
