@@ -1,30 +1,27 @@
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import QuestionList from '../../components/questions/QuestionList'
+import WelcomeBanner from "../../components/student/WelcomeBanner";
+import QuestionCard from "../../components/student/QuestionCard";
+import { questions } from "../../data/questions";
+
 
 function StudentDashboard() {
-  const questions = [
-    {
-      id: 1,
-      text: "Explain normalization in DBMS?",
-      subject: ["DBMS"],
-      answers: 5
-    },
-  ]
-
   return (
-    <DashboardLayout>
-      <h1>Student Dashboard</h1>
-      <p>Welcome to DoubtDesk!</p>
-      <h3>Ask your Doubt</h3>
-      <button>Ask Question</button>
-      <hr />
-      
 
-      <QuestionList
-        questions={questions}
-      />
+    <DashboardLayout>
+
+      <WelcomeBanner />
+      <h2 className="mt-8 mb-3 font-bold">
+        Recent Questions
+      </h2>
+      {
+        questions.map(q =>
+          <QuestionCard
+            key={q.id}
+            question={q} />
+        )}
     </DashboardLayout>
   )
+
 }
 
 export default StudentDashboard

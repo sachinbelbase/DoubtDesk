@@ -16,8 +16,6 @@ function Navbar() {
 
                     <span className="text-xl">🔔</span>
 
-                    <span className="text-xl">👤 Student</span>
-
                </div>
 
           </div>

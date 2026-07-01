@@ -1,104 +1,143 @@
 import {
      Home,
-     MessageCircle,
      Plus,
-     Bell,
-     User,
+     FileQuestion,
+     Bookmark,
+     Users,
+     BookOpen,
      Settings,
+     UserCircle,
+     Bell,
      AlertTriangle,
-     FileQuestionIcon,
-     MailQuestionMark,
-     Book,
-     BookDashed,
-     LucideBookDashed,
-     BookImage
+     BookImage,
+     User
 } from "lucide-react";
 
 function Sidebar() {
-
-     const menu = [
+     const items = [
 
           {
                name: "Home",
-               icon: <Home size={20} />
+               icon: Home
           },
 
           {
                name: "Ask Question",
-               icon: <MessageCircle size={20} />
-          },
-          {
-               name: "Questions Feed",
-               icon: <MessageCircle size={20} />
-          },
-          {
-               name: "My Questions",
-               icon: <MessageCircle size={20} />
-          },
-          {
-               name: "Bookmarks",
-               icon: <MessageCircle size={20} />
+               icon: Plus
           },
 
+          {
+               name: "My Questions",
+               icon: FileQuestion
+          },
+
+          {
+               name: "Bookmarks",
+               icon: Bookmark
+          },
+
+          {
+               name: "Community",
+               icon: Users
+          },
+
+          {
+               name: "Guidelines",
+               icon: BookOpen
+          },
 
           {
                name: "Ask Doubt",
-               icon: <Plus size={20} />
+               icon: Plus
           },
+
           {
-               name: "Guidelines",
-               icon: <BookImage size={20} />
+               name: "Resources",
+               icon: BookImage
           },
+
           {
                name: "FAQ",
-               icon: <FileQuestionIcon size={20} />
+               icon: FileQuestion
           },
 
           {
                name: "Profile",
-               icon: <User />
+               icon: User
           },
 
           {
                name: "Notifications",
-               icon: <Bell size={20} />
+               icon: Bell
           },
 
           {
                name: "Warnings",
-               icon: <AlertTriangle size={20} />
+               icon: AlertTriangle
           },
 
           {
                name: "Settings",
-               icon: <Settings size={20} />
+               icon: Settings
           }
 
      ]
 
      return (
 
-          <div className="sidebar w-64 bg-white shadow-md p-5">
+          <div
+               className="sidebar w-64 bg-white shadow-md p-5 min-h-screen border-r flex flex-col">
 
-               <h2 className="text-2xl font-bold mb-1 text-blue-950">DoubtDesk </h2>
-               <p className=" mb-8 text-blue-950 font-semibold">Anonymous Q&A Platform</p>
-               {
-                    menu.map((item, index) => (
-                         <div
-                              className="menu-item flex items-center gap-3 p-3 rounded-lg hover:bg-blue-900 hover:text-white cursor-pointer"
+               <h2
+                    className="text-2xl font-bold text-blue-950">
+                    DoubtDesk
+               </h2>
+               <p
+                    className="mb-8 text-blue-950font-semiboldtext-sm">
+                    Anonymous Q&A Platform
+               </p>
 
-                              key={index}
-                         >
+               <div className="space-y-2">
+                    {
+                         items.map((item) => {
+                              const Icon = item.icon;
+                              return (
+                                   <div
+                                        key={item.name}
+                                        className="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition">
 
+                                        <Icon size={20} />
 
-                              {item.icon}
-                              <span>{item.name}</span>
-                         </div>
-                    ))
-               }
+                                        <span>
+                                             {item.name}
+                                        </span>
+                                   </div>
+                              )
+                         })
+                    }
+
+               </div>
+
+               <div
+                    className="mt-auto bg-gray-100 rounded-xl p-4 flex gap-3 items-center">
+
+                    <UserCircle size={20} />
+
+                    <div>
+                         <p className="font-semibold">
+                              Anonymous User
+                         </p>
+
+                         <p className="text-sm text-gray-500">
+                              Student
+                         </p>
+
+                    </div>
+
+               </div>
+
           </div>
      )
 }
-
 
 export default Sidebar;
