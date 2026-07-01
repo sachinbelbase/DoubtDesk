@@ -1,6 +1,8 @@
 from fastapi import FastAPI,Depends,HTTPException
 from sqlalchemy.orm import Session
 from database import Base, engine , get_db
+from security import hash_password, verify_password
+
 import models
 import schemas
 
@@ -19,13 +21,14 @@ def register_student(
     db: Session = Depends(get_db)
 ):
     
-    if not students.email.endswith("@ncit.edu.np"):
-        raise HTTPException(status_code=400, detail="Email must be a valid NCIT email address")
+    if not students.email.endswith("@ncit.edu.np") or len(students.password) < 8:
+        raise HTTPException(status_code=400, detail="Email must be a valid NCIT email address "
+        "and password must be at least 8 characters long")
 
     new_student = models.Student(
         name=students.name,
         email=students.email,
-        password_hash=students.password
+        password_hash= hash_password(students.password)
     )
 
     db.add(new_student)
