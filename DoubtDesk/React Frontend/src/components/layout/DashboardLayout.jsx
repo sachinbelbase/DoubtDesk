@@ -1,28 +1,32 @@
+import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import Navbar from "../common/Navbar";
+import RightSidebar from "./RightSidebar";
 
-function DashboardLayout({ children }) {
-
+function DashboardLayout({ role, children }) {
   return (
+    <div className="min-h-screen bg-gray-100">
 
-    <div className="dashboard flex h-screen bg-gray-100">
+      {/* Navbar */}
+      <Navbar />
 
-      <Sidebar />
+      {/* Body */}
+      <div className="flex">
 
-      <div className="main flex-1">
+        {/* Sidebar */}
+        <Sidebar role={role} />
 
-        <Navbar />
-
-        <div className="content p-6">
-
+        {/* Main Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
           {children}
+        </main>
 
-        </div>
+        {/* Right Sidebar */}
+        <RightSidebar role={role} />
 
       </div>
 
     </div>
-  )
+  );
 }
 
 export default DashboardLayout;

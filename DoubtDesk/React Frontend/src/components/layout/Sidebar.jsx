@@ -1,143 +1,141 @@
-import {
-     Home,
-     Plus,
-     FileQuestion,
-     Bookmark,
-     Users,
-     BookOpen,
-     Settings,
-     UserCircle,
-     Bell,
-     AlertTriangle,
-     BookImage,
-     User
-} from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { UserCircle } from "lucide-react";
+import { menus } from "../../data/sidebarMenu";
 
-function Sidebar() {
-     const items = [
 
-          {
-               name: "Home",
-               icon: Home
-          },
+function Sidebar({role}) {
+     const menu = menus[role] || [];
 
-          {
-               name: "Ask Question",
-               icon: Plus
-          },
+//      return (
 
-          {
-               name: "My Questions",
-               icon: FileQuestion
-          },
+//           <div
+//                className="sidebar w-64 bg-white shadow-md p-5 min-h-screen border-r flex flex-col">
 
-          {
-               name: "Bookmarks",
-               icon: Bookmark
-          },
+//                <h2
+//                     className="text-2xl font-bold text-blue-950">
+//                     DoubtDesk
+//                </h2>
+//                <p
+//                     className="mb-8 text-blue-950font-semiboldtext-sm">
+//                     Anonymous Q&A Platform
+//                </p>
 
-          {
-               name: "Community",
-               icon: Users
-          },
+//                <div className="space-y-2">
+//                     {
+//                          items.map((item) => {
+//                               const Icon = item.icon;
+//                               return (
+//                                    <div
+//                                         key={item.name}
+//                                         className="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition">
 
-          {
-               name: "Guidelines",
-               icon: BookOpen
-          },
+//                                         <Icon size={20} />
 
-          {
-               name: "Ask Doubt",
-               icon: Plus
-          },
+//                                         <span>
+//                                              {item.name}
+//                                         </span>
+//                                    </div>
+//                               )
+//                          })
+//                     }
 
-          {
-               name: "Resources",
-               icon: BookImage
-          },
+//                </div>
 
-          {
-               name: "FAQ",
-               icon: FileQuestion
-          },
+//                <div
+//                     className="mt-auto bg-gray-100 rounded-xl p-4 flex gap-3 items-center">
 
-          {
-               name: "Profile",
-               icon: User
-          },
+//                     <UserCircle size={20} />
 
-          {
-               name: "Notifications",
-               icon: Bell
-          },
+//                     <div>
+//                          <p className="font-semibold">
+//                               Anonymous User
+//                          </p>
 
-          {
-               name: "Warnings",
-               icon: AlertTriangle
-          },
+//                          <p className="text-sm text-gray-500">
+//                               Student
+//                          </p>
 
-          {
-               name: "Settings",
-               icon: Settings
-          }
+//                     </div>
 
-     ]
+//                </div>
 
+//           </div>
+//      )
+// }
      return (
+          <aside className="w-64 min-h-screen bg-white border-r shadow-sm flex flex-col">
 
-          <div
-               className="sidebar w-64 bg-white shadow-md p-5 min-h-screen border-r flex flex-col">
+               {/* Logo */}
+               <div className="p-6 border-b">
+                    <h1 className="text-2xl font-bold text-blue-900">
+                         DoubtDesk
+                    </h1>
 
-               <h2
-                    className="text-2xl font-bold text-blue-950">
-                    DoubtDesk
-               </h2>
-               <p
-                    className="mb-8 text-blue-950font-semiboldtext-sm">
-                    Anonymous Q&A Platform
-               </p>
-
-               <div className="space-y-2">
-                    {
-                         items.map((item) => {
-                              const Icon = item.icon;
-                              return (
-                                   <div
-                                        key={item.name}
-                                        className="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition">
-
-                                        <Icon size={20} />
-
-                                        <span>
-                                             {item.name}
-                                        </span>
-                                   </div>
-                              )
-                         })
-                    }
-
+                    <p className="text-sm text-gray-500">
+                         Anonymous Q&A Platform
+                    </p>
                </div>
 
-               <div
-                    className="mt-auto bg-gray-100 rounded-xl p-4 flex gap-3 items-center">
+               {/* Menu */}
 
-                    <UserCircle size={20} />
+               <nav className="flex-1 p-4">
 
-                    <div>
-                         <p className="font-semibold">
-                              Anonymous User
-                         </p>
+                    {menu.map((item) => {
 
-                         <p className="text-sm text-gray-500">
-                              Student
-                         </p>
+                         const Icon = item.icon;
+
+                         return (
+
+                              <NavLink
+                                   key={item.label}
+                                   to={item.path}
+                                   className={({ isActive }) =>
+                                        `flex items-center gap-4 p-3 rounded-xl mb-2 transition-all
+                ${isActive
+                                             ? "bg-blue-600 text-white"
+                                             : "hover:bg-blue-50 text-gray-700"
+                                        }`
+                                   }
+                              >
+
+                                   <Icon size={20} />
+
+                                   <span>{item.label}</span>
+
+                              </NavLink>
+
+                         );
+
+                    })}
+
+               </nav>
+
+               {/* User */}
+
+               <div className="border-t p-4">
+
+                    <div className="flex items-center gap-3">
+
+                         <UserCircle size={42} />
+
+                         <div>
+
+                              <p className="font-semibold">
+                                   Anonymous User
+                              </p>
+
+                              <p className="text-sm capitalize text-gray-500">
+                                   {role}
+                              </p>
+
+                         </div>
 
                     </div>
 
                </div>
 
-          </div>
-     )
+          </aside>
+     );
 }
 
 export default Sidebar;

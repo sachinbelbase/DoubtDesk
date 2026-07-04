@@ -1,29 +1,26 @@
-import Input from "../../components/common/Input";
-import TextArea from "../../components/common/TextArea";
-import Button from "../../components/common/Button";
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import AskQuestionForm from "../../components/student/AskQuestionForm";
 
-const AskQuestion = () => {
+function AskQuestion() {
      return (
-          <div>
-               <h1>
-                    Ask Question
-               </h1>
+          <DashboardLayout role="student">
 
-               <Input
-                    label="Title"
-                    placeholder="Enter question" />
+               <div className="mb-6">
 
-               <TextArea
-                    label="Description"
-                    placeholder="Explain your doubt"
-               />
+                    <h1 className="text-3xl font-bold">
+                         Ask a New Question
+                    </h1>
 
-               <Button>
-                    Post Question
-               </Button>
+                    <p className="text-gray-500 mt-2">
+                         Ask your doubts anonymously and receive answers from teachers and students.
+                    </p>
 
-          </div>
-     )
+               </div>
+
+               <AskQuestionForm />
+
+          </DashboardLayout>
+     );
 }
 
 export default AskQuestion;
