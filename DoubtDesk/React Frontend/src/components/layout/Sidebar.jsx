@@ -6,62 +6,6 @@ import { menus } from "../../data/sidebarMenu";
 function Sidebar({role}) {
      const menu = menus[role] || [];
 
-//      return (
-
-//           <div
-//                className="sidebar w-64 bg-white shadow-md p-5 min-h-screen border-r flex flex-col">
-
-//                <h2
-//                     className="text-2xl font-bold text-blue-950">
-//                     DoubtDesk
-//                </h2>
-//                <p
-//                     className="mb-8 text-blue-950font-semiboldtext-sm">
-//                     Anonymous Q&A Platform
-//                </p>
-
-//                <div className="space-y-2">
-//                     {
-//                          items.map((item) => {
-//                               const Icon = item.icon;
-//                               return (
-//                                    <div
-//                                         key={item.name}
-//                                         className="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition">
-
-//                                         <Icon size={20} />
-
-//                                         <span>
-//                                              {item.name}
-//                                         </span>
-//                                    </div>
-//                               )
-//                          })
-//                     }
-
-//                </div>
-
-//                <div
-//                     className="mt-auto bg-gray-100 rounded-xl p-4 flex gap-3 items-center">
-
-//                     <UserCircle size={20} />
-
-//                     <div>
-//                          <p className="font-semibold">
-//                               Anonymous User
-//                          </p>
-
-//                          <p className="text-sm text-gray-500">
-//                               Student
-//                          </p>
-
-//                     </div>
-
-//                </div>
-
-//           </div>
-//      )
-// }
      return (
           <aside className="w-64 min-h-screen bg-white border-r shadow-sm flex flex-col">
 
@@ -114,23 +58,6 @@ function Sidebar({role}) {
 
                <div className="border-t p-4">
 
-                    <div className="flex items-center gap-3">
-
-                         <UserCircle size={42} />
-
-                         <div>
-
-                              <p className="font-semibold">
-                                   Anonymous User
-                              </p>
-
-                              <p className="text-sm capitalize text-gray-500">
-                                   {role}
-                              </p>
-
-                         </div>
-
-                    </div>
 
                </div>
 

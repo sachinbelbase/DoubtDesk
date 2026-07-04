@@ -1,17 +1,17 @@
 export const categories = [
   {
     id: 1,
-    name: "Programming",
-    description: "C, C++, Java, Python",
+    name: "Web Technology II",
+    description: "Python, Flask",
     questions: 120,
     icon: "💻",
   },
   {
     id: 2,
-    name: "Web Development",
-    description: "HTML, CSS, React",
+    name: "Computer Graphics",
+    description: "BLA, DDA, Multimedia",
     questions: 95,
-    icon: "🌐",
+    icon: "🎨",
   },
   {
     id: 3,
@@ -22,23 +22,16 @@ export const categories = [
   },
   {
     id: 4,
-    name: "Networking",
-    description: "CCNA, Security",
+    name: "Probability and Statistics",
+    description: "Random Variables, Distributions",
     questions: 65,
-    icon: "🌍",
+    icon: "📊",
   },
   {
     id: 5,
-    name: "Artificial Intelligence",
-    description: "Machine Learning",
+    name: "Software Engineering",
+    description: "Software Design, Testing",
     questions: 50,
-    icon: "🤖",
-  },
-  {
-    id: 6,
-    name: "Mathematics",
-    description: "Discrete, Calculus",
-    questions: 75,
-    icon: "📐",
+    icon: "🛠️",
   },
 ];

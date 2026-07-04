@@ -31,11 +31,22 @@ function StudentDashboard() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout role="student">
 
-      <DashboardHeader />
+      <DashboardHeader
+        title="Student Dashboard"
+        subtitle="Ask questions, get answers, learn together"
+        notificationCount={3}
+      />
 
-      <SearchSection />
+      <SearchSection
+        search={search}
+        category={category}
+        difficulty={difficulty}
+        onSearchChange={handleSearchChange}
+        onCategoryChange={handleCategoryChange}
+        onDifficultyChange={handleDifficultyChange}
+      />
 
       <QuickStats />
 

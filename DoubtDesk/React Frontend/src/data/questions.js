@@ -1,10 +1,10 @@
 export const questions = [
   {
     id: 1,
-    title: "How does React Virtual DOM work?",
+    title: "How Mid Point Algorithm Works in Computer Graphics?",
     description:
-      "Can someone explain how the Virtual DOM improves performance?",
-    category: "React",
+      " I am trying to understand the Mid Point Algorithm for line drawing in computer graphics.",
+    category: "Computer Graphics",
     author: "Anonymous",
     answers: 5,
     views: 120,
@@ -12,9 +12,9 @@ export const questions = [
   },
   {
     id: 2,
-    title: "Difference between let, const and var?",
-    description: "I'm confused about when to use each keyword in JavaScript.",
-    category: "JavaScript",
+    title: "Binomial Distribution vs Normal Distribution",
+    description: "I'm confused about when to use each distribution in statistics.",
+    category: "Probability and Statistics",
     author: "Anonymous",
     answers: 8,
     views: 200,

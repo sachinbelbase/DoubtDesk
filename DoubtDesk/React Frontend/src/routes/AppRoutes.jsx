@@ -5,9 +5,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import StudentDashboard from "../pages/student/Dashboard";
 import AskQuestion from "../pages/student/AskQuestion";
 import MyQuestions from "../pages/student/MyQuestions";
-// import Bookmarks from "../pages/student/Bookmarks";
+import Bookmarks from "../pages/student/Bookmarks";
 import Notifications from "../pages/student/Notifications";
 import StudentProfile from "../pages/student/Profile";
+import Settings from "../pages/student/Settings";
 
 // Teacher Pages
 import TeacherDashboard from "../pages/teacher/Dashboard";
@@ -39,6 +40,7 @@ function AppRoutes() {
                <Route path="/student/bookmarks" element={<Bookmarks />} />
                <Route path="/student/notifications" element={<Notifications />} />
                <Route path="/student/profile" element={<StudentProfile />} />
+               <Route path="/student/settings" element={<Settings />} />
 
                {/* Teacher */}
                <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
