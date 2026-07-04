@@ -1,34 +1,24 @@
-function FileUpload({
+function Checkbox({
      label,
      name,
+     checked,
      onChange,
 }) {
      return (
-          <div className="space-y-2">
-               {label && (
-                    <label
-                         htmlFor={name}
-                         className="block text-sm font-semibold text-gray-700"
-                    >
-                         {label}
-                    </label>
-               )}
-
+          <label className="flex items-center gap-3 cursor-pointer">
                <input
-                    id={name}
+                    type="checkbox"
                     name={name}
-                    type="file"
+                    checked={checked}
                     onChange={onChange}
-                    className="
-          w-full
-          rounded-lg
-          border
-          border-gray-300
-          p-3
-        "
+                    className="h-4 w-4"
                />
-          </div>
+
+               <span className="text-gray-700">
+                    {label}
+               </span>
+          </label>
      );
 }
 
-export default FileUpload;
+export default Checkbox;

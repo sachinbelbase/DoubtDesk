@@ -1,7 +1,7 @@
 function TextArea({
      label,
      name,
-     value,
+     value="",
      onChange,
      rows = 5,
      placeholder,

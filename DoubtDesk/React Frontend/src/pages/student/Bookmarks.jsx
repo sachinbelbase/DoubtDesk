@@ -1,10 +1,10 @@
-function Dashboard() {
+function Bookmarks() {
 
      return (
 
           <h1>
 
-               Student Dashboard
+               Student Bookmarks
 
           </h1>
 
@@ -12,4 +12,4 @@ function Dashboard() {
 
 }
 
-export default Dashboard;
+export default Bookmarks;

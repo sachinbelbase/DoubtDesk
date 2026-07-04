@@ -35,7 +35,7 @@ function Sidebar({role}) {
                                    to={item.path}
                                    className={({ isActive }) =>
                                         `flex items-center gap-4 p-3 rounded-xl mb-2 transition-all
-                ${isActive
+                                             ${isActive
                                              ? "bg-blue-600 text-white"
                                              : "hover:bg-blue-50 text-gray-700"
                                         }`

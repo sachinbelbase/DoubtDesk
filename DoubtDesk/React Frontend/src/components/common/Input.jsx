@@ -2,7 +2,7 @@ function Input({
      label,
      type = "text",
      name,
-     value,
+     value="",
      onChange,
      placeholder,
      error,

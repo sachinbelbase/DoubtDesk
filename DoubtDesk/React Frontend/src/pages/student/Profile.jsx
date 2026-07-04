@@ -1,10 +1,10 @@
-function Dashboard() {
+function Profile() {
 
      return (
 
           <h1>
 
-               Student Dashboard
+               Student Profile
 
           </h1>
 
@@ -12,4 +12,4 @@ function Dashboard() {
 
 }
 
-export default Dashboard;
+export default Profile;

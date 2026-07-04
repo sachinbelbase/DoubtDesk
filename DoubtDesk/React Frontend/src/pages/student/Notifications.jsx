@@ -1,10 +1,10 @@
-function Dashboard() {
+function Notifications() {
 
      return (
 
           <h1>
 
-               Student Dashboard
+               Student Notifications
 
           </h1>
 
@@ -12,4 +12,4 @@ function Dashboard() {
 
 }
 
-export default Dashboard;
+export default Notifications;

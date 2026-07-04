@@ -1,5 +1,5 @@
 import { questions } from "../../data/questions";
-import QuestionCard from "./QuestionCard";
+import QuestionCard from "../dashboard/QuestionCard"; 
 import QuestionFilter from "./QuestionFilter";
 
 function QuestionFeed() {

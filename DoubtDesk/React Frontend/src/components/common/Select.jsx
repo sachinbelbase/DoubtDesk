@@ -1,7 +1,7 @@
 function Select({
      label,
      name,
-     value,
+     value="",
      onChange,
      options = [],
      placeholder = "Select an option",

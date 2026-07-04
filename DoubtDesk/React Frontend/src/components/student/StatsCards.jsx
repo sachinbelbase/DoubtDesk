@@ -5,7 +5,7 @@ import {
      CircleHelp
 } from "lucide-react";
 
-import StatCard from "./StatCard";
+import DashboardStatCard from "../dashboard/DashboardStatCard";
 
 function StatsCards() {
 
@@ -13,44 +13,28 @@ function StatsCards() {
 
           <div className="grid grid-cols-4 gap-5">
 
-               <StatCard
-
+               <DashboardStatCard
                     title="Questions"
-
                     value="12"
-
                     icon={<CircleHelp />}
-
                />
 
-               <StatCard
-
+               <DashboardStatCard
                     title="Answers"
-
                     value="30"
-
                     icon={<MessageCircle />}
-
                />
 
-               <StatCard
-
+               <DashboardStatCard
                     title="Bookmarks"
-
                     value="8"
-
                     icon={<Bookmark />}
-
                />
 
-               <StatCard
-
+               <DashboardStatCard
                     title="Reputation"
-
                     value="150"
-
                     icon={<Star />}
-
                />
 
           </div>

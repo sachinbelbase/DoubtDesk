@@ -1,10 +1,10 @@
-function Dashboard() {
+function MyQuestions() {
 
      return (
 
           <h1>
 
-               Student Dashboard
+               My Questions
 
           </h1>
 
@@ -12,4 +12,4 @@ function Dashboard() {
 
 }
 
-export default Dashboard;
+export default MyQuestions;
