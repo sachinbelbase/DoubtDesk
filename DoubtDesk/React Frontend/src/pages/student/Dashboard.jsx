@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import DashboardHeader from "../../components/dashboard/DashboardHeader";
+import WelcomeBanner from "../../components/dashboard/WelcomeBanner";
 import SearchSection from "../../components/dashboard/SearchSection";
 import QuickStats from "../../components/dashboard/QuickStats";
 import CategoryGrid from "../../components/dashboard/CategoryGrid";
@@ -32,6 +33,8 @@ function StudentDashboard() {
 
   return (
     <DashboardLayout role="student">
+
+      <WelcomeBanner />
 
       <DashboardHeader
         title="Student Dashboard"

@@ -1,13 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import {
      Bell,
      Search,
      Moon,
      Menu,
      ChevronDown,
-     UserCircle
+     UserCircle,
+     LogOut,
 } from "lucide-react";
 
+import { useAuth } from "../../hooks/useAuth";
+
 function Navbar() {
+     const { user, logout } = useAuth();
+     const navigate = useNavigate();
+
+     const handleLogout = () => {
+          logout();
+          navigate("/login");
+     };
+
      return (
           <header className="h-16 bg-white border-b shadow-sm flex items-center justify-between px-6">
 
@@ -63,11 +75,11 @@ function Navbar() {
                          <div>
 
                               <p className="font-semibold">
-                                   Anonymous User
+                                   {user?.name || "Anonymous User"}
                               </p>
 
-                              <p className="text-sm text-gray-500">
-                                   Student
+                              <p className="text-sm text-gray-500 capitalize">
+                                   {user?.role || "Student"}
                               </p>
 
                          </div>
@@ -75,6 +87,14 @@ function Navbar() {
                          <ChevronDown size={18} />
 
                     </div>
+
+                    <button
+                         onClick={handleLogout}
+                         className="p-2 rounded-lg hover:bg-gray-100"
+                         title="Log out"
+                    >
+                         <LogOut size={21} />
+                    </button>
 
                </div>
 

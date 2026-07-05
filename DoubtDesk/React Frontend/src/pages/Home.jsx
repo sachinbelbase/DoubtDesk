@@ -8,7 +8,7 @@ function Home() {
             <br />
             <Link to="/register" className='text-blue-700'>Click </Link> here to go to Register Page
             <br />
-            <Link to="/student/dashboard" className='text-blue-700'>Click </Link> here to go to Student Dashboard
+
 
        </div>  )
 }
