@@ -1,22 +1,35 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import Button from "../common/Button";
+
+
 const WelcomeBanner = () => {
+     const navigate = useNavigate();
+     const { user } = useAuth();
+
      return (
-          <div className="bg-blue-600 text-white rounded-2xl p-6 mb-6">
-               <h1 className="text-3xl font-bold">
-                    Welcome back, Anonymous!
-               </h1>
+          <section className="bg-blue-600 text-white rounded-2xl px-8 py-5 mb-6">
 
-               <p>
-                    Ask questions anonymously and learn from the community.
-               </p>
+               <div className="flex items-center justify-between">
 
-               <div className="mt-5">
-                    <Button>
+                    <div>
+                         <h1 className="text-2xl font-bold">
+                              Welcome back, {user?.name || "Student"}!
+                         </h1>
+
+                         <p className="text-blue-100 mt-1">
+                              Ready to solve another doubt today?
+                         </p>
+                    </div>
+
+                    <Button onClick={() => navigate("/student/ask-question")}>
                          Ask Question
                     </Button>
+
                </div>
-          </div>
-     )
-}
+
+          </section>
+     );
+};
 
 export default WelcomeBanner;

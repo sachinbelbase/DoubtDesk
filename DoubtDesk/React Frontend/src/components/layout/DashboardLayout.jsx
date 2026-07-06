@@ -1,6 +1,5 @@
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import RightSidebar from "./RightSidebar";
 import { useAuth } from "../../hooks/useAuth";
 
 function DashboardLayout({ role, children }) {
@@ -23,9 +22,6 @@ function DashboardLayout({ role, children }) {
         <main className="flex-1 p-6 overflow-y-auto">
           {children}
         </main>
-
-        {/* Right Sidebar */}
-        <RightSidebar role={activeRole} />
 
       </div>
 

@@ -1,15 +1,14 @@
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import StudentProfileCard from "../../components/student/StudentProfileCard";
+
 function Profile() {
-
      return (
+          <DashboardLayout role="student">
 
-          <h1>
+               <StudentProfileCard />
 
-               Student Profile
-
-          </h1>
-
-     )
-
+          </DashboardLayout>
+     );
 }
 
 export default Profile;

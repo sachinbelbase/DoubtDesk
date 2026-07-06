@@ -4,30 +4,33 @@ function DashboardStatCard({
      icon,
      color = "bg-blue-500",
 }) {
-
      return (
 
           <div
                className="
                     bg-white
-                    rounded-xl
-                    shadow
-                    p-5
+                    border
+                    border-gray-100
+                    rounded-2xl
+                    p-6
                     flex
-                    justify-between
                     items-center
-                    hover:shadow-lg
-                    transition
+                    justify-between
+                    shadow-sm
+                    hover:shadow-xl
+                    hover:-translate-y-1
+                    transition-all
+                    duration-300
                "
           >
 
                <div>
 
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-sm font-medium text-gray-500">
                          {title}
                     </p>
 
-                    <h2 className="text-3xl font-bold mt-2">
+                    <h2 className="text-4xl font-bold text-gray-900 mt-2">
                          {value}
                     </h2>
 
@@ -38,11 +41,12 @@ function DashboardStatCard({
                          ${color}
                          w-14
                          h-14
-                         rounded-full
+                         rounded-2xl
                          flex
                          items-center
                          justify-center
                          text-white
+                         shadow-md
                     `}
                >
                     {icon}
@@ -51,7 +55,6 @@ function DashboardStatCard({
           </div>
 
      );
-
 }
 
 export default DashboardStatCard;

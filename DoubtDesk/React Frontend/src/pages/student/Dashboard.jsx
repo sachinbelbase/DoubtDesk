@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import DashboardHeader from "../../components/dashboard/DashboardHeader";
@@ -9,21 +8,16 @@ import QuickStats from "../../components/dashboard/QuickStats";
 import CategoryGrid from "../../components/dashboard/CategoryGrid";
 import RecentQuestions from "../../components/dashboard/RecentQuestions";
 import TrendingTopics from "../../components/dashboard/TrendingTopics";
-import { useNotifications } from "../../hooks/useNotifications";
+
 
 function StudentDashboard() {
 
-  const navigate = useNavigate();
-  const { unreadCount } = useNotifications();
-
   // Search States
-
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [difficulty, setDifficulty] = useState("");
 
   // Handlers
-
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -41,12 +35,7 @@ function StudentDashboard() {
 
       <WelcomeBanner />
 
-      <DashboardHeader
-        title="Student Dashboard"
-        subtitle="Ask questions, get answers, learn together"
-        notificationCount={unreadCount}
-        onBellClick={() => navigate("/student/notifications")}
-      />
+      <DashboardHeader/>
 
       <SearchSection
         search={search}
@@ -59,9 +48,9 @@ function StudentDashboard() {
 
       <QuickStats />
 
-      <CategoryGrid />
-
       <RecentQuestions />
+
+      <CategoryGrid />
 
       <TrendingTopics />
 

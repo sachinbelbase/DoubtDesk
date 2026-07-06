@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useNotifications } from "../../hooks/useNotifications";
 import {
      Bell,
      Search,
@@ -13,11 +14,33 @@ import { useAuth } from "../../hooks/useAuth";
 
 function Navbar() {
      const { user, logout } = useAuth();
+     const { unreadCount } = useNotifications();
      const navigate = useNavigate();
 
      const handleLogout = () => {
           logout();
           navigate("/login");
+     };
+
+     const handleNotificationClick = () => {
+          if (!user) return;
+
+          switch (user.role) {
+               case "student":
+                    navigate("/student/notifications");
+                    break;
+
+               case "teacher":
+                    navigate("/teacher/notifications");
+                    break;
+
+               case "admin":
+                    navigate("/admin/notifications");
+                    break;
+
+               default:
+                    break;
+          }
      };
 
      return (
@@ -30,38 +53,47 @@ function Navbar() {
                          <Menu size={22} />
                     </button>
 
-                    <div className="relative">
-
-                         <Search
-                              size={18}
-                              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                         />
-
-                         <input
-                              type="text"
-                              placeholder="Search doubts..."
-                              className="
-              w-80
-              pl-10
-              pr-4
-              py-2
-              rounded-lg
-              border
-              outline-none
-              focus:border-blue-500
-            "
-                         />
-
-                    </div>
-
                </div>
 
                {/* Right Section */}
 
                <div className="flex items-center gap-5">
 
-                    <button className="p-2 rounded-lg hover:bg-gray-100">
-                         <Bell size={21} />
+                    <button
+                         onClick={handleNotificationClick}
+                         className="
+                         relative
+                         bg-white
+                         p-3
+                         rounded-full
+                         shadow
+                         hover:bg-gray-100
+                         transition
+                    "
+                    >
+                         <Bell size={22} />
+
+                         {unreadCount > 0 && (
+                              <span
+                                   className="
+                                   absolute
+                                   -top-1
+                                   -right-1
+                                   bg-red-500
+                                   text-white
+                                   text-xs
+                                   rounded-full
+                                   h-5
+                                   w-5
+                                   flex
+                                   items-center
+                                   justify-center
+                              "
+                              >
+                                   {unreadCount}
+                              </span>
+                         )}
+
                     </button>
 
                     <button className="p-2 rounded-lg hover:bg-gray-100">
