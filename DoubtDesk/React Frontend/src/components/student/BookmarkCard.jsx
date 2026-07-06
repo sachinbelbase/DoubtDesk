@@ -1,0 +1,66 @@
+import { MessageCircle, Eye } from "lucide-react";
+import Button from "../common/Button";
+import { useBookmarks } from "../../hooks/useBookmarks";
+
+function BookmarkCard({ question }) {
+
+     const { toggleBookmark } = useBookmarks();
+
+     return (
+          <div className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition">
+
+               {/* Category */}
+               <span className="inline-block bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">
+                    {question.category}
+               </span>
+
+               {/* Title */}
+               <h2 className="text-xl font-semibold mt-3">
+                    {question.title}
+               </h2>
+
+               {/* Description */}
+               <p className="text-gray-600 mt-2">
+                    {question.description}
+               </p>
+
+               {/* Footer */}
+               <div className="flex justify-between items-center mt-5">
+
+                    <div className="flex gap-5 text-gray-500 text-sm">
+
+                         <span>{question.author}</span>
+
+                         <span>{question.time}</span>
+
+                    </div>
+
+                    <div className="flex items-center gap-5">
+
+                         <div className="flex items-center gap-1 text-gray-500">
+                              <MessageCircle size={18} />
+                              {question.answers}
+                         </div>
+
+                         <div className="flex items-center gap-1 text-gray-500">
+                              <Eye size={18} />
+                              {question.views}
+                         </div>
+
+                         <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toggleBookmark(question)}
+                         >
+                              Remove
+                         </Button>
+
+                    </div>
+
+               </div>
+
+          </div>
+     );
+}
+
+export default BookmarkCard;

@@ -1,6 +1,11 @@
 import { MessageCircle, Eye, Bookmark } from "lucide-react";
+import { useBookmarks } from "../../hooks/useBookmarks";
 
 function QuestionCard({ question }) {
+
+     const { isBookmarked, toggleBookmark } = useBookmarks();
+     const bookmarked = isBookmarked(question.id);
+
      return (
           <div className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition">
 
@@ -42,10 +47,15 @@ function QuestionCard({ question }) {
                               {question.views}
                          </div>
 
-                         <button>
+                         <button onClick={() => toggleBookmark(question)}>
                               <Bookmark
                                    size={20}
-                                   className="text-gray-500 hover:text-blue-600"
+                                   className={
+                                        bookmarked
+                                             ? "text-blue-600"
+                                             : "text-gray-500 hover:text-blue-600"
+                                   }
+                                   fill={bookmarked ? "currentColor" : "none"}
                               />
                          </button>
 

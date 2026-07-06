@@ -26,14 +26,14 @@ function Button({
                onClick={onClick}
                disabled={disabled}
                className={`
-        rounded-lg
-        font-medium
-        transition
-        ${variants[variant]}
-        ${sizes[size]}
-        ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-        ${className}
-      `}
+                         rounded-lg
+                         font-medium
+                         transition
+                         ${variants[variant]}
+                         ${sizes[size]}
+                         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+                         ${className}
+               `}
           >
                {children}
           </button>

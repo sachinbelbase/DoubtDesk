@@ -1,9 +1,9 @@
-function QuestionFilter() {
+function QuestionFilter({ title = "Recent Questions" }) {
      return (
           <div className="flex justify-between items-center mb-6">
 
                <h2 className="text-2xl font-bold">
-                    Recent Questions
+                    {title}
                </h2>
 
                <select className="border rounded-lg px-4 py-2">

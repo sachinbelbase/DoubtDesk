@@ -10,8 +10,13 @@ import Button from "../common/Button";
 
 import { categories } from "../../data/categories";
 import { difficulties } from "../../data/difficulties";
+import { useAuth } from "../../hooks/useAuth";
+import { useMyQuestions } from "../../hooks/useMyQuestions";
 
 function AskQuestionForm() {
+
+     const { user } = useAuth();
+     const { addQuestion } = useMyQuestions();
 
      // Initial Form Values
      const initialFormData = {
@@ -89,7 +94,18 @@ function AskQuestionForm() {
 
           if (!validateForm()) return;
 
-          console.log(formData);
+          const newQuestion = {
+               id: Date.now(),
+               title: formData.title,
+               description: formData.description,
+               category: formData.category,
+               author: formData.anonymous ? "Anonymous" : (user?.name || "Anonymous"),
+               answers: 0,
+               views: 0,
+               time: "Just now",
+          };
+
+          addQuestion(newQuestion);
 
           setSuccessMessage("Question submitted successfully!");
 
