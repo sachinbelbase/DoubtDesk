@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 
-// NOTE: Login.jsx and Signup.jsx currently use a local mock (data/users.js)
-// since there's no backend yet. Once one exists, call these instead.
+// now i use data/users.js
+// backend banesi sidai tya bata linxu
 
 export const loginRequest = (credentials) =>
   axiosClient.post("/auth/login", credentials);

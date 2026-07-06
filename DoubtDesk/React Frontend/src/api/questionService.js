@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 
-// NOTE: components currently import static data from data/questions.js.
-// Swap those imports for these calls once a backend exists.
+// aaile chai data/questions.js. lexu
+// backend banesi swap garxu imports lai
 
 export const getQuestions = () => axiosClient.get("/questions");
 

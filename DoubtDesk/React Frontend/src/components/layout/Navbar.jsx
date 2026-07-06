@@ -46,7 +46,7 @@ function Navbar() {
      return (
           <header className="h-16 bg-white border-b shadow-sm flex items-center justify-between px-6">
 
-               {/* Left Section */}
+          {/* Left Section */}
                <div className="flex items-center gap-4">
 
                     <button className="p-2 rounded-lg hover:bg-gray-100">
@@ -55,10 +55,8 @@ function Navbar() {
 
                </div>
 
-               {/* Right Section */}
-
+          {/* Right Section */}
                <div className="flex items-center gap-5">
-
                     <button
                          onClick={handleNotificationClick}
                          className="
@@ -105,7 +103,6 @@ function Navbar() {
                          <UserCircle size={38} />
 
                          <div>
-
                               <p className="font-semibold">
                                    {user?.name || "Anonymous User"}
                               </p>

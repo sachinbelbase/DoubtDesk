@@ -17,8 +17,6 @@ function SearchSection({
 
                <div className="grid md:grid-cols-3 gap-4">
 
-                    {/* Search */}
-
                     <Input
                          name="search"
                          type="text"
@@ -27,8 +25,6 @@ function SearchSection({
                          onChange={onSearchChange}
                     />
 
-                    {/* Category */}
-
                     <Select
                          name="category"
                          value={category}
@@ -36,8 +32,6 @@ function SearchSection({
                          options={categories}
                          placeholder="All Categories"
                     />
-
-                    {/* Difficulty */}
 
                     <Select
                          name="difficulty"

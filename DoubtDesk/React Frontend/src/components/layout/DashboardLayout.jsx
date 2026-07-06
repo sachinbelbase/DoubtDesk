@@ -9,16 +9,12 @@ function DashboardLayout({ role, children }) {
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Navbar */}
       <Navbar />
-
-      {/* Body */}
+      
       <div className="flex">
 
-        {/* Sidebar */}
         <Sidebar role={activeRole} />
 
-        {/* Main Content */}
         <main className="flex-1 p-6 overflow-y-auto">
           {children}
         </main>

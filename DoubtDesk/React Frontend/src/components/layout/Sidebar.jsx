@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { UserCircle } from "lucide-react";
 import { menus } from "../../data/sidebarMenu";
 
-
 function Sidebar({role}) {
      const menu = menus[role] || [];
 

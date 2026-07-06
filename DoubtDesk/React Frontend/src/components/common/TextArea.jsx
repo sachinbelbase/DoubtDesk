@@ -29,19 +29,19 @@ function TextArea({
                     onChange={onChange}
                     placeholder={placeholder}
                     className={`
-          w-full
-          rounded-lg
-          border
-          px-4
-          py-3
-          outline-none
-          resize-none
-          transition
-          ${error
+                              w-full
+                              rounded-lg
+                              border
+                              px-4
+                              py-3
+                              outline-none
+                              resize-none
+                              transition
+                              ${error
                               ? "border-red-500 focus:ring-2 focus:ring-red-400"
                               : "border-gray-300 focus:ring-2 focus:ring-blue-500"
-                         }
-        `}
+                           }
+                    `}
                />
 
                {error && (

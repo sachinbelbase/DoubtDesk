@@ -13,12 +13,10 @@ function Checkbox({
                     onChange={onChange}
                     className="h-4 w-4"
                />
-
                <span className="text-gray-700">
                     {label}
                </span>
           </label>
      );
 }
-
 export default Checkbox;

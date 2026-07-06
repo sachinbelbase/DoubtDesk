@@ -2,11 +2,9 @@ import Card from "../common/Card";
 import { trendingTopics } from "../../data/trendingTopics";
 
 function TrendingTopics() {
-
      return (
 
           <Card>
-
                <h2 className="text-2xl font-bold mb-5">
                     Trending Topics
                </h2>
@@ -25,20 +23,15 @@ function TrendingTopics() {
                                    text-blue-700
                                    hover:bg-blue-600
                                    hover:text-white
-                                   transition
-                              "
+                                   transition"
                          >
                               #{topic}
                          </button>
 
                     ))}
-
                </div>
 
           </Card>
-
      );
-
 }
-
 export default TrendingTopics;

@@ -5,8 +5,8 @@ import { ROLES } from "../constants/roles";
 
 // Public Pages
 import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
+import Login from "../pages/authentication/Login";
+import Register from "../pages/authentication/Register";
 import NotFound from "../pages/NotFound";
 
 // Student Pages
@@ -39,7 +39,7 @@ function AppRoutes() {
                {/* Public */}
                <Route path="/" element={<Home />} />
                <Route path="/login" element={<Login />} />
-               <Route path="/register" element={<Signup />} />
+               <Route path="/register" element={<Register />} />
 
                {/* Student */}
                <Route

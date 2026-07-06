@@ -8,5 +8,4 @@ const Card = ({ children }) => {
           </div>
      )
 }
-
 export default Card;
