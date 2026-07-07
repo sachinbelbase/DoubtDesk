@@ -1,9 +1,18 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardHeader from "../../components/dashboard/DashboardHeader";
+import SettingsCard from "../../components/common/SettingsCard";
 
 function Settings() {
   return (
     <DashboardLayout role="teacher">
-      <h1 className="text-3xl font-bold">Settings</h1>
+
+      <DashboardHeader
+        title="Settings"
+        subtitle="Manage your account preferences."
+      />
+
+      <SettingsCard role="teacher" />
+
     </DashboardLayout>
   );
 }

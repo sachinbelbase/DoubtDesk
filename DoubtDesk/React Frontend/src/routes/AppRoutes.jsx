@@ -30,6 +30,7 @@ import AdminDashboard from "../pages/admin/Dashboard";
 import Users from "../pages/admin/Users";
 import Reports from "../pages/admin/Reports";
 import AdminSettings from "../pages/admin/Settings";
+import AdminProfile from "../pages/admin/Profile";
 
 
 function AppRoutes() {
@@ -163,6 +164,14 @@ function AppRoutes() {
                     element={
                          <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
                               <Reports />
+                         </ProtectedRoute>
+                    }
+               />
+               <Route
+                    path="/admin/profile"
+                    element={
+                         <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+                              <AdminProfile />
                          </ProtectedRoute>
                     }
                />

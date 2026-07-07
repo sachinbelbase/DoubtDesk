@@ -4,7 +4,6 @@ import AdminStats from "../../components/admin/AdminStats";
 import { useAuth } from "../../hooks/useAuth";
 
 function Profile() {
-
      const { user } = useAuth();
 
      return (

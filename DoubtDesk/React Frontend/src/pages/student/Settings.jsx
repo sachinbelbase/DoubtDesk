@@ -1,9 +1,20 @@
-import React from 'react'
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardHeader from "../../components/dashboard/DashboardHeader";
+import SettingsCard from "../../components/common/SettingsCard";
 
 function Settings() {
   return (
-    <h1>Settings</h1>
-  )
+    <DashboardLayout role="student">
+
+      <DashboardHeader
+        title="Settings"
+        subtitle="Manage your account preferences."
+      />
+
+      <SettingsCard role="student" />
+
+    </DashboardLayout>
+  );
 }
 
-export default Settings
+export default Settings;

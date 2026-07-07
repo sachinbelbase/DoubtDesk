@@ -108,7 +108,12 @@ export const menus = {
       icon: Shield,
       path: "/admin/reports",
     },
-
+    {
+      label: "Profile",
+      icon: User,
+      path: "/admin/profile",
+    },
+    
     {
       label: "Settings",
       icon: Settings,
