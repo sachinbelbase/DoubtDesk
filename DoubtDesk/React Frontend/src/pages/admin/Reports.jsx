@@ -1,9 +1,20 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardHeader from "../../components/dashboard/DashboardHeader";
+import ReportTable from "../../components/admin/ReportTable";
 
 function Reports() {
   return (
     <DashboardLayout role="admin">
-      <h1 className="text-3xl font-bold">Reports</h1>
+
+      <DashboardHeader
+        title="Reported Content"
+        subtitle="Review and manage reported questions."
+      />
+
+      <div className="mt-8">
+        <ReportTable />
+      </div>
+
     </DashboardLayout>
   );
 }

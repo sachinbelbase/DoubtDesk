@@ -6,7 +6,7 @@ import { useMyQuestions } from "../../hooks/useMyQuestions";
 import { useAnswers } from "../../hooks/useAnswers";
 import { getQuestionStats } from "../../utils/questionStats";
 
-function TeacherStatus() {
+function TeacherStats() {
 
      const { myQuestions } = useMyQuestions();
      const { answers } = useAnswers();
@@ -42,4 +42,4 @@ function TeacherStatus() {
      );
 }
 
-export default TeacherStatus;
+export default TeacherStats;

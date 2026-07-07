@@ -26,7 +26,7 @@ function AnalyticsCharts() {
      const maxCount = Math.max(...categoryEntries.map(([, count]) => count));
 
      return (
-          <div className="bg-white rounded-xl shadow p-6">
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
 
                <h2 className="text-lg font-semibold mb-5">
                     Questions by Category
