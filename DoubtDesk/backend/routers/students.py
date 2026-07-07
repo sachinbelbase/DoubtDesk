@@ -13,14 +13,19 @@ router = APIRouter(
 
 @router.post("/register")
 def register_student(
-    students: schemas.createStudent,
+    students: schemas.CreateStudent,
     db: Session = Depends(get_db)
 ):
     
     if not students.email.endswith("@ncit.edu.np") or len(students.password) < 8:
         raise HTTPException(status_code=400, detail="Email must be a valid NCIT email address "
         "and password must be at least 8 characters long")
-
+    
+    existing_student = db.query(models.Student).filter(models.Student.email == students.email).first()
+    if existing_student:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    
     new_student = models.Student(
         name=students.name,
         email=students.email,
@@ -41,7 +46,7 @@ def register_student(
 
 @router.post("/login")
 def login_student(
-    students: schemas.loginStudent,
+    students: schemas.LoginStudent,
     db: Session = Depends(get_db)
 ):
     # finds student with given email
