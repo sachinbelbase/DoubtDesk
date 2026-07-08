@@ -1,21 +1,28 @@
+import { useState } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import { useAuth } from "../../hooks/useAuth";
 
-function DashboardLayout({ role, children }) {
-  const { user } = useAuth();
-  const activeRole = role || user?.role;
+function DashboardLayout({ children, role }) {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100">
 
-      <Navbar />
-      
-      <div className="flex">
+      {/* Sidebar */}
+      <Sidebar
+        role={role}
+        sidebarOpen={sidebarOpen}
+      />
 
-        <Sidebar role={activeRole} />
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
 
-        <main className="flex-1 p-6 overflow-y-auto">
+        <Navbar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
 

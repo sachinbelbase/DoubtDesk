@@ -15,13 +15,18 @@ function Login() {
           name: "",
           role: ROLES.STUDENT,
      });
+
      const [error, setError] = useState("");
 
      const { login } = useAuth();
      const navigate = useNavigate();
 
      const handleChange = (e) => {
-          setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+          setFormData((prev) => ({
+               ...prev,
+               [e.target.name]: e.target.value,
+          }));
+
           setError("");
      };
 
@@ -33,15 +38,27 @@ function Login() {
                return;
           }
 
-          // TEMP: mock login using data/users.js until a real backend exists.
-          // Swap this block for authService.loginRequest(formData) later.
+          // Mock login using users.js
           const matchedUser =
                users.find(
-                    (u) => u.name.toLowerCase() === formData.name.trim().toLowerCase()
-               ) || { id: Date.now(), name: formData.name, role: formData.role };
+                    (u) =>
+                         u.name.toLowerCase() === formData.name.trim().toLowerCase() &&
+                         u.role.toLowerCase() === formData.role.toLowerCase()
+               ) || {
+                    id: Date.now(),
+                    name: formData.name,
+                    role: formData.role,
+               };
 
-          login(matchedUser);
-          navigate(`/${matchedUser.role}/dashboard`);
+          // Normalize role
+          const userData = {
+               ...matchedUser,
+               role: matchedUser.role.toLowerCase(),
+          };
+
+          login(userData);
+
+          navigate(`/${userData.role}/dashboard`);
      };
 
      return (
@@ -51,6 +68,7 @@ function Login() {
                          <h1 className="text-2xl font-bold text-center mb-1">
                               Welcome Back
                          </h1>
+
                          <p className="text-gray-500 text-center mb-6">
                               Log in to DoubtDesk
                          </p>
@@ -71,7 +89,11 @@ function Login() {
                                    name="role"
                                    value={formData.role}
                                    onChange={handleChange}
-                                   options={[ROLES.STUDENT, ROLES.TEACHER, ROLES.ADMIN]}
+                                   options={[
+                                        ROLES.STUDENT,
+                                        ROLES.TEACHER,
+                                        ROLES.ADMIN,
+                                   ]}
                                    placeholder="Select role"
                               />
 
@@ -81,8 +103,11 @@ function Login() {
                          </form>
 
                          <p className="text-center text-sm text-gray-500 mt-5">
-                              Don&apos;t have an account?{" "}
-                              <Link to="/register" className="text-blue-600 font-semibold">
+                              Don't have an account?{" "}
+                              <Link
+                                   to="/register"
+                                   className="text-blue-600 font-semibold hover:underline"
+                              >
                                    Sign up
                               </Link>
                          </p>

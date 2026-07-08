@@ -7,6 +7,7 @@ function Select({
      placeholder = "Select an option",
      error,
      required = false,
+     className = "",
 }) {
      return (
           <div className="space-y-2">
@@ -14,7 +15,7 @@ function Select({
                {label && (
                     <label
                          htmlFor={name}
-                         className="block text-sm font-semibold text-gray-700"
+                         className="block text-sm font-medium text-gray-700"
                     >
                          {label}
                          {required && <span className="text-red-500"> *</span>}
@@ -27,16 +28,27 @@ function Select({
                     value={value}
                     onChange={onChange}
                     className={`
-                              w-full
-                              rounded-lg
-                              border
-                              px-4
-                              py-3
-                              outline-none
-                              transition
-                              ${error ? "border-red-500 focus:ring-2 focus:ring-red-400" : "border-gray-300 focus:ring-2 focus:ring-blue-500"
+          w-full
+          rounded-xl
+          border
+          border-gray-300
+          px-4
+          py-3
+          text-sm
+          bg-white
+          outline-none
+          transition-all
+          duration-200
+          focus:border-blue-500
+          focus:ring-2
+          focus:ring-blue-200
+          ${error
+                              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                              : ""
                          }
-                 `}>
+          ${className}
+        `}
+               >
                     <option value="">{placeholder}</option>
 
                     {options.map((option) => {

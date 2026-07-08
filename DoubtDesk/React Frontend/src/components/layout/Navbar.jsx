@@ -1,92 +1,130 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNotifications } from "../../hooks/useNotifications";
 import {
-     Bell,
-     Search,
-     Moon,
      Menu,
+     Bell,
+     Moon,
      ChevronDown,
-     UserCircle,
+     User,
+     Settings,
      LogOut,
 } from "lucide-react";
 
 import { useAuth } from "../../hooks/useAuth";
+import { useNotifications } from "../../hooks/useNotifications";
 
-function Navbar() {
+function Navbar({
+     sidebarOpen,
+     setSidebarOpen,
+}) {
+     const navigate = useNavigate();
+
      const { user, logout } = useAuth();
      const { unreadCount } = useNotifications();
-     const navigate = useNavigate();
+
+     const [showDropdown, setShowDropdown] = useState(false);
+
+     const getInitials = (name = "Anonymous User") =>
+          name
+               .split(" ")
+               .map((word) => word[0])
+               .join("")
+               .toUpperCase();
 
      const handleLogout = () => {
           logout();
           navigate("/login");
      };
 
-     const handleNotificationClick = () => {
-          if (!user) return;
+     const handleProfile = () => {
+          navigate(`/${user.role}/profile`);
+          setShowDropdown(false);
+     };
 
-          switch (user.role) {
-               case "student":
-                    navigate("/student/notifications");
-                    break;
+     const handleSettings = () => {
+          navigate(`/${user.role}/settings`);
+          setShowDropdown(false);
+     };
 
-               case "teacher":
-                    navigate("/teacher/notifications");
-                    break;
+     const handleNotification = () => {
+          if (user?.role === "student")
+               navigate("/student/notifications");
 
-               case "admin":
-                    navigate("/admin/notifications");
-                    break;
+          else if (user?.role === "teacher")
+               navigate("/teacher/notifications");
 
-               default:
-                    break;
-          }
+          else
+               navigate("/admin/reports");
      };
 
      return (
-          <header className="h-16 bg-white border-b shadow-sm flex items-center justify-between px-6">
+          <header className="sticky top-0 z-50 h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between">
 
-          {/* Left Section */}
+               {/* Left */}
+
                <div className="flex items-center gap-4">
 
-                    <button className="p-2 rounded-lg hover:bg-gray-100">
+                    <button
+                         onClick={() => setSidebarOpen(!sidebarOpen)}
+                         className="
+                              p-2
+                              rounded-lg
+                              hover:bg-gray-100
+                              transition
+                         "
+                    >
                          <Menu size={22} />
                     </button>
 
+                    <div>
+
+                         <h1 className="text-xl font-bold text-gray-900">
+                              DoubtDesk
+                         </h1>
+
+                         <p className="text-xs text-gray-500">
+                              Anonymous Learning Platform
+                         </p>
+
+                    </div>
+
                </div>
 
-          {/* Right Section */}
-               <div className="flex items-center gap-5">
+               {/* Right */}
+
+               <div className="flex items-center gap-3">
+
+                    {/* Notification */}
+
                     <button
-                         onClick={handleNotificationClick}
+                         onClick={handleNotification}
                          className="
-                         relative
-                         bg-white
-                         p-3
-                         rounded-full
-                         shadow
-                         hover:bg-gray-100
-                         transition
-                    "
+                              relative
+                              p-2
+                              rounded-lg
+                              hover:bg-gray-100
+                              transition
+                         "
                     >
-                         <Bell size={22} />
+
+                         <Bell size={20} />
 
                          {unreadCount > 0 && (
                               <span
                                    className="
-                                   absolute
-                                   -top-1
-                                   -right-1
-                                   bg-red-500
-                                   text-white
-                                   text-xs
-                                   rounded-full
-                                   h-5
-                                   w-5
-                                   flex
-                                   items-center
-                                   justify-center
-                              "
+                                        absolute
+                                        -top-1
+                                        -right-1
+                                        w-5
+                                        h-5
+                                        rounded-full
+                                        bg-red-500
+                                        text-white
+                                        text-xs
+                                        flex
+                                        items-center
+                                        justify-center
+                                   "
                               >
                                    {unreadCount}
                               </span>
@@ -94,36 +132,117 @@ function Navbar() {
 
                     </button>
 
-                    <button className="p-2 rounded-lg hover:bg-gray-100">
-                         <Moon size={21} />
-                    </button>
-
-                    <div className="flex items-center gap-3 cursor-pointer">
-
-                         <UserCircle size={38} />
-
-                         <div>
-                              <p className="font-semibold">
-                                   {user?.name || "Anonymous User"}
-                              </p>
-
-                              <p className="text-sm text-gray-500 capitalize">
-                                   {user?.role || "Student"}
-                              </p>
-
-                         </div>
-
-                         <ChevronDown size={18} />
-
-                    </div>
+                    {/* Theme */}
 
                     <button
-                         onClick={handleLogout}
-                         className="p-2 rounded-lg hover:bg-gray-100"
-                         title="Log out"
+                         className="
+                              p-2
+                              rounded-lg
+                              hover:bg-gray-100
+                              transition
+                         "
                     >
-                         <LogOut size={21} />
+                         <Moon size={20} />
                     </button>
+
+                    {/* Profile */}
+
+                    <div className="relative">
+
+                         <button
+                              onClick={() =>
+                                   setShowDropdown(!showDropdown)
+                              }
+                              className="
+                                   flex
+                                   items-center
+                                   gap-3
+                                   pl-3
+                                   border-l
+                              "
+                         >
+
+                              <div
+                                   className="
+                                        w-10
+                                        h-10
+                                        rounded-full
+                                        bg-blue-600
+                                        text-white
+                                        flex
+                                        items-center
+                                        justify-center
+                                        font-semibold
+                                   "
+                              >
+                                   {getInitials(user?.name)}
+                              </div>
+
+                              <div className="text-left hidden md:block">
+
+                                   <p className="font-semibold">
+                                        {user?.name}
+                                   </p>
+
+                                   <p className="text-xs text-gray-500 capitalize">
+                                        {user?.role}
+                                   </p>
+
+                              </div>
+
+                              <ChevronDown size={18} />
+
+                         </button>
+
+                         {/* Dropdown */}
+
+                         {showDropdown && (
+
+                              <div
+                                   className="
+                                        absolute
+                                        right-0
+                                        mt-3
+                                        w-56
+                                        bg-white
+                                        rounded-xl
+                                        shadow-lg
+                                        border
+                                        overflow-hidden
+                                   "
+                              >
+
+                                   <button
+                                        onClick={handleProfile}
+                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                                   >
+                                        <User size={18} />
+                                        Profile
+                                   </button>
+
+                                   <button
+                                        onClick={handleSettings}
+                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                                   >
+                                        <Settings size={18} />
+                                        Settings
+                                   </button>
+
+                                   <hr />
+
+                                   <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50"
+                                   >
+                                        <LogOut size={18} />
+                                        Logout
+                                   </button>
+
+                              </div>
+
+                         )}
+
+                    </div>
 
                </div>
 
