@@ -7,7 +7,6 @@ import AppProviders from "./context/AppProviders";
 import { BookmarksProvider } from "./context/BookmarksContext";
 import { MyQuestionsProvider } from "./context/MyQuestionsContext";
 import { NotificationsProvider } from "./context/NotificationsContext";
-import ThemeProvider from "./context/ThemeProvider";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -17,9 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <MyQuestionsProvider>
           <NotificationsProvider>
             <AppProviders>
-              <ThemeProvider>
-                <App />
-              </ThemeProvider>
+              <App />
             </AppProviders>
           </NotificationsProvider>
         </MyQuestionsProvider>
