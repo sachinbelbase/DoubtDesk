@@ -2,9 +2,12 @@ from pydantic import BaseModel
 from enum import Enum
 
 class CreateStudent(BaseModel):
-    name : str
-    email : str
-    password : str
+    name: str
+    email: str
+    password: str
+    program: str
+    semester: int
+    section: str
 
 
 class LoginStudent(BaseModel):
@@ -17,7 +20,6 @@ class visibility(str ,Enum):
     
 
 class CreateQuestion(BaseModel):
-    student_id : int
     title : str
     question_text : str
     visibility : visibility

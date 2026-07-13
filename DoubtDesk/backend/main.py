@@ -1,6 +1,6 @@
 from fastapi import FastAPI,Depends,HTTPException
 from database import Base, engine
-from routers import students 
+from routers import students , question
 
 
 app = FastAPI()
@@ -9,6 +9,7 @@ app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
 app.include_router(students.router)
+app.include_router(question.router)
 
 #homepage
 @app.get("/")

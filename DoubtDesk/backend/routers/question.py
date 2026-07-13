@@ -1,6 +1,7 @@
 from fastapi import APIRouter,Depends,HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
+from auth import get_current_student
 import schemas
 import models
 
@@ -10,22 +11,33 @@ router = APIRouter(
     tags=["Questions"]
 )
 
-@router.post("/")
-def ask_question(
-    question : schemas.CreateQuestion,
+@router.get("/")
+def get_questions(
+    current_student: models.Student = Depends(get_current_student),
     db: Session = Depends(get_db)
 ):
     
-    student = db.query(models.Student).filter(models.Student.student_id == question.student_id).first()
-    if not student:
-        raise HTTPException(status_code=400, detail="Student not found")
+    questions = db.query(models.Question).filter(
+        (models.Question.visibility == "COLLEGE") |
+        ((models.Question.visibility == "CLASS") & (models.Question.class_id == current_student.class_id))
+    ).all()
+
+    return questions
+
+
+@router.post("/")
+def ask_question(
+    question : schemas.CreateQuestion,
+    current_student: models.Student = Depends(get_current_student),
+    db: Session = Depends(get_db)
+):
     
     new_question = models.Question(
-        student_id = student.student_id,
+        student_id = current_student.student_id,
         title = question.title,
         question_text = question.question_text,
         visibility = question.visibility,
-        class_id = student.class_id,
+        class_id = current_student.class_id,
         status = "OPEN"
         )
 

@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP,DateTime
 from database import Base
+from sqlalchemy.sql import func
 
 
 class Student(Base):
@@ -10,7 +11,7 @@ class Student(Base):
     email = Column(String(150), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     class_id = Column(Integer, ForeignKey("classes.class_id"))
-    created_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
 
 
 class Question(Base):
@@ -21,9 +22,9 @@ class Question(Base):
     class_id = Column(Integer, ForeignKey("classes.class_id"))
     title = Column(String(255), nullable=False)
     question_text = Column(Text, nullable=False)
-    visibility = Column(String(20))
-    status = Column(String(20))
-    created_at = Column(DateTime)
+    visibility = Column(String(20), nullable=False)  # "CLASS" or "COLLEGE"
+    status = Column(String(20), default="OPEN")
+    created_at = Column(DateTime, default=func.now())
 
 
 class Answer(Base):
@@ -43,7 +44,7 @@ class Class(Base):
     program = Column(String(100), nullable=False)
     semester = Column(Integer, nullable=False)
     section = Column(String(10), nullable=False)
-    created_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
 
 class Teacher(Base):
     __tablename__ = "teachers"
