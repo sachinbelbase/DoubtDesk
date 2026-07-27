@@ -34,7 +34,11 @@ class Answer(Base):
     question_id = Column(Integer, ForeignKey("questions.question_id"))
     student_id = Column(Integer, ForeignKey("students.student_id"))
     teacher_id = Column(Integer, ForeignKey("teachers.teacher_id"))
-    created_at = Column(DateTime)
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False
+        )
     answer_text = Column(Text)
 
 class Class(Base):

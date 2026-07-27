@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 from enum import Enum
 
@@ -27,6 +29,14 @@ class CreateQuestion(BaseModel):
 class CreateAnswer(BaseModel):
     question_id : int
     answer_text : str
+
+class AnswerResponse(BaseModel):
+    answer_id: int  
+    answer_text: str
+    created_at: datetime
+
+    class config:
+        from_attributes = True
 
 class Token(BaseModel):
     access_token: str

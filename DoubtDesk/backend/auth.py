@@ -26,7 +26,10 @@ def create_access_token(data: dict):
     token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return token
 
-def get_current_student(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_student(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -35,13 +38,25 @@ def get_current_student(token: str = Depends(oauth2_scheme), db: Session = Depen
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        student_id: str = payload.get("sub")
+        print("Payload:", payload)
+
+        student_id = payload.get("sub")
+        print("Student ID:", student_id)
+
         if student_id is None:
             raise credentials_exception
-    except JWTError:
+
+    except JWTError as e:
+        print("JWT Error:", e)
         raise credentials_exception
 
-    student = db.query(models.Student).filter(models.Student.student_id == student_id).first()
+    # This part should be OUTSIDE the except block
+    student = db.query(models.Student).filter(
+        models.Student.student_id == int(student_id)
+    ).first()
+
+    print("Student:", student)
+
     if student is None:
         raise credentials_exception
 
