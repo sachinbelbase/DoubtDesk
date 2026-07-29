@@ -1,32 +1,32 @@
+import os
 from jose import JWTError, jwt
-from datetime import datetime, timedelta , timezone 
+from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+from dotenv import load_dotenv
 
 from database import get_db
 import models
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/students/login")
+load_dotenv()
 
-SECRET_KEY = "doubtdesk_secret_key"
+# Single shared OAuth2 scheme — one Authorize lock in Swagger
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="Auth")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+
 def create_access_token(data: dict):
     to_encode = data.copy()
-
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update(
-        {
-            "exp": expire
-        }
-    )
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-    token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return token
 
-def get_current_student(
+def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ):
@@ -38,26 +38,47 @@ def get_current_student(
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print("Payload:", payload)
+        user_id = payload.get("sub")
+        role = payload.get("role")
 
-        student_id = payload.get("sub")
-        print("Student ID:", student_id)
-
-        if student_id is None:
+        if user_id is None or role is None:
             raise credentials_exception
 
-    except JWTError as e:
-        print("JWT Error:", e)
+        if role == "student":
+            user = db.query(models.Student).filter(
+                models.Student.student_id == int(user_id)
+            ).first()
+        elif role == "teacher":
+            user = db.query(models.Teacher).filter(
+                models.Teacher.teacher_id == int(user_id)
+            ).first()
+        else:
+            raise credentials_exception
+
+    except (JWTError, ValueError):
         raise credentials_exception
 
-    # This part should be OUTSIDE the except block
-    student = db.query(models.Student).filter(
-        models.Student.student_id == int(student_id)
-    ).first()
-
-    print("Student:", student)
-
-    if student is None:
+    if user is None:
         raise credentials_exception
 
-    return student
+    return user, role
+
+
+def get_current_student(current=Depends(get_current_user)):
+    user, role = current
+    if role != "student":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Students only"
+        )
+    return user
+
+
+def get_current_teacher(current=Depends(get_current_user)):
+    user, role = current
+    if role != "teacher":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Teachers only"
+        )
+    return user

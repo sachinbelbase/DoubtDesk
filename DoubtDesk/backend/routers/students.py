@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordRequestForm
-from auth import create_access_token
 from database import get_db
 from security import hash_password, verify_password
 import models
@@ -83,37 +81,3 @@ def register_student(
     }
 
 
-@router.post("/login")
-def login_student(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
-):
-    # Find student
-    db_student = db.query(models.Student).filter(
-        models.Student.email == form_data.username
-    ).first()
-
-    # Verify credentials
-    if not db_student or not verify_password(
-        form_data.password,
-        db_student.password_hash
-    ):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password."
-        )
-
-    # Generate JWT
-    access_token = create_access_token(
-        data={"sub": str(db_student.student_id)}
-    )
-
-    return {
-        "message": f"{db_student.name} has logged in successfully.",
-        "student_id": db_student.student_id,
-        "access_token": access_token,
-        "class_id": db_student.class_id,
-        "token_type": "bearer",
-        "name": db_student.name,
-        "email": db_student.email
-    }

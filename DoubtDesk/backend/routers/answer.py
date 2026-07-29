@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from auth import get_current_student
+from auth import get_current_user, get_current_teacher
 
 import schemas
 import models
@@ -15,18 +15,16 @@ router = APIRouter(
 @router.post("/")
 def answer_question(
     answer: schemas.CreateAnswer,
-    current_student: models.Student = Depends(get_current_student),
+    current_teacher: models.Teacher = Depends(get_current_teacher),
     db: Session = Depends(get_db)
 ):
-    # Check if the question exists
     question = db.query(models.Question).filter(models.Question.question_id == answer.question_id).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
 
-    # Create a new answer
     new_answer = models.Answer(
         question_id=answer.question_id,
-        student_id=current_student.student_id,
+        teacher_id=current_teacher.teacher_id,
         answer_text=answer.answer_text
     )
 
@@ -39,22 +37,40 @@ def answer_question(
         "answer_id": new_answer.answer_id
     }
 
+
 @router.get(
     "/{question_id}",
     response_model=list[schemas.AnswerResponse]
 )
 def get_answers(
     question_id: int,
-    current_student: models.Student = Depends(get_current_student),
+    current=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    # Check if the question exists
+    user, role = current
+
     question = db.query(models.Question).filter(models.Question.question_id == question_id).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
 
-    # Fetch answers for the given question
+    # Teachers can view answers to any question
+    if role != "teacher":
+        # Students can only view answers to questions they're allowed to see
+        is_college_wide = question.visibility == "COLLEGE"
+        is_own_class = question.visibility == "CLASS" and question.class_id == user.class_id
+
+        if not (is_college_wide or is_own_class):
+            raise HTTPException(status_code=403, detail="You don't have access to this question")
+
     answers = db.query(models.Answer).filter(models.Answer.question_id == question_id).all()
 
-    return answers
-
+    result = [
+        schemas.AnswerResponse(
+            answer_id=answer.answer_id,
+            question_text=question.question_text,
+            answer_text=answer.answer_text,
+            created_at=answer.created_at
+        )
+        for answer in answers
+    ]
+    return result
