@@ -15,16 +15,21 @@ router = APIRouter(
 @router.post("/")
 def answer_question(
     answer: schemas.CreateAnswer,
-    current_teacher: models.Teacher = Depends(get_current_teacher),
+    current=Depends(get_current_user),      # renamed — it's a tuple, not just a teacher
     db: Session = Depends(get_db)
 ):
-    question = db.query(models.Question).filter(models.Question.question_id == answer.question_id).first()
+    user, role = current                     # unpack the tuple into the actual user + their role
+
+    question = db.query(models.Question).filter(
+        models.Question.question_id == answer.question_id
+    ).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
 
     new_answer = models.Answer(
         question_id=answer.question_id,
-        teacher_id=current_teacher.teacher_id,
+        student_id=user.student_id if role == "student" else None,   # fill only if student
+        teacher_id=user.teacher_id if role == "teacher" else None,   # fill only if teacher
         answer_text=answer.answer_text
     )
 
@@ -74,3 +79,54 @@ def get_answers(
         for answer in answers
     ]
     return result
+
+@router.put("/{answer_id}")
+def update_answer(
+    answer_id: int,
+    updated_answer: schemas.CreateAnswer,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user, role = current
+
+    answer = db.query(models.Answer).filter(models.Answer.answer_id == answer_id).first()
+    if not answer:
+        raise HTTPException(status_code=404, detail="Answer not found")
+
+    # Only the original author (student or teacher) can update their answer
+    if (role == "student" and answer.student_id != user.student_id) or \
+       (role == "teacher" and answer.teacher_id != user.teacher_id):
+        raise HTTPException(status_code=403, detail="You can only edit your own answers")
+
+    answer.answer_text = updated_answer.answer_text
+    db.commit()
+    db.refresh(answer)
+
+    return {
+        "message": f"Answer ID '{answer.answer_id}' has been updated successfully"
+    }
+
+
+@router.delete("/{answer_id}")
+def delete_answer(
+    answer_id: int,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user, role = current
+
+    answer = db.query(models.Answer).filter(models.Answer.answer_id == answer_id).first()
+    if not answer:
+        raise HTTPException(status_code=404, detail="Answer not found")
+
+    # Only the original author (student or teacher) can delete their answer
+    if (role == "student" and answer.student_id != user.student_id) or \
+       (role == "teacher" and answer.teacher_id != user.teacher_id):
+        raise HTTPException(status_code=403, detail="You can only delete your own answers")
+
+    db.delete(answer)
+    db.commit()
+
+    return {
+        "message" : f"Answer ID '{answer.answer_id}' has been deleted successfully"
+    }

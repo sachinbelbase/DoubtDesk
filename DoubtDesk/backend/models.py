@@ -27,6 +27,7 @@ class Question(Base):
     status = Column(String(20), default="OPEN")
     created_at = Column(DateTime, default=func.now())
 
+
 class Answer(Base):
     __tablename__ = "answers"
 

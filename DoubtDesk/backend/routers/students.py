@@ -4,6 +4,7 @@ from database import get_db
 from security import hash_password, verify_password
 import models
 import schemas
+from auth import get_current_student
 
 router = APIRouter(
     prefix="/students",
@@ -80,4 +81,22 @@ def register_student(
         "email": new_student.email
     }
 
+    
+@router.get("/me", response_model=schemas.StudentOut)
+def get_my_profile(
+    current_student: models.Student = Depends(get_current_student),
+    db: Session = Depends(get_db)
+):
+    student_class = db.query(models.Class).filter(
+        models.Class.class_id == current_student.class_id
+    ).first()
 
+    return schemas.StudentOut(
+        student_id=current_student.student_id,
+        name=current_student.name,
+        email=current_student.email,
+        program=student_class.program,
+        semester=student_class.semester,
+        section=student_class.section,
+        created_at=current_student.created_at
+    )

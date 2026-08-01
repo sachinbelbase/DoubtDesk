@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from auth import get_current_teacher
 from database import get_db
 from security import hash_password, verify_password
 import models, schemas
@@ -53,4 +54,10 @@ def register_teacher(
     db.refresh(new_teacher)
 
     return {"message": "Teacher registered successfully."}
+
+@router.get("/me", response_model=schemas.TeacherOut)
+def get_my_profile(
+    current_teacher: models.Teacher = Depends(get_current_teacher)
+):
+    return current_teacher
 
