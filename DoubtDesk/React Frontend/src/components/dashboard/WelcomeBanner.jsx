@@ -7,7 +7,7 @@ const WelcomeBanner = () => {
      const { user } = useAuth();
 
      return (
-          <section className="bg-blue-600 text-white rounded-2xl px-8 py-5 mb-6">
+          <section className="bg-blue-500 text-white rounded-2xl px-8 py-5 mb-6">
 
                <div className="flex items-center justify-between">
 

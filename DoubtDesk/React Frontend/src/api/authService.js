@@ -1,10 +1,24 @@
 import axiosClient from "./axiosClient";
 
-// now i use data/users.js
-// backend banesi sidai tya bata linxu
+export const loginRequest = ({ email, password }) => {
+  const formData = new URLSearchParams();
 
-export const loginRequest = (credentials) =>
-  axiosClient.post("/auth/login", credentials);
+  formData.append("username", email);
+  formData.append("password", password);
 
-export const registerRequest = (data) =>
-  axiosClient.post("/auth/register", data);
+  return axiosClient.post("/login", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+};
+
+export const getStudentProfile = () => axiosClient.get("/students/me");
+
+export const getTeacherProfile = () => axiosClient.get("/teachers/me");
+
+export const registerStudentRequest = (data) =>
+  axiosClient.post("/students/register", data);
+
+export const registerTeacherRequest = (data) =>
+  axiosClient.post("/teachers/register", data);

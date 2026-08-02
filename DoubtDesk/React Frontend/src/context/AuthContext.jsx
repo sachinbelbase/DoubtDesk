@@ -6,27 +6,49 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore session on refresh
   useEffect(() => {
-    const stored = localStorage.getItem("doubtdesk_user");
-    if (stored) {
-      setUser(JSON.parse(stored));
+    try {
+      const storedUser = localStorage.getItem("doubtdesk_user");
+
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error("Failed to restore session:", error);
+
+      localStorage.removeItem("doubtdesk_user");
+      localStorage.removeItem("doubtdesk_access_token");
+      localStorage.removeItem("doubtdesk_refresh_token");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem("doubtdesk_user", JSON.stringify(userData));
+  const login = ({ user, accessToken, refreshToken }) => {
+    setUser(user);
+
+    localStorage.setItem("doubtdesk_user", JSON.stringify(user));
+    localStorage.setItem("doubtdesk_access_token", accessToken);
+    localStorage.setItem("doubtdesk_refresh_token", refreshToken);
   };
 
   const logout = () => {
     setUser(null);
+
     localStorage.removeItem("doubtdesk_user");
+    localStorage.removeItem("doubtdesk_access_token");
+    localStorage.removeItem("doubtdesk_refresh_token");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
