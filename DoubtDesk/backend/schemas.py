@@ -4,13 +4,18 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from enum import Enum
 
+class SectionType(str, Enum):
+    MORNING = "MORNING"
+    DAY = "DAY"
+
 class CreateStudent(BaseModel):
     name: str
     email: str
     password: str
     program: str
     semester: int
-    section: str
+    section: SectionType
+
 
 
 class LoginStudent(BaseModel):
