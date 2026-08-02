@@ -1,136 +1,132 @@
 import {
-     MessageCircle,
-     Eye,
-     Bookmark,
+     Globe,
+     Users,
+     Clock,
      UserCircle,
+     Pencil,
+     Trash2,
 } from "lucide-react";
 
-import { useBookmarks } from "../../hooks/useBookmarks";
+function QuestionCard({
+     question,
+     showActions = false,
+     onEdit,
+     onDelete,
+}) {
 
-function QuestionCard({ question }) {
-     const { isBookmarked, toggleBookmark } = useBookmarks();
-
-     const bookmarked = isBookmarked(question.id);
-
-     const difficultyColors = {
-          Easy: "bg-green-100 text-green-700",
-          Medium: "bg-yellow-100 text-yellow-700",
-          Hard: "bg-red-100 text-red-700",
+     const statusColors = {
+          OPEN: "bg-yellow-100 text-yellow-700",
+          ANSWERED: "bg-green-100 text-green-700",
+          CLOSED: "bg-red-100 text-red-700",
      };
 
      return (
-          <div
-               className="
-      bg-white
-      border
-      border-gray-200
-      rounded-2xl
-      p-6
-      shadow-sm
-      hover:shadow-md
-      transition-all
-      duration-300
-    "
-          >
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+
                {/* Top */}
+               <div className="flex justify-between items-center flex-wrap gap-3">
 
-               <div className="flex justify-between items-start">
+                    <div className="flex gap-2">
 
-                    <div className="flex gap-2 flex-wrap">
+                         <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
 
-                         <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                              {question.category}
+                              {question.visibility === "COLLEGE" ? (
+                                   <>
+                                        <Globe size={14} />
+                                        College
+                                   </>
+                              ) : (
+                                   <>
+                                        <Users size={14} />
+                                        Class
+                                   </>
+                              )}
+
                          </span>
 
                          <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${difficultyColors[question.difficulty]
-                                   }`}
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[question.status]}`}
                          >
-                              {question.difficulty}
+                              {question.status}
                          </span>
 
-                         <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${question.answers > 0
-                                        ? "bg-green-100 text-green-700"
-                                        : "bg-orange-100 text-orange-700"
-                                   }`}
-                         >
-                              {question.answers > 0 ? "Answered" : "Pending"}
-                         </span>
+                         {/* Future difficulty */}
+                         {question.difficulty && (
+                              <span className="px-3 py-1 rounded-full text-xs bg-purple-100 text-purple-700">
+                                   {question.difficulty}
+                              </span>
+                         )}
 
                     </div>
-
-                    <button
-                         onClick={() => toggleBookmark(question)}
-                         className="hover:scale-110 transition"
-                    >
-                         <Bookmark
-                              size={20}
-                              fill={bookmarked ? "currentColor" : "none"}
-                              className={
-                                   bookmarked
-                                        ? "text-blue-600"
-                                        : "text-gray-400 hover:text-blue-600"
-                              }
-                         />
-                    </button>
 
                </div>
 
                {/* Title */}
 
-               <h2 className="text-xl font-semibold text-gray-900 mt-5">
+               <h2 className="text-xl font-semibold mt-5">
                     {question.title}
                </h2>
 
                {/* Description */}
 
-               <p className="text-gray-600 mt-3 leading-7">
-                    {question.description}
+               <p className="text-gray-600 mt-3 whitespace-pre-line">
+                    {question.question_text}
                </p>
 
                {/* Footer */}
 
-               <div className="flex justify-between items-center mt-6">
+               <div className="flex justify-between items-center mt-6 flex-wrap gap-4">
 
                     <div className="flex items-center gap-3">
 
-                         <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-
-                              <UserCircle
-                                   size={24}
-                                   className="text-gray-500"
-                              />
-
-                         </div>
+                         <UserCircle
+                              className="text-gray-500"
+                              size={28}
+                         />
 
                          <div>
 
                               <p className="text-sm font-medium">
-                                   {question.author}
+                                   {question.asked_by}
                               </p>
 
-                              <p className="text-xs text-gray-500">
-                                   {question.time}
-                              </p>
+                              <div className="flex items-center gap-1 text-xs text-gray-500">
+
+                                   <Clock size={14} />
+
+                                   {new Date(question.created_at).toLocaleString()}
+
+                              </div>
 
                          </div>
 
                     </div>
 
-                    <div className="flex items-center gap-5 text-gray-500">
+                    {showActions && (
+                         <div className="flex gap-2">
 
-                         <div className="flex items-center gap-1">
-                              <MessageCircle size={18} />
-                              <span>{question.answers}</span>
+                              <button
+                                   onClick={() => onEdit(question)}
+                                   className="p-2 rounded-lg hover:bg-blue-100"
+                              >
+                                   <Pencil
+                                        size={18}
+                                        className="text-blue-600"
+                                   />
+                              </button>
+
+                              <button
+                                   onClick={() => onDelete(question)}
+                                   className="p-2 rounded-lg hover:bg-red-100"
+                              >
+                                   <Trash2
+                                        size={18}
+                                        className="text-red-600"
+                                   />
+                              </button>
+
                          </div>
-
-                         <div className="flex items-center gap-1">
-                              <Eye size={18} />
-                              <span>{question.views}</span>
-                         </div>
-
-                    </div>
+                    )}
 
                </div>
 

@@ -1,64 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import QuestionCard from "../../components/dashboard/QuestionCard";
-import AnswerForm from "../../components/teacher/AnswerForm";
-import Button from "../../components/common/Button";
+import QuestionFeed from "../../components/student/QuestionFeed";
 
-import { questions as staticQuestions } from "../../data/questions";
-import { useMyQuestions } from "../../hooks/useMyQuestions";
+import { getQuestions } from "../../api/questionService";
 
 function Questions() {
+     const [questions, setQuestions] = useState([]);
+     const [loading, setLoading] = useState(true);
+     const [error, setError] = useState("");
 
-     const { myQuestions } = useMyQuestions();
-     const allQuestions = [...myQuestions, ...staticQuestions];
+     useEffect(() => {
+          const fetchQuestions = async () => {
+               try {
+                    const response = await getQuestions();
 
-     const [expandedId, setExpandedId] = useState(null);
+                    setQuestions(response.data);
+               } catch (err) {
+                    console.error(err);
 
-     const toggleExpand = (id) => {
-          setExpandedId((prev) => (prev === id ? null : id));
-     };
+                    setError(
+                         err.response?.data?.detail ||
+                         "Failed to load questions."
+                    );
+               } finally {
+                    setLoading(false);
+               }
+          };
+
+          fetchQuestions();
+     }, []);
+
+     if (loading) {
+          return (
+               <DashboardLayout role="teacher">
+                    <p>Loading...</p>
+               </DashboardLayout>
+          );
+     }
+
+     if (error) {
+          return (
+               <DashboardLayout role="teacher">
+                    <p className="text-red-600">{error}</p>
+               </DashboardLayout>
+          );
+     }
 
      return (
           <DashboardLayout role="teacher">
 
                <div className="mb-6">
-
                     <h1 className="text-3xl font-bold">
-                         Questions
+                         Student Questions
                     </h1>
 
                     <p className="text-gray-500 mt-2">
-                         Answer questions submitted by students.
+                         Browse and answer students' questions.
                     </p>
-
                </div>
 
-               <div className="space-y-5">
-
-                    {allQuestions.map((question) => (
-                         <div key={question.id}>
-
-                              <QuestionCard question={question} />
-
-                              <div className="flex justify-end mt-2">
-                                   <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => toggleExpand(question.id)}
-                                   >
-                                        {expandedId === question.id ? "Close" : "Answer"}
-                                   </Button>
-                              </div>
-
-                              {expandedId === question.id && (
-                                   <AnswerForm questionId={question.id} />
-                              )}
-
-                         </div>
-                    ))}
-
-               </div>
+               <QuestionFeed
+                    questions={questions}
+                    title="All Questions"
+                    emptyMessage="No questions available."
+               />
 
           </DashboardLayout>
      );

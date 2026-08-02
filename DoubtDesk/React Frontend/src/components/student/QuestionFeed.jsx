@@ -1,11 +1,13 @@
-import { questions as allQuestions } from "../../data/questions";
 import QuestionCard from "../dashboard/QuestionCard";
 import QuestionFilter from "./QuestionFilter";
 
 function QuestionFeed({
-     questions = allQuestions,
+     questions = [],
      title = "Recent Questions",
      emptyMessage = "No questions yet.",
+     showActions = false,
+     onEdit,
+     onDelete,
 }) {
      return (
           <section className="mt-10">
@@ -19,9 +21,13 @@ function QuestionFeed({
                ) : (
                     <div className="space-y-5">
                          {questions.map((question) => (
+
                               <QuestionCard
-                                   key={question.id}
+                                   key={question.question_id}
                                    question={question}
+                                   showActions={showActions}
+                                   onEdit={onEdit}
+                                   onDelete={onDelete}
                               />
                          ))}
                     </div>

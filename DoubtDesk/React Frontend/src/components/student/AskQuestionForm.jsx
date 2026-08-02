@@ -4,76 +4,56 @@ import Card from "../common/Card";
 import Input from "../common/Input";
 import TextArea from "../common/TextArea";
 import Select from "../common/Select";
-import Checkbox from "../common/Checkbox";
-import FileUpload from "../common/FileUpload";
 import Button from "../common/Button";
 
-import { categories } from "../../data/categories";
-import { difficulties } from "../../data/difficulties";
-import { useAuth } from "../../hooks/useAuth";
-import { useMyQuestions } from "../../hooks/useMyQuestions";
+import { createQuestion } from "../../api/questionService";
 
 function AskQuestionForm() {
-
-     const { user } = useAuth();
-     const { addQuestion } = useMyQuestions();
 
      // Initial Form Values
      const initialFormData = {
           title: "",
-          description: "",
-          category: "",
-          difficulty: "Easy",
-          tags: "",
-          anonymous: true,
-          attachment: null,
+          question_text: "",
+          visibility: "CLASS",
      };
 
-     // Form Data State
      const [formData, setFormData] = useState(initialFormData);
 
-     // Validation Errors
      const [errors, setErrors] = useState({});
 
-     // Success Message
+     const [loading, setLoading] = useState(false);
+
      const [successMessage, setSuccessMessage] = useState("");
+
+     const [serverError, setServerError] = useState("");
 
      // Handle Input Changes
      const handleChange = (e) => {
-          const { name, value, type, checked, files } = e.target;
+          const { name, value } = e.target;
 
           setFormData((prev) => ({
                ...prev,
-               [name]:
-                    type === "checkbox"
-                         ? checked
-                         : type === "file"
-                              ? files[0]
-                              : value,
+               [name]: value,
           }));
 
-          // Clear error when user starts typing
           setErrors((prev) => ({
                ...prev,
                [name]: "",
           }));
+
+          setServerError("");
      };
 
      // Validate Form
      const validateForm = () => {
-
           const newErrors = {};
 
           if (!formData.title.trim()) {
                newErrors.title = "Question title is required.";
           }
 
-          if (!formData.description.trim()) {
-               newErrors.description = "Description is required.";
-          }
-
-          if (!formData.category) {
-               newErrors.category = "Please select a category.";
+          if (!formData.question_text.trim()) {
+               newErrors.question_text = "Description is required.";
           }
 
           setErrors(newErrors);
@@ -86,32 +66,35 @@ function AskQuestionForm() {
           setFormData(initialFormData);
           setErrors({});
           setSuccessMessage("");
+          setServerError("");
      };
 
      // Handle Submit
-     const handleSubmit = (e) => {
+     const handleSubmit = async (e) => {
           e.preventDefault();
 
           if (!validateForm()) return;
 
-          const newQuestion = {
-               id: Date.now(),
-               title: formData.title,
-               description: formData.description,
-               category: formData.category,
-               author: formData.anonymous ? "Anonymous" : (user?.name || "Anonymous"),
-               answers: 0,
-               views: 0,
-               time: "Just now",
-          };
+          setLoading(true);
+          setServerError("");
+          setSuccessMessage("");
 
-          addQuestion(newQuestion);
+          try {
+               const response = await createQuestion(formData);
 
-          setSuccessMessage("Question submitted successfully!");
+               setSuccessMessage(response.data.message);
 
-          setFormData(initialFormData);
+               setFormData(initialFormData);
+               setErrors({});
+          } catch (error) {
+               console.error(error);
 
-          setErrors({});
+               setServerError(
+                    error.response?.data?.detail || "Failed to submit question."
+               );
+          } finally {
+               setLoading(false);
+          }
      };
 
      return (
@@ -121,6 +104,14 @@ function AskQuestionForm() {
                     onSubmit={handleSubmit}
                     className="space-y-6"
                >
+
+                    {/* Backend Error */}
+
+                    {serverError && (
+                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                              {serverError}
+                         </div>
+                    )}
 
                     {/* Success Message */}
 
@@ -146,70 +137,28 @@ function AskQuestionForm() {
                     {/* Description */}
 
                     <TextArea
-                         label="Description"
-                         name="description"
+                         label="Question Description"
+                         name="question_text"
                          rows={6}
-                         placeholder="Explain your question clearly..."
-                         value={formData.description}
+                         placeholder="Describe your question clearly..."
+                         value={formData.question_text}
                          onChange={handleChange}
-                         error={errors.description}
+                         error={errors.question_text}
                          required
                     />
 
-                    {/* Category & Difficulty */}
-
-                    <div className="grid md:grid-cols-2 gap-5">
-
-                         <Select
-                              label="Category"
-                              name="category"
-                              value={formData.category}
-                              onChange={handleChange}
-                              options={categories}
-                              placeholder="Select Category"
-                              error={errors.category}
-                              required
-                         />
-
-                         <Select
-                              label="Difficulty"
-                              name="difficulty"
-                              value={formData.difficulty}
-                              onChange={handleChange}
-                              options={difficulties}
-                              placeholder="Select Difficulty"
-                         />
-
-                    </div>
-
-                    {/* Tags */}
-
-                    <Input
-                         label="Tags"
-                         name="tags"
-                         type="text"
-                         placeholder="React, JavaScript, CSS..."
-                         value={formData.tags}
+                    <Select
+                         label="Visibility"
+                         name="visibility"
+                         value={formData.visibility}
                          onChange={handleChange}
+                         options={[
+                              "CLASS",
+                              "COLLEGE",
+                         ]}
+                         required
                     />
-
-                    {/* File Upload */}
-
-                    <FileUpload
-                         label="Attachment (Optional)"
-                         name="attachment"
-                         onChange={handleChange}
-                    />
-
-                    {/* Anonymous */}
-
-                    <Checkbox
-                         label="Post Anonymously"
-                         name="anonymous"
-                         checked={formData.anonymous}
-                         onChange={handleChange}
-                    />
-
+ 
                     {/* Buttons */}
 
                     <div className="flex justify-end gap-4">
@@ -218,6 +167,7 @@ function AskQuestionForm() {
                               type="button"
                               variant="secondary"
                               onClick={resetForm}
+                              disabled={loading}
                          >
                               Cancel
                          </Button>
@@ -225,8 +175,9 @@ function AskQuestionForm() {
                          <Button
                               type="submit"
                               variant="primary"
+                              disabled={loading}
                          >
-                              Submit Question
+                              {loading ? "Submitting..." : "Submit Question"}
                          </Button>
 
                     </div>

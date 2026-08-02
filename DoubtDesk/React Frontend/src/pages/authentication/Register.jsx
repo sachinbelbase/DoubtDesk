@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {
+     registerStudentRequest,
+     registerTeacherRequest,
+} from "../../api/authService";
 
 import Card from "../../components/common/Card";
 import Input from "../../components/common/Input";
@@ -13,11 +17,20 @@ function Register() {
      const [formData, setFormData] = useState({
           name: "",
           email: "",
+          password: "",
+          confirmPassword: "",
           role: ROLES.STUDENT,
+
+          // Student
+          program: "",
+          semester: "",
+          section: "",
+
+          // Teacher
+          department: "",
      });
      const [errors, setErrors] = useState({});
-
-     const { login } = useAuth();
+     
      const navigate = useNavigate();
 
      const handleChange = (e) => {
@@ -27,21 +40,86 @@ function Register() {
 
      const validate = () => {
           const newErrors = {};
-          if (!formData.name.trim()) newErrors.name = "Name is required.";
-          if (!formData.email.trim()) newErrors.email = "Email is required.";
+
+          if (!formData.name.trim()) {
+               newErrors.name = "Name is required.";
+          }
+
+          if (!formData.email.trim()) {
+               newErrors.email = "Email is required.";
+          } else if (!formData.email.endsWith("@ncit.edu.np")) {
+               newErrors.email = "Use your NCIT email.";
+          }
+
+          if (!formData.password) {
+               newErrors.password = "Password is required.";
+          } else if (formData.password.length < 8) {
+               newErrors.password = "Password must be at least 8 characters.";
+          }
+
+          if (formData.password !== formData.confirmPassword) {
+               newErrors.confirmPassword = "Passwords do not match.";
+          }
+
+          if (formData.role === ROLES.STUDENT) {
+
+               if (!formData.program)
+                    newErrors.program = "Select program.";
+
+               if (!formData.semester)
+                    newErrors.semester = "Select semester.";
+
+               if (!formData.section)
+                    newErrors.section = "Select your class.";
+          }
+
+          if (formData.role === ROLES.TEACHER) {
+
+               if (!formData.department.trim())
+                    newErrors.department = "Department is required.";
+          }
+
           setErrors(newErrors);
+
           return Object.keys(newErrors).length === 0;
      };
 
-     const handleSubmit = (e) => {
+     const handleSubmit = async (e) => {
           e.preventDefault();
+
           if (!validate()) return;
 
-          // TEMP: no backend yet - this only creates a local session.
-          // Swap this block for authService.registerRequest(formData) later.
-          const newUser = { id: Date.now(), ...formData };
-          login(newUser);
-          navigate(`/${newUser.role}/dashboard`);
+          try {
+               if (formData.role === ROLES.STUDENT) {
+                    await registerStudentRequest({
+                         name: formData.name,
+                         email: formData.email,
+                         password: formData.password,
+                         program: formData.program,
+                         semester: Number(formData.semester),
+                         section: formData.section,
+                    });
+               } else if (formData.role === ROLES.TEACHER) {
+                    await registerTeacherRequest({
+                         name: formData.name,
+                         email: formData.email,
+                         password: formData.password,
+                         department: formData.department,
+                    });
+               }
+
+               alert("Registration successful! Please login.");
+
+               navigate("/login");
+
+          } catch (error) {
+               console.error(error);
+
+               alert(
+                    error.response?.data?.detail ||
+                    "Registration failed."
+               );
+          }
      };
 
      return (
@@ -77,14 +155,94 @@ function Register() {
                                    required
                               />
 
+                              <Input
+                                   label="Password"
+                                   type="password"
+                                   name="password"
+                                   value={formData.password}
+                                   onChange={handleChange}
+                                   error={errors.password}
+                                   required
+                              />
+
+                              <Input
+                                   label="Confirm Password"
+                                   type="password"
+                                   name="confirmPassword"
+                                   value={formData.confirmPassword}
+                                   onChange={handleChange}
+                                   error={errors.confirmPassword}
+                                   required
+                              />
+
                               <Select
                                    label="I am a"
                                    name="role"
                                    value={formData.role}
                                    onChange={handleChange}
-                                   options={[ROLES.STUDENT, ROLES.TEACHER, ROLES.ADMIN]}
+                                   options={[ROLES.STUDENT, ROLES.TEACHER, /*ROLES.ADMIN*/]}
                                    placeholder="Select role"
                               />
+
+                              {formData.role === ROLES.STUDENT && (
+                                   <>
+                                        <Select
+                                             label="Program"
+                                             name="program"
+                                             value={formData.program}
+                                             onChange={handleChange}
+                                             options={[
+                                                  "BCA",
+                                                  "BSc CSIT",
+                                                  "BIT",
+                                                  "BIM",
+                                             ]}
+                                             error={errors.program}
+                                        />
+
+                                        <Select
+                                             label="Semester"
+                                             name="semester"
+                                             value={formData.semester}
+                                             onChange={handleChange}
+                                             options={[
+                                                  1,
+                                                  2,
+                                                  3,
+                                                  4,
+                                                  5,
+                                                  6,
+                                                  7,
+                                                  8,
+                                             ]}
+                                             error={errors.semester}
+                                        />
+
+                                        <Select
+                                             label="Class"
+                                             name="section"
+                                             value={formData.section}
+                                             onChange={handleChange}
+                                             options={[
+                                                  "Morning",
+                                                  "Day",
+                                             ]}
+                                             error={errors.section}
+                                        />
+                                   </>
+                              )}
+
+
+                              {formData.role === ROLES.TEACHER && (
+                                   <Input
+                                        label="Department"
+                                        name="department"
+                                        value={formData.department}
+                                        onChange={handleChange}
+                                        error={errors.department}
+                                        required
+                                   />
+                              )}
 
                               <Button type="submit" className="w-full">
                                    Sign Up

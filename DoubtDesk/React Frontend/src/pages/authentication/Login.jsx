@@ -1,25 +1,24 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Card from "../../components/common/Card";
 import Input from "../../components/common/Input";
-import Select from "../../components/common/Select";
 import Button from "../../components/common/Button";
 
 import { useAuth } from "../../hooks/useAuth";
-import { users } from "../../data/users";
-import { ROLES } from "../../constants/roles";
+import { loginUser } from "../../api/authService";
 
 function Login() {
+     const navigate = useNavigate();
+     const { login } = useAuth();
+
      const [formData, setFormData] = useState({
-          name: "",
-          role: ROLES.STUDENT,
+          email: "",
+          password: "",
      });
 
      const [error, setError] = useState("");
-
-     const { login } = useAuth();
-     const navigate = useNavigate();
+     const [loading, setLoading] = useState(false);
 
      const handleChange = (e) => {
           setFormData((prev) => ({
@@ -30,35 +29,38 @@ function Login() {
           setError("");
      };
 
-     const handleSubmit = (e) => {
+     const handleSubmit = async (e) => {
           e.preventDefault();
 
-          if (!formData.name.trim()) {
-               setError("Please enter your name.");
+          if (!formData.email.trim() || !formData.password.trim()) {
+               setError("Please enter your email and password.");
                return;
           }
 
-          // Mock login using users.js
-          const matchedUser =
-               users.find(
-                    (u) =>
-                         u.name.toLowerCase() === formData.name.trim().toLowerCase() &&
-                         u.role.toLowerCase() === formData.role.toLowerCase()
-               ) || {
-                    id: Date.now(),
-                    name: formData.name,
-                    role: formData.role,
-               };
+          try {
+               setLoading(true);
 
-          // Normalize role
-          const userData = {
-               ...matchedUser,
-               role: matchedUser.role.toLowerCase(),
-          };
+               const authData = await loginUser({
+                    email: formData.email,
+                    password: formData.password,
+               });
 
-          login(userData);
+               login(authData);
 
-          navigate(`/${userData.role}/dashboard`);
+               navigate(`/${authData.user.role}/dashboard`, {
+                    replace: true,
+               });
+          } catch (err) {
+               console.error(err);
+
+               setError(
+                    err.response?.data?.detail ||
+                    err.message ||
+                    "Login failed. Please try again."
+               );
+          } finally {
+               setLoading(false);
+          }
      };
 
      return (
@@ -75,30 +77,36 @@ function Login() {
 
                          <form onSubmit={handleSubmit} className="space-y-5">
                               <Input
-                                   label="Name"
-                                   name="name"
-                                   value={formData.name}
+                                   label="NCIT Email"
+                                   type="email"
+                                   name="email"
+                                   value={formData.email}
                                    onChange={handleChange}
-                                   placeholder="e.g. Anonymous Student"
-                                   error={error}
+                                   placeholder="yourname@ncit.edu.np"
                                    required
                               />
 
-                              <Select
-                                   label="Login as"
-                                   name="role"
-                                   value={formData.role}
+                              <Input
+                                   label="Password"
+                                   type="password"
+                                   name="password"
+                                   value={formData.password}
                                    onChange={handleChange}
-                                   options={[
-                                        ROLES.STUDENT,
-                                        ROLES.TEACHER,
-                                        ROLES.ADMIN,
-                                   ]}
-                                   placeholder="Select role"
+                                   required
                               />
 
-                              <Button type="submit" className="w-full">
-                                   Log In
+                              {error && (
+                                   <p className="text-sm text-red-500 text-center">
+                                        {error}
+                                   </p>
+                              )}
+
+                              <Button
+                                   type="submit"
+                                   className="w-full"
+                                   disabled={loading}
+                              >
+                                   {loading ? "Signing In..." : "Log In"}
                               </Button>
                          </form>
 
