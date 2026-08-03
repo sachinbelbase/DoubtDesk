@@ -31,6 +31,13 @@ def login(
         role = "teacher"
         user_id = user.teacher_id if user else None
 
+    if not user:
+        user = db.query(models.Admin).filter(
+            models.Admin.email == credentials.username
+        ).first()
+        role = "admin"
+        user_id = user.admin_id if user else None
+
     if not user or not verify_password(credentials.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 

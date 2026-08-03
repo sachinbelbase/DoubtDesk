@@ -32,6 +32,8 @@ def get_questions(
 
     if role == "teacher":
         query = db.query(models.Question)
+    elif role == "admin":
+        query = db.query(models.Question)   
     else:
         query = db.query(models.Question).filter(
             or_(
@@ -42,6 +44,7 @@ def get_questions(
                 )
             )
         )
+
 
     if search:
         search_pattern = f"%{search}%"
@@ -149,23 +152,21 @@ def update_question(
 @router.delete("/{question_id}")
 def delete_question(
     question_id: int,
-    current_student: models.Student = Depends(get_current_student),
+    current=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    question = db.query(models.Question).filter(
-        models.Question.question_id == question_id
-    ).first()
+    user, role = current
 
+    question = db.query(models.Question).filter(models.Question.question_id == question_id).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
 
-    if question.student_id != current_student.student_id:
-        raise HTTPException(status_code=403, detail="You can only delete your own questions")
+    if role != "admin" and question.student_id != user.student_id:
+        raise HTTPException(status_code=403, detail="Not authorized")
 
     db.delete(question)
     db.commit()
-
-    return {"message": f"Question '{question.title}' has been deleted successfully"}
+    return {"message": "Question deleted"}
 
 
 @router.put("/{question_id}/status")

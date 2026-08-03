@@ -58,6 +58,10 @@ def get_current_user(
             user = db.query(models.Teacher).filter(
                 models.Teacher.teacher_id == int(user_id)
             ).first()
+        elif role == "admin":
+            user = db.query(models.Admin).filter(
+                models.Admin.admin_id == int(user_id)
+            ).first()
         else:
             raise credentials_exception
 
@@ -86,5 +90,14 @@ def get_current_teacher(current=Depends(get_current_user)):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Teachers only"
+        )
+    return user
+
+def get_current_admin(current=Depends(get_current_user)):
+    user, role = current
+    if role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admins only"
         )
     return user

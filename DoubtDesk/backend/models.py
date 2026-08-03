@@ -2,6 +2,7 @@ from pydantic import ConfigDict
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP,DateTime
 from database import Base
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 
 class Student(Base):
@@ -25,6 +26,12 @@ class Question(Base):
     question_text = Column(Text, nullable=False)
     visibility = Column(String(20), nullable=False)  # "CLASS" or "COLLEGE"
     status = Column(String(20), default="OPEN")
+    answers = relationship(
+    "Answer",
+    back_populates="question",
+    cascade="all, delete-orphan",
+    passive_deletes=True
+)
     created_at = Column(DateTime, default=func.now())
 
 
@@ -32,13 +39,17 @@ class Answer(Base):
     __tablename__ = "answers"
 
     answer_id = Column(Integer, primary_key=True, index=True)
-    question_id = Column(Integer, ForeignKey("questions.question_id"))
+    question_id = Column(Integer, ForeignKey("questions.question_id", ondelete="CASCADE"), nullable=False)
     student_id = Column(Integer, ForeignKey("students.student_id"))
     teacher_id = Column(Integer, ForeignKey("teachers.teacher_id"))
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now(),
         nullable=False
+        )
+    question = relationship(
+    "Question",
+    back_populates="answers"
         )
     answer_text = Column(Text)
 
@@ -75,3 +86,12 @@ class TeacherClass(Base):
         ForeignKey("classes.class_id"),
         primary_key=True
     )
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    admin_id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    email = Column(String(150), unique=True, nullable=False)
+    password_hash = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=func.now())

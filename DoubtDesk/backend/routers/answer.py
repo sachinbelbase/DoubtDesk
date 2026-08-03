@@ -58,8 +58,8 @@ def get_answers(
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
 
-    # Teachers can view answers to any question
-    if role != "teacher":
+    # Teachers and admin can view answers to any question
+    if role != "teacher" and role != "admin":
         # Students can only view answers to questions they're allowed to see
         is_college_wide = question.visibility == "COLLEGE"
         is_own_class = question.visibility == "CLASS" and question.class_id == user.class_id
@@ -123,6 +123,10 @@ def delete_answer(
     if (role == "student" and answer.student_id != user.student_id) or \
        (role == "teacher" and answer.teacher_id != user.teacher_id):
         raise HTTPException(status_code=403, detail="You can only delete your own answers")
+
+    elif role == "admin":
+        # Admins can delete any answer
+        pass
 
     db.delete(answer)
     db.commit()
