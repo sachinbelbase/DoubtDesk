@@ -6,8 +6,12 @@ function QuestionFeed({
      title = "Recent Questions",
      emptyMessage = "No questions yet.",
      showActions = false,
+     showViewAnswers = false,
+     onViewAnswers,
      onEdit,
      onDelete,
+     onAnswer,
+     
 }) {
      return (
           <section className="mt-10">
@@ -26,8 +30,11 @@ function QuestionFeed({
                                    key={question.question_id}
                                    question={question}
                                    showActions={showActions}
+                                   showViewAnswers={showViewAnswers}
+                                   onViewAnswers={onViewAnswers}
                                    onEdit={onEdit}
                                    onDelete={onDelete}
+                                   onAnswer={onAnswer}
                               />
                          ))}
                     </div>
