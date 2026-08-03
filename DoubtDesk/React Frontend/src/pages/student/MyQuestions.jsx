@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { getMyQuestions, deleteQuestion } from "../../api/questionService";
+import ConfirmModal from "../../components/common/ConfirmModal";
 import EditQuestionModal from "../../components/student/EditQuestionModal";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import QuestionFeed from "../../components/student/QuestionFeed";
+import ViewAnswersModal from "../../components/student/ViewAnswersModal";
 
 function MyQuestions() {
 
@@ -11,6 +13,9 @@ function MyQuestions() {
      const [error, setError] = useState("");
 
      const [editingQuestion, setEditingQuestion] = useState(null);
+     const [viewingQuestion, setViewingQuestion] = useState(null);
+     const [deletingQuestion, setDeletingQuestion] = useState(null);
+     const [deleting, setDeleting] = useState(false);
 
      const fetchQuestions = async () => {
           try {
@@ -37,29 +42,46 @@ function MyQuestions() {
           fetchQuestions();
      }, []);
 
+     const handleViewAnswers = (question) => {
+          setViewingQuestion(question);
+     };
+
+
      const handleEdit = (question) => {
           setEditingQuestion(question);
      };
 
-     const handleDelete = async (question) => {
-          const confirmed = window.confirm(
-               `Delete "${question.title}"?\n\nThis action cannot be undone.`
-          );
+     const handleDelete = (question) => {
+          setDeletingQuestion(question);
+     };
 
-          if (!confirmed) return;
+     const confirmDelete = async () => {
 
           try {
-               await deleteQuestion(question.question_id);
 
-               fetchQuestions();
+               setDeleting(true);
+
+               await deleteQuestion(deletingQuestion.question_id);
+
+               setDeletingQuestion(null);
+
+               await fetchQuestions();
+
           } catch (err) {
+
                console.error(err);
 
                alert(
                     err.response?.data?.detail ||
                     "Failed to delete question."
                );
+
+          } finally {
+
+               setDeleting(false);
+
           }
+
      };
 
      if (loading) {
@@ -98,15 +120,38 @@ function MyQuestions() {
                     title="Your Questions"
                     emptyMessage="You haven't asked any questions yet."
                     showActions={true}
+                    showViewAnswers={true}
+                    onViewAnswers={handleViewAnswers}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                />
+               
                {editingQuestion && (
                     <EditQuestionModal
                          question={editingQuestion}
                          onClose={() => setEditingQuestion(null)}
                          onSuccess={fetchQuestions}
                          
+                    />
+               )}
+
+               {viewingQuestion && (
+                    <ViewAnswersModal
+                         question={viewingQuestion}
+                         onClose={() => setViewingQuestion(null)}
+                    />
+               )}
+
+               {deletingQuestion && (
+                    <ConfirmModal
+                         isOpen={true}
+                         title="Delete Question"
+                         message="Are you sure you want to delete this question? This action cannot be undone."
+                         confirmText="Delete"
+                         cancelText="Cancel"
+                         loading={deleting}
+                         onClose={() => setDeletingQuestion(null)}
+                         onConfirm={confirmDelete}
                     />
                )}
 

@@ -5,13 +5,18 @@ import {
      UserCircle,
      Pencil,
      Trash2,
+     MessageSquareReply,
+     Eye,
 } from "lucide-react";
 
 function QuestionCard({
      question,
      showActions = false,
+     showViewAnswers = false,
+     onViewAnswers,
      onEdit,
      onDelete,
+     onAnswer,
 }) {
 
      const statusColors = {
@@ -102,31 +107,62 @@ function QuestionCard({
 
                     </div>
 
-                    {showActions && (
-                         <div className="flex gap-2">
+                    <div className="flex gap-2">
 
+                         {showViewAnswers && (
                               <button
-                                   onClick={() => onEdit(question)}
-                                   className="p-2 rounded-lg hover:bg-blue-100"
+                                   onClick={() => onViewAnswers(question)}
+                                   className="p-2 rounded-lg hover:bg-gray-100"
+                                   title="View Answers"
                               >
-                                   <Pencil
+                                   <Eye
                                         size={18}
-                                        className="text-blue-600"
+                                        className="text-gray-600"
                                    />
                               </button>
+                         )}
 
-                              <button
-                                   onClick={() => onDelete(question)}
-                                   className="p-2 rounded-lg hover:bg-red-100"
-                              >
-                                   <Trash2
-                                        size={18}
-                                        className="text-red-600"
-                                   />
-                              </button>
+                         {showActions && (
+                              <>
+                                   {onAnswer && (
+                                        <button
+                                             onClick={() => onAnswer(question)}
+                                             className="p-2 rounded-lg hover:bg-green-100"
+                                        >
+                                             <MessageSquareReply
+                                                  size={18}
+                                                  className="text-green-600"
+                                             />
+                                        </button>
+                                   )}
 
-                         </div>
-                    )}
+                                   {onEdit && (
+                                        <button
+                                             onClick={() => onEdit(question)}
+                                             className="p-2 rounded-lg hover:bg-blue-100"
+                                        >
+                                             <Pencil
+                                                  size={18}
+                                                  className="text-blue-600"
+                                             />
+                                        </button>
+                                   )}
+
+                                   {onDelete && (
+                                        <button
+                                             onClick={() => onDelete(question)}
+                                             className="p-2 rounded-lg hover:bg-red-100"
+                                        >
+                                             <Trash2
+                                                  size={18}
+                                                  className="text-red-600"
+                                             />
+                                        </button>
+                                   )}
+                              </>
+                         )}
+
+                    </div>
 
                </div>
 

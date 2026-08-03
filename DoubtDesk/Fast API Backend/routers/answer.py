@@ -32,6 +32,9 @@ def answer_question(
         teacher_id=user.teacher_id if role == "teacher" else None,   # fill only if teacher
         answer_text=answer.answer_text
     )
+    
+    # Change question status
+    question.status = "ANSWERED"
 
     db.add(new_answer)
     db.commit()
@@ -74,6 +77,7 @@ def get_answers(
             answer_id=answer.answer_id,
             question_text=question.question_text,
             answer_text=answer.answer_text,
+            answered_by_role="Teacher" if answer.teacher_id else "Student",
             created_at=answer.created_at
         )
         for answer in answers

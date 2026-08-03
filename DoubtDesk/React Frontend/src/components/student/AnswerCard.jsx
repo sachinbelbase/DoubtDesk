@@ -23,7 +23,12 @@ function AnswerCard({ answer }) {
                               />
                          )}
 
-                         <span className="font-semibold">
+                         <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${role === "Teacher"
+                                        ? "bg-blue-100 text-blue-700"
+                                        : "bg-green-100 text-green-700"
+                                   }`}
+                         >
                               {role}
                          </span>
 
@@ -33,7 +38,7 @@ function AnswerCard({ answer }) {
 
                          <Clock size={15} />
 
-                         {new Date(answer.created_at).toLocaleString()}
+                         {new Date(answer.created_at).toLocaleDateString()}
 
                     </div>
 

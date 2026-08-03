@@ -35,6 +35,7 @@ class AnswerResponse(BaseModel):
     answer_id: int
     question_text: str
     answer_text: str
+    answered_by_role: str
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
