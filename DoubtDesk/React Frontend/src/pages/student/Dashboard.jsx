@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { getStudentDashboard } from "../../api/dashboardService";
+import { getQuestions } from "../../api/questionService";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import DashboardHeader from "../../components/dashboard/DashboardHeader";
@@ -17,9 +20,87 @@ function StudentDashboard() {
   const [category, setCategory] = useState("");
   const [difficulty, setDifficulty] = useState("");
 
+  const [stats, setStats] = useState(null);
+
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+
+  const limit = 10;
+
+
+  const fetchQuestions = async () => {
+
+    try {
+
+      setLoading(true);
+      setError("");
+
+      const response = await getQuestions({
+        search,
+        page,
+        limit,
+      });
+
+      setQuestions(response.data.items);
+      setTotalPages(response.data.total_pages);
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError(
+        err.response?.data?.detail ||
+        "Failed to load questions."
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+
+    const fetchStats = async () => {
+
+      try {
+
+        const response = await getStudentDashboard();
+
+        setStats(response.data);
+
+      } catch (err) {
+
+        console.error(err);
+
+      }
+
+    };
+
+    fetchStats();
+
+  }, []);
+  
+
+  useEffect(() => {
+
+    fetchQuestions();
+
+  }, [page]);
+
   // Handlers
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
+  };
+
+  const handleSearch = () => {
+    fetchQuestions();
   };
 
   const handleCategoryChange = (e) => {
@@ -44,11 +125,20 @@ function StudentDashboard() {
         onSearchChange={handleSearchChange}
         onCategoryChange={handleCategoryChange}
         onDifficultyChange={handleDifficultyChange}
+        onSearch={handleSearch}
       />
 
-      <QuickStats />
+      <QuickStats stats={stats} />
 
-      <RecentQuestions />
+      <RecentQuestions 
+        questions={questions}
+        loading={loading}
+        error={error}
+        fetchQuestions={fetchQuestions} 
+        page={page}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
 
       <CategoryGrid />
 

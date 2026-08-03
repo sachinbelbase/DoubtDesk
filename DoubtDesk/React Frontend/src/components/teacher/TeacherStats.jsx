@@ -1,39 +1,33 @@
 import { HelpCircle, CheckCircle2, Clock } from "lucide-react";
 
 import DashboardStatCard from "../dashboard/DashboardStatCard";
-import { questions as staticQuestions } from "../../data/questions";
-import { useMyQuestions } from "../../hooks/useMyQuestions";
-import { useAnswers } from "../../hooks/useAnswers";
-import { getQuestionStats } from "../../utils/questionStats";
 
-function TeacherStats() {
+function TeacherStats({ stats }) {
 
-     const { myQuestions } = useMyQuestions();
-     const { answers } = useAnswers();
-
-     const allQuestions = [...myQuestions, ...staticQuestions];
-     const stats = getQuestionStats(allQuestions, answers);
+     if (!stats) {
+          return <p>Loading statistics...</p>;
+     }
 
      return (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 
                <DashboardStatCard
                     title="Total Questions"
-                    value={stats.total}
+                    value={stats.total_questions}
                     icon={<HelpCircle size={28} />}
                     color="bg-blue-500"
                />
 
                <DashboardStatCard
                     title="Answered"
-                    value={stats.answered}
+                    value={stats.answered_questions}
                     icon={<CheckCircle2 size={28} />}
                     color="bg-green-500"
                />
 
                <DashboardStatCard
                     title="Pending"
-                    value={stats.pending}
+                    value={stats.pending_questions}
                     icon={<Clock size={28} />}
                     color="bg-yellow-500"
                />

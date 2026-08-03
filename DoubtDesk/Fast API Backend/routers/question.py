@@ -13,7 +13,7 @@ router = APIRouter(
     tags=["Questions"]
 )
 
-@router.get("/", response_model=List[schemas.QuestionOut])
+@router.get("/", response_model=schemas.PaginatedQuestions)
 def get_questions(
     page: int = 1,
     limit: int = 20,
@@ -61,6 +61,9 @@ def get_questions(
         query = query.order_by(models.Question.created_at.asc())
     else:
         query = query.order_by(models.Question.created_at.desc())
+        
+    
+    total = query.count()
 
     offset = (page - 1) * limit
     questions = query.offset(offset).limit(limit).all()
@@ -83,7 +86,13 @@ def get_questions(
             asked_by=asked_by
         ))
 
-    return result
+    return {
+    "items": result,
+    "page": page,
+    "limit": limit,
+    "total": total,
+    "total_pages": (total + limit - 1) // limit,
+}
 
 
 @router.post("/")

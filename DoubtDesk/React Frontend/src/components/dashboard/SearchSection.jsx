@@ -14,6 +14,7 @@ function SearchSection({
      onSearchChange,
      onCategoryChange,
      onDifficultyChange,
+     onSearch,
 }) {
      return (
           <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 mb-8">
@@ -30,6 +31,11 @@ function SearchSection({
                               placeholder="Search questions..."
                               value={search}
                               onChange={onSearchChange}
+                              onKeyDown={(e) => {
+                                   if (e.key === "Enter") {
+                                        onSearch();
+                                   }
+                              }}
                          />
 
                          <Search
@@ -78,7 +84,10 @@ function SearchSection({
 
                     <div className="lg:col-span-2">
 
-                         <Button className="w-full">
+                         <Button 
+                         className="w-full"
+                         onClick={onSearch}
+                         >
                               Search
                          </Button>
 

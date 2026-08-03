@@ -1,44 +1,20 @@
-import { useEffect, useState } from "react";
-
-import { getQuestions } from "../../api/questionService";
-
+import { useState } from "react";
 import QuestionCard from "./QuestionCard";
 import ViewAnswersModal from "../student/ViewAnswersModal";
 import AnswerQuestionModal from "../common/AnswerQuestionModal";
 
-function RecentQuestions() {
-
-     const [questions, setQuestions] = useState([]);
-     const [loading, setLoading] = useState(true);
-     const [error, setError] = useState("");
+function RecentQuestions({
+     questions,
+     loading,
+     error,
+     fetchQuestions,
+     page,
+     setPage,
+     totalPages,
+}) {
 
      const [viewingQuestion, setViewingQuestion] = useState(null);
      const [answeringQuestion, setAnsweringQuestion] = useState(null);
-
-     const fetchQuestions = async () => {
-          try {
-               setLoading(true);
-
-               const response = await getQuestions();
-
-               setQuestions(response.data);
-          } catch (err) {
-               console.error(err);
-
-               setError(
-                    err.response?.data?.detail ||
-                    "Failed to load questions."
-               );
-          } finally {
-               setLoading(false);
-          }
-     };
-
-     useEffect(() => {
-
-          fetchQuestions();
-          
-     }, []);
 
      if (loading) {
           return <p>Loading questions...</p>;
@@ -53,11 +29,9 @@ function RecentQuestions() {
           <section className="mb-10">
 
                <div className="flex justify-between items-center mb-5">
-
                     <h2 className="text-2xl font-bold">
                          Recent Questions
                     </h2>
-
                </div>
 
                <div className="space-y-5">
@@ -92,10 +66,35 @@ function RecentQuestions() {
                     />
                )}
 
+               <div className="flex items-center justify-center gap-4 mt-8">
+
+                    <button
+                         onClick={() => setPage(page - 1)}
+                         disabled={page === 1}
+                         className="px-4 py-2 rounded-lg border disabled:opacity-50"
+                    >
+                         Previous
+                    </button>
+
+                    <span className="font-medium">
+                         Page {page} of {totalPages}
+                    </span>
+
+                    <button
+                         onClick={() => setPage(page + 1)}
+                         disabled={page === totalPages}
+                         className="px-4 py-2 rounded-lg border disabled:opacity-50"
+                    >
+                         Next
+                    </button>
+
+               </div>
+
           </section>
 
-     );
+          
 
+     );
 }
 
 export default RecentQuestions;

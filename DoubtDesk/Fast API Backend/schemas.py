@@ -87,7 +87,12 @@ class TeacherOut(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-
+class PaginatedQuestions(BaseModel):
+    items: list[QuestionOut]
+    page: int
+    limit: int
+    total: int
+    total_pages: int
 
 class RefreshRequest(BaseModel):
     refresh_token: str

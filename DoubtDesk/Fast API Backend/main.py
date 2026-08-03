@@ -2,6 +2,10 @@ from fastapi import FastAPI,Depends,HTTPException
 from database import Base, engine
 from routers import students , question , answer, Teachers, Login
 from fastapi.middleware.cors import CORSMiddleware
+from routers import dashboard
+
+
+
 
 app = FastAPI()
 
@@ -29,6 +33,7 @@ app.include_router(question.router)
 app.include_router(answer.router)
 app.include_router(Teachers.router)
 app.include_router(Login.router)
+app.include_router(dashboard.router)
 
 #homepage
 @app.get("/")

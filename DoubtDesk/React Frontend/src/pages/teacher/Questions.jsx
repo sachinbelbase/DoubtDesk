@@ -18,8 +18,8 @@ function Questions() {
      const fetchQuestions = async () => {
           try {
                const response = await getQuestions();
+               setQuestions(response.data.items);
 
-               setQuestions(response.data);
           } catch (err) {
                console.error(err);
 

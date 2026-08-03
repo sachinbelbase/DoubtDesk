@@ -5,19 +5,36 @@ import DashboardHeader from "../../components/dashboard/DashboardHeader";
 import TeacherStatus from "../../components/teacher/TeacherStats";
 import Button from "../../components/common/Button";
 
-import { questions as staticQuestions } from "../../data/questions";
-import { useMyQuestions } from "../../hooks/useMyQuestions";
-import { useAnswers } from "../../hooks/useAnswers";
-import { getQuestionStats } from "../../utils/questionStats";
+import { useEffect, useState } from "react";
+import { getTeacherDashboard } from "../../api/dashboardService";
 
 function Dashboard() {
 
      const navigate = useNavigate();
-     const { myQuestions } = useMyQuestions();
-     const { answers } = useAnswers();
+     const [stats, setStats] = useState(null);
 
-     const allQuestions = [...myQuestions, ...staticQuestions];
-     const { pending } = getQuestionStats(allQuestions, answers);
+     useEffect(() => {
+
+          const fetchStats = async () => {
+
+               try {
+
+                    const response = await getTeacherDashboard();
+                    console.log("Teacher Dashboard:", response.data);
+
+                    setStats(response.data);
+
+               } catch (err) {
+                    console.error("Teacher dashboard error:", err);
+                    console.error(err);
+
+               }
+
+          };
+
+          fetchStats();
+
+     }, []);
 
      return (
           <DashboardLayout role="teacher">
@@ -25,12 +42,12 @@ function Dashboard() {
                <DashboardHeader
                     title="Teacher Dashboard"
                     subtitle="Review activity and help students with their doubts"
-                    notificationCount={pending}
+                    notificationCount={0}
                     onBellClick={() => navigate("/teacher/notifications")}
                />
 
                <div className="mt-8">
-                    <TeacherStatus />
+                    <TeacherStatus stats={stats} />
                </div>
 
                <div className="mt-8">
