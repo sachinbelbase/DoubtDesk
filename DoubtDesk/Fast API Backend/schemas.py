@@ -127,3 +127,14 @@ class UpdateQuestionStatus(BaseModel):
 class AdminLogin(BaseModel):
     email: str
     password: str
+    
+class AdminStudentOut(BaseModel):
+    student_id: int
+    name: str
+    email: str
+    program: str
+    semester: int
+    section: str
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

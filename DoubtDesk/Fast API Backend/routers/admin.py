@@ -12,7 +12,7 @@ router = APIRouter(
     tags=["Admin"],
 )
 
-@router.get("/students", response_model=list[schemas.StudentOut])
+@router.get("/students", response_model=list[schemas.AdminStudentOut])
 def get_all_students(
     current_admin=Depends(get_current_admin),
     db: Session = Depends(get_db),
@@ -23,7 +23,29 @@ def get_all_students(
         .all()
     )
 
-    return students
+    result = []
+
+    for student in students:
+
+        student_class = (
+            db.query(models.Class)
+            .filter(models.Class.class_id == student.class_id)
+            .first()
+        )
+
+        result.append(
+            schemas.AdminStudentOut(
+                student_id=student.student_id,
+                name=student.name,
+                email=student.email,
+                program=student_class.program if student_class else "N/A",
+                semester=student_class.semester if student_class else 0,
+                section=student_class.section if student_class else "N/A",
+                created_at=student.created_at,
+            )
+        )
+
+    return result
 
 
 
@@ -104,3 +126,8 @@ def delete_question(
     db.commit()
 
     return {"message": "Question deleted successfully"}
+
+# @router.patch("/students/{student_id}/block")
+# @router.patch("/students/{student_id}/unblock")
+# @router.patch("/teachers/{teacher_id}/block")
+# @router.patch("/teachers/{teacher_id}/unblock")

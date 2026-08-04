@@ -2,6 +2,7 @@ from pydantic import ConfigDict
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP,DateTime
 from database import Base
 from sqlalchemy.sql import func
+from sqlalchemy import Boolean
 
 
 class Student(Base):
@@ -12,6 +13,9 @@ class Student(Base):
     email = Column(String(150), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     class_id = Column(Integer, ForeignKey("classes.class_id"))
+
+    is_active = Column(Boolean, default=True, nullable=False)
+
     created_at = Column(DateTime, default=func.now())
 
 
@@ -59,6 +63,9 @@ class Teacher(Base):
     email = Column(String(150), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     department = Column(String(100))
+
+    is_active = Column(Boolean, default=True, nullable=False)
+
     created_at = Column(DateTime, default=func.now())
 
 class TeacherClass(Base):
