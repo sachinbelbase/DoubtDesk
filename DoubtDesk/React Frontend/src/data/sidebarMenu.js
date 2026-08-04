@@ -11,6 +11,9 @@ import {
   Shield,
   ClipboardList,
   BarChart3,
+  MessageSquare,
+  GraduationCap,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const menus = {
@@ -72,12 +75,6 @@ export const menus = {
     },
 
     {
-      label: "Analytics",
-      icon: BarChart3,
-      path: "/teacher/analytics",
-    },
-
-    {
       label: "Profile",
       icon: User,
       path: "/teacher/profile",
@@ -93,31 +90,26 @@ export const menus = {
   admin: [
     {
       label: "Dashboard",
-      icon: Home,
+      icon: LayoutDashboard,
       path: "/admin/dashboard",
     },
 
     {
-      label: "Users",
-      icon: Users,
-      path: "/admin/users",
+      label: "Students",
+      icon: GraduationCap,
+      path: "/admin/students",
     },
 
     {
-      label: "Reports",
-      icon: Shield,
-      path: "/admin/reports",
-    },
-    {
-      label: "Profile",
+      label: "Teachers",
       icon: User,
-      path: "/admin/profile",
+      path: "/admin/teachers",
     },
-    
+
     {
-      label: "Settings",
-      icon: Settings,
-      path: "/admin/settings",
+      label: "Questions",
+      icon: MessageSquare,
+      path: "/admin/questions",
     },
   ],
 };

@@ -28,10 +28,9 @@ import TeacherSettings from "../pages/teacher/Settings";
 
 // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
-import Users from "../pages/admin/Users";
-import Reports from "../pages/admin/Reports";
-import AdminSettings from "../pages/admin/Settings";
-import AdminProfile from "../pages/admin/Profile";
+import AdminStudents from "../pages/admin/Students";
+import AdminTeachers from "../pages/admin/Teachers";
+import AdminQuestions from "../pages/admin/Questions";
 
 
 function AppRoutes() {
@@ -148,46 +147,10 @@ function AppRoutes() {
                />
 
                {/* Admin */}
-               <Route
-                    path="/admin/dashboard"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
-                              <AdminDashboard />
-                         </ProtectedRoute>
-                    }
-               />
-               <Route
-                    path="/admin/users"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
-                              <Users />
-                         </ProtectedRoute>
-                    }
-               />
-               <Route
-                    path="/admin/reports"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
-                              <Reports />
-                         </ProtectedRoute>
-                    }
-               />
-               <Route
-                    path="/admin/profile"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
-                              <AdminProfile />
-                         </ProtectedRoute>
-                    }
-               />
-               <Route
-                    path="/admin/settings"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
-                              <AdminSettings />
-                         </ProtectedRoute>
-                    }
-               />
+               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+               <Route path="/admin/students" element={<AdminStudents />} />
+               <Route path="/admin/teachers" element={<AdminTeachers />} />
+               <Route path="/admin/questions" element={<AdminQuestions />} />
 
                {/* 404 */}
                <Route path="*" element={<NotFound />} />

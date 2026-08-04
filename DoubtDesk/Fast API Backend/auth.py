@@ -15,8 +15,12 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="Auth")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
+
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
+
+ADMIN_EMAIL = "admin@doubtdesk.com"
+ADMIN_PASSWORD = "Admin@123"
 
 
 def create_access_token(data: dict):
@@ -66,6 +70,15 @@ def get_current_user(
                 models.Teacher.teacher_id == int(user_id)
             ).first()
             print("FOUND TEACHER:", user)
+            
+        elif role == "admin":
+            user = {
+                "admin_id": 0,
+                "name": "Administrator",
+                "email": "admin@doubtdesk.com"
+            }
+
+            print("FOUND ADMIN:", user)
 
         else:
             print("INVALID ROLE")
@@ -140,4 +153,15 @@ def get_current_teacher(current=Depends(get_current_user)):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Teachers only"
         )
+    return user
+
+def get_current_admin(current=Depends(get_current_user)):
+    user, role = current
+
+    if role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
     return user

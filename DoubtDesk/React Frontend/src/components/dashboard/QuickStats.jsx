@@ -56,7 +56,6 @@ function QuickStats({ stats }) {
                     />
 
                ))}
-
           </div>
 
      );

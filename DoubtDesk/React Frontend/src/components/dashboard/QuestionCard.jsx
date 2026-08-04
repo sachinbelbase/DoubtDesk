@@ -159,7 +159,7 @@ function QuestionCard({
                                         </button>
                                    )}
 
-                                   {onEdit && (
+                                   {onEdit && question.status === "OPEN" && (
                                         <button
                                              onClick={(e) => {
                                                   e.stopPropagation();
@@ -174,7 +174,7 @@ function QuestionCard({
                                         </button>
                                    )}
 
-                                   {onDelete && (
+                                   {onDelete &&  (
                                         <button
                                              onClick={(e) => {
                                                   e.stopPropagation();

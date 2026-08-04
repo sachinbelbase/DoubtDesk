@@ -124,3 +124,6 @@ class QuestionStatus(str, Enum):
 class UpdateQuestionStatus(BaseModel):
     status: QuestionStatus
     
+class AdminLogin(BaseModel):
+    email: str
+    password: str

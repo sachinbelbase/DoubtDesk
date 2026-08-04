@@ -7,7 +7,7 @@ from database import get_db
 import models
 import schemas
 from security import verify_password
-from auth import create_access_token, create_refresh_token, SECRET_KEY, ALGORITHM
+from auth import create_access_token, create_refresh_token, SECRET_KEY, ALGORITHM, ADMIN_EMAIL, ADMIN_PASSWORD
 
 router = APIRouter(
     tags=["Login"]
@@ -18,11 +18,39 @@ def login(
     credentials: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
+    
+    if (
+    credentials.username == ADMIN_EMAIL
+    and credentials.password == ADMIN_PASSWORD
+):
+        access_token = create_access_token(
+            {
+            "sub": "0",
+            "role": "admin",
+            }
+    )
+
+        refresh_token = create_refresh_token(
+            {
+                "sub": "0",
+                "role": "admin",
+            }
+        )
+
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer",
+            "role": "admin",
+        }
+    
+    
     user = db.query(models.Student).filter(
         models.Student.email == credentials.username
     ).first()
     role = "student"
     user_id = user.student_id if user else None
+
 
     if not user:
         user = db.query(models.Teacher).filter(
@@ -31,11 +59,14 @@ def login(
         role = "teacher"
         user_id = user.teacher_id if user else None
 
+
+
     if not user or not verify_password(credentials.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     access_token = create_access_token(data={"sub": str(user_id), "role": role})
     refresh_token = create_refresh_token(data={"sub": str(user_id), "role": role})
+
 
     return {
         "access_token": access_token,

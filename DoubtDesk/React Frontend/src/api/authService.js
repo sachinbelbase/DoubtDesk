@@ -13,18 +13,29 @@ export const loginUser = async ({ email, password }) => {
   });
 
   const { access_token, refresh_token, role } = loginResponse.data;
+  console.log(loginResponse.data);
+  console.log("ROLE =", role);
 
   localStorage.setItem("doubtdesk_access_token", access_token);
 
+
   let profileResponse;
 
-  if (role === "student") {
-    profileResponse = await axiosClient.get("/students/me");
-  } else if (role === "teacher") {
-    profileResponse = await axiosClient.get("/teachers/me");
-  } else {
-    throw new Error("Unsupported user role.");
-  }
+if (role === "student") {
+  profileResponse = await axiosClient.get("/students/me");
+} else if (role === "teacher") {
+  profileResponse = await axiosClient.get("/teachers/me");
+} else if (role === "admin") {
+  profileResponse = {
+    data: {
+      id: 0,
+      name: "Administrator",
+      email: "admin@doubtdesk.com",
+    },
+  };
+} else {
+  throw new Error("Unsupported user role.");
+}
 
   return {
     user: {
