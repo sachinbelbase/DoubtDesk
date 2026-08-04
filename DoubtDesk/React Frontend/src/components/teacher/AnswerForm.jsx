@@ -1,81 +1,67 @@
 import { useState } from "react";
 import TextArea from "../common/TextArea";
 import Button from "../common/Button";
-import { useAuth } from "../../hooks/useAuth";
-import { useAnswers } from "../../hooks/useAnswers";
+import { createAnswer } from "../../api/answerService";
 
-function AnswerForm({ questionId }) {
-
-     const { user } = useAuth();
-     const { addAnswer, getAnswersForQuestion } = useAnswers();
-
+function AnswerForm({ questionId, onSuccess }) {
      const [text, setText] = useState("");
      const [error, setError] = useState("");
-
-     const existingAnswers = getAnswersForQuestion(questionId);
+     const [loading, setLoading] = useState(false);
 
      const handleChange = (e) => {
           setText(e.target.value);
           setError("");
      };
 
-     const handleSubmit = (e) => {
+     const handleSubmit = async (e) => {
           e.preventDefault();
 
           if (!text.trim()) {
-               setError("Write an answer before submitting.");
+               setError("Answer cannot be empty.");
                return;
           }
 
-          addAnswer(questionId, text.trim(), user?.name);
-          setText("");
-          setError("");
+          try {
+               setLoading(true);
+
+               await createAnswer({
+                    question_id: questionId,
+                    answer_text: text,
+               });
+
+               setText("");
+
+               if (onSuccess) {
+                    onSuccess();
+               }
+          } catch (err) {
+               console.error(err);
+               setError(
+                    err.response?.data?.detail ||
+                    "Failed to post answer."
+               );
+          } finally {
+               setLoading(false);
+          }
      };
 
      return (
-          <div className="mt-4 space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 mt-6">
+               <TextArea
+                    name="answer"
+                    rows={4}
+                    placeholder="Write your answer..."
+                    value={text}
+                    onChange={handleChange}
+                    error={error}
+               />
 
-               {existingAnswers.length > 0 && (
-                    <div className="space-y-3">
-
-                         {existingAnswers.map((answer) => (
-                              <div
-                                   key={answer.id}
-                                   className="bg-blue-50 rounded-lg p-4"
-                              >
-                                   <p className="text-gray-800">
-                                        {answer.text}
-                                   </p>
-
-                                   <p className="text-sm text-gray-500 mt-2">
-                                        — {answer.teacherName}, {answer.time}
-                                   </p>
-                              </div>
-                         ))}
-
-                    </div>
-               )}
-
-               <form onSubmit={handleSubmit} className="space-y-3">
-
-                    <TextArea
-                         name="answer"
-                         rows={3}
-                         placeholder="Write your answer..."
-                         value={text}
-                         onChange={handleChange}
-                         error={error}
-                    />
-
-                    <div className="flex justify-end">
-                         <Button type="submit" size="sm">
-                              Post Answer
-                         </Button>
-                    </div>
-
-               </form>
-
-          </div>
+               <div className="flex justify-end">
+                    <Button type="submit" disabled={loading}>
+                         {loading ? "Posting..." : "Post Answer"}
+                    </Button>
+               </div>
+          </form>
      );
 }
 

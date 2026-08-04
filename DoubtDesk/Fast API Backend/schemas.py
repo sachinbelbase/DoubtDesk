@@ -3,6 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 from enum import Enum
+from typing import Optional
 
 class CreateStudent(BaseModel):
     name: str
@@ -37,6 +38,16 @@ class AnswerResponse(BaseModel):
     answer_text: str
     answered_by_role: str
     created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+    
+class AnswerOut(BaseModel):
+    answer_id: int
+    question_id: int
+    teacher_id: Optional[int] = None
+    answer_text: str
+    created_at: datetime
+    teacher_name: str
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -112,3 +123,4 @@ class QuestionStatus(str, Enum):
 
 class UpdateQuestionStatus(BaseModel):
     status: QuestionStatus
+    

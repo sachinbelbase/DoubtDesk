@@ -51,11 +51,15 @@ def get_questions(
                 models.Question.question_text.ilike(search_pattern)
             )
         )
-
+    print("status_filter:", status_filter)
+    print("type:", type(status_filter))
     if status_filter == schemas.StatusFilterOption.answered:
+        
         query = query.filter(models.Question.status == "ANSWERED")
     elif status_filter == schemas.StatusFilterOption.unanswered:
         query = query.filter(models.Question.status == "OPEN")
+        
+    print("Questions found:", query.count())
 
     if sort == schemas.SortOption.oldest:
         query = query.order_by(models.Question.created_at.asc())
@@ -230,3 +234,85 @@ def update_question_status(
     return {
         "message": f"Question ID '{question.question_id}' status has been updated to '{question.status}'"
     }
+    
+@router.get("/{question_id}", response_model=schemas.QuestionOut)
+def get_question(
+    question_id: int,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user, role = current
+
+    question = db.query(models.Question).filter(
+        models.Question.question_id == question_id
+    ).first()
+
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    if role == "student":
+        if (
+            question.visibility == "CLASS"
+            and question.class_id != user.class_id
+        ):
+            raise HTTPException(
+                status_code=403,
+                detail="Not allowed"
+            )
+
+    asked_by = (
+        "You"
+        if role == "student"
+        and question.student_id == user.student_id
+        else "Anonymous"
+    )
+
+    return schemas.QuestionOut(
+        question_id=question.question_id,
+        class_id=question.class_id,
+        title=question.title,
+        question_text=question.question_text,
+        visibility=question.visibility,
+        status=question.status,
+        created_at=question.created_at,
+        asked_by=asked_by,
+    )
+    
+
+@router.get(
+    "/{question_id}/answers",
+    response_model=List[schemas.AnswerOut]
+)
+def get_question_answers(
+    question_id: int,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    answers = (
+        db.query(models.Answer)
+        .filter(models.Answer.question_id == question_id)
+        .order_by(models.Answer.created_at.asc())
+        .all()
+    )
+
+    result = []
+
+    for answer in answers:
+        teacher = (
+            db.query(models.Teacher)
+            .filter(models.Teacher.teacher_id == answer.teacher_id)
+            .first()
+        )
+
+        result.append(
+            schemas.AnswerOut(
+                answer_id=answer.answer_id,
+                question_id=answer.question_id,
+                teacher_id=answer.teacher_id,
+                answer_text=answer.answer_text,
+                created_at=answer.created_at,
+                teacher_name=teacher.name if teacher else "Unknown",
+            )
+        )
+
+    return result

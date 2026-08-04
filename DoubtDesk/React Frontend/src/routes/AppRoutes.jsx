@@ -8,6 +8,7 @@ import Home from "../pages/Home";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
 import NotFound from "../pages/NotFound";
+import QuestionDetails from "../components/common/QuestionDetails";
 
 // Student Pages
 import StudentDashboard from "../pages/student/Dashboard";
@@ -41,6 +42,10 @@ function AppRoutes() {
                <Route path="/" element={<Home />} />
                <Route path="/login" element={<Login />} />
                <Route path="/register" element={<Register />} />
+               <Route
+                    path="/questions/:questionId"
+                    element={<QuestionDetails />}
+               />
 
                {/* Student */}
                <Route

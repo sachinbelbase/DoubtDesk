@@ -8,6 +8,7 @@ import {
      MessageSquareReply,
      Eye,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function QuestionCard({
      question,
@@ -19,6 +20,9 @@ function QuestionCard({
      onAnswer,
 }) {
 
+
+     const navigate = useNavigate();
+
      const statusColors = {
           OPEN: "bg-yellow-100 text-yellow-700",
           ANSWERED: "bg-green-100 text-green-700",
@@ -26,7 +30,21 @@ function QuestionCard({
      };
 
      return (
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+          <div
+               onClick={() => navigate(`/questions/${question.question_id}`)}
+               className="
+                    bg-white
+                    border
+                    border-gray-200
+                    rounded-2xl
+                    p-6
+                    shadow-sm
+                    hover:shadow-md
+                    hover:-translate-y-1
+                    transition
+                    cursor-pointer 
+               "
+          >
 
                {/* Top */}
                <div className="flex justify-between items-center flex-wrap gap-3">
@@ -111,9 +129,11 @@ function QuestionCard({
 
                          {showViewAnswers && (
                               <button
-                                   onClick={() => onViewAnswers(question)}
+                                   onClick={(e) => {
+                                        e.stopPropagation();
+                                        onViewAnswers(question);
+                                   }}
                                    className="p-2 rounded-lg hover:bg-gray-100"
-                                   title="View Answers"
                               >
                                    <Eye
                                         size={18}
@@ -126,7 +146,10 @@ function QuestionCard({
                               <>
                                    {onAnswer && (
                                         <button
-                                             onClick={() => onAnswer(question)}
+                                             onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  onAnswer(question);
+                                             }}
                                              className="p-2 rounded-lg hover:bg-green-100"
                                         >
                                              <MessageSquareReply
@@ -138,7 +161,10 @@ function QuestionCard({
 
                                    {onEdit && (
                                         <button
-                                             onClick={() => onEdit(question)}
+                                             onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  onEdit(question);
+                                             }}
                                              className="p-2 rounded-lg hover:bg-blue-100"
                                         >
                                              <Pencil
@@ -150,7 +176,10 @@ function QuestionCard({
 
                                    {onDelete && (
                                         <button
-                                             onClick={() => onDelete(question)}
+                                             onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  onDelete(question);
+                                             }}
                                              className="p-2 rounded-lg hover:bg-red-100"
                                         >
                                              <Trash2

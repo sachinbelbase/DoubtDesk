@@ -55,10 +55,10 @@ function Select({
                          if (typeof option === "object") {
                               return (
                                    <option
-                                        key={option.id}
-                                        value={option.name}
+                                        key={option.id ?? option.value}
+                                        value={option.value ?? option.name}
                                    >
-                                        {option.name}
+                                        {option.label ?? option.name}
                                    </option>
                               );
                          }

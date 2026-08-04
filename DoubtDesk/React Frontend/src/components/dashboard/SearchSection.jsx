@@ -4,18 +4,25 @@ import Input from "../common/Input";
 import Select from "../common/Select";
 import Button from "../common/Button";
 
-import { categories } from "../../data/categories";
-import { difficulties } from "../../data/difficulties";
+// import { categories } from "../../data/categories";
+// import { difficulties } from "../../data/difficulties";
+
+import { sorts } from "../../data/sorts";
+import { statusFilters } from "../../data/statusFilters";
+
 
 function SearchSection({
      search,
-     category,
-     difficulty,
+     sort,
      onSearchChange,
-     onCategoryChange,
-     onDifficultyChange,
+     onSortChange,
      onSearch,
-}) {
+     statusFilter,
+     onStatusFilterChange,
+
+}) 
+     {
+
      return (
           <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 mb-8">
 
@@ -52,33 +59,35 @@ function SearchSection({
 
                     </div>
 
-                    {/* Category */}
+                    {/* Status Filter */}
 
                     <div className="lg:col-span-2">
 
                          <Select
-                              name="category"
-                              value={category}
-                              onChange={onCategoryChange}
-                              options={categories}
-                              placeholder="Category"
+                              name="statusFilter"
+                              value={statusFilter}
+                              onChange={onStatusFilterChange}
+                              options={statusFilters}
+                              placeholder="Status"
                          />
 
                     </div>
 
-                    {/* Difficulty */}
+          
+                         {/* Sort */}
 
-                    <div className="lg:col-span-2">
+                         <div className="lg:col-span-2">
 
-                         <Select
-                              name="difficulty"
-                              value={difficulty}
-                              onChange={onDifficultyChange}
-                              options={difficulties}
-                              placeholder="Difficulty"
-                         />
+                              <Select
+                                   name="sort"
+                                   value={sort}
+                                   onChange={onSortChange}
+                                   options={sorts}
+                                   placeholder="Sort"
+                              />
 
-                    </div>
+                         </div>
+
 
                     {/* Button */}
 

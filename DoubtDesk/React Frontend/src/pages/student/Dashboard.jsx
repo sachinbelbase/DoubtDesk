@@ -15,10 +15,7 @@ import TrendingTopics from "../../components/dashboard/TrendingTopics";
 
 function StudentDashboard() {
 
-  // Search States
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [difficulty, setDifficulty] = useState("");
 
   const [stats, setStats] = useState(null);
 
@@ -29,40 +26,49 @@ function StudentDashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
 
+  const [sort, setSort] = useState("newest");
+  const [statusFilter, setStatusFilter] = useState("");
+
   const limit = 10;
 
 
   const fetchQuestions = async () => {
-
     try {
-
       setLoading(true);
       setError("");
 
-      const response = await getQuestions({
+      const params = {
         search,
         page,
         limit,
-      });
+        sort,
+      };
+
+      if (statusFilter) {
+        params.status_filter = statusFilter;
+      }
+
+      console.log("Params:", params);
+
+      const response = await getQuestions(params);
 
       setQuestions(response.data.items);
       setTotalPages(response.data.total_pages);
 
     } catch (err) {
+      console.log(err.response?.status);
+      console.log(err.response?.data);
 
-      console.error(err);
+      const detail = err.response?.data?.detail;
 
-      setError(
-        err.response?.data?.detail ||
-        "Failed to load questions."
-      );
-
+      if (Array.isArray(detail)) {
+        setError(detail[0].msg);
+      } else {
+        setError(detail || "Failed to load questions.");
+      }
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   useEffect(() => {
@@ -92,23 +98,15 @@ function StudentDashboard() {
 
     fetchQuestions();
 
-  }, [page]);
+  }, [page, sort, statusFilter]);
 
-  // Handlers
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
   const handleSearch = () => {
+    setPage(1);
     fetchQuestions();
-  };
-
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const handleDifficultyChange = (e) => {
-    setDifficulty(e.target.value);
   };
 
   return (
@@ -120,12 +118,18 @@ function StudentDashboard() {
 
       <SearchSection
         search={search}
-        category={category}
-        difficulty={difficulty}
+        sort={sort}
         onSearchChange={handleSearchChange}
-        onCategoryChange={handleCategoryChange}
-        onDifficultyChange={handleDifficultyChange}
+        onSortChange={(e) => {
+          setSort(e.target.value);
+          setPage(1);
+        }}
         onSearch={handleSearch}
+        statusFilter={statusFilter}
+        onStatusFilterChange={(e) => {
+          setStatusFilter(e.target.value);
+          setPage(1);
+        }}
       />
 
       <QuickStats stats={stats} />
