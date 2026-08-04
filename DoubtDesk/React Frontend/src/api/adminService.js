@@ -8,3 +8,4 @@ export const getQuestions = () => axiosClient.get("/admin/questions");
 
 export const deleteQuestion = (questionId) =>
   axiosClient.delete(`/admin/questions/${questionId}`);
+
