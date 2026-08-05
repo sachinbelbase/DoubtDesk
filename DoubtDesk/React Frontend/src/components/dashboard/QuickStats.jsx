@@ -1,8 +1,8 @@
 import {
      BookOpen,
-     MessageCircle,
-     Bookmark,
-     Trophy,
+     MessageCircleReply,
+     Clock3,
+     Globe,
 } from "lucide-react";
 
 import DashboardStatCard from "./DashboardStatCard";
@@ -12,32 +12,32 @@ function QuickStats({ stats }) {
      const dashboardStats = [
 
           {
-               title: "Questions",
+               title: "Questions Asked",
                value: stats?.total_questions ?? 0,
                icon: <BookOpen size={28} />,
                color: "bg-blue-500",
           },
 
           {
-               title: "Answered",
+               title: "Answers Received",
                value: stats?.answered_questions ?? 0,
-               icon: <MessageCircle size={28} />,
+               icon: <MessageCircleReply size={28} />,
                color: "bg-green-500",
           },
 
           {
-               title: "Open",
+               title: "Pending Questions",
                value: stats?.open_questions ?? 0,
-               icon: <Bookmark size={28} />,
+               icon: <Clock3 size={28} />,
                color: "bg-yellow-500",
           },
 
           {
-               title: "Reputation",
-               value: 180, // We'll make this dynamic later
-               icon: <Trophy size={28} />,
+               title: "Class Questions",
+               value: stats?.class_questions ?? 0,
+               icon: <Globe size={28} />,
                color: "bg-purple-500",
-          },
+          }
 
      ];
 

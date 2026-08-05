@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import models
@@ -34,22 +34,23 @@ def get_all_students(
         )
 
         result.append(
-            schemas.AdminStudentOut(
-                student_id=student.student_id,
-                name=student.name,
-                email=student.email,
-                program=student_class.program if student_class else "N/A",
-                semester=student_class.semester if student_class else 0,
-                section=student_class.section if student_class else "N/A",
-                created_at=student.created_at,
-            )
-        )
+        schemas.AdminStudentOut(
+        student_id=student.student_id,
+        name=student.name,
+        email=student.email,
+        program=student_class.program if student_class else "N/A",
+        semester=student_class.semester if student_class else 0,
+        section=student_class.section if student_class else "N/A",
+        is_active=student.is_active,
+        created_at=student.created_at,
+    )
+)
 
     return result
 
 
 
-@router.get("/teachers", response_model=list[schemas.TeacherOut])
+@router.get("/teachers", response_model=list[schemas.AdminTeacherOut])
 def get_all_teachers(
     current_admin=Depends(get_current_admin),
     db: Session = Depends(get_db),
@@ -60,11 +61,26 @@ def get_all_teachers(
         .all()
     )
 
-    return teachers
+    result = []
+
+    for teacher in teachers:
+
+        result.append(
+            schemas.AdminTeacherOut(
+                teacher_id=teacher.teacher_id,
+                name=teacher.name,
+                email=teacher.email,
+                department=teacher.department or "Not Assigned",
+                is_active=teacher.is_active,
+                created_at=teacher.created_at,
+            )
+        )
+
+    return result
 
 
 
-@router.get("/questions", response_model=list[schemas.QuestionOut])
+@router.get("/questions", response_model=list[schemas.AdminQuestionOut])
 def get_all_questions(
     current_admin=Depends(get_current_admin),
     db: Session = Depends(get_db),
@@ -77,24 +93,57 @@ def get_all_questions(
 
     result = []
 
-    for q in questions:
+    for question in questions:
 
         student = (
             db.query(models.Student)
-            .filter(models.Student.student_id == q.student_id)
+            .filter(models.Student.student_id == question.student_id)
             .first()
         )
 
+        student_class = (
+            db.query(models.Class)
+            .filter(models.Class.class_id == question.class_id)
+            .first()
+        )
+
+        answer = (
+            db.query(models.Answer)
+            .filter(models.Answer.question_id == question.question_id)
+            .first()
+        )
+
+        teacher_name = None
+
+        if answer:
+            teacher = (
+                db.query(models.Teacher)
+                .filter(models.Teacher.teacher_id == answer.teacher_id)
+                .first()
+            )
+
+            if teacher:
+                teacher_name = teacher.name
+
+        class_name = "N/A"
+
+        if student_class:
+            class_name = (
+                f"{student_class.program} "
+                f"Semester {student_class.semester} "
+                f"Section {student_class.section}"
+            )
+
         result.append(
-            schemas.QuestionOut(
-                question_id=q.question_id,
-                class_id=q.class_id,
-                title=q.title,
-                question_text=q.question_text,
-                visibility=q.visibility,
-                status=q.status,
-                created_at=q.created_at,
-                asked_by=student.name if student else "Unknown",
+            schemas.AdminQuestionOut(
+                question_id=question.question_id,
+                title=question.title,
+                student_name=student.name if student else "Unknown",
+                class_name=class_name,
+                visibility=question.visibility,
+                status=question.status,
+                teacher_name=teacher_name,
+                created_at=question.created_at,
             )
         )
 
@@ -115,7 +164,7 @@ def delete_question(
     if not question:
         raise HTTPException(
             status_code=404,
-            detail="Question not found",
+            detail="Question not found"
         )
 
     db.query(models.Answer).filter(
@@ -123,11 +172,118 @@ def delete_question(
     ).delete()
 
     db.delete(question)
+
     db.commit()
 
-    return {"message": "Question deleted successfully"}
+    return {
+        "message": "Question deleted successfully."
+    }
 
-# @router.patch("/students/{student_id}/block")
-# @router.patch("/students/{student_id}/unblock")
-# @router.patch("/teachers/{teacher_id}/block")
-# @router.patch("/teachers/{teacher_id}/unblock")
+@router.patch("/students/{student_id}/block")
+def block_student(
+    student_id: int,
+    current_admin=Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    student = (
+        db.query(models.Student)
+        .filter(models.Student.student_id == student_id)
+        .first()
+    )
+
+    if not student:
+        raise HTTPException(
+            status_code=404,
+            detail="Student not found"
+        )
+
+    student.is_active = False
+
+    db.commit()
+    db.refresh(student)
+
+    return {
+        "message": "Student blocked successfully"
+    }
+
+@router.patch("/students/{student_id}/unblock")
+def unblock_student(
+    student_id: int,
+    current_admin=Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    student = (
+        db.query(models.Student)
+        .filter(models.Student.student_id == student_id)
+        .first()
+    )
+
+    if not student:
+        raise HTTPException(
+            status_code=404,
+            detail="Student not found"
+        )
+
+    student.is_active = True
+
+    db.commit()
+    db.refresh(student)
+
+    return {
+        "message": "Student unblocked successfully"
+    }
+
+@router.patch("/teachers/{teacher_id}/block")
+def block_teacher(
+    teacher_id: int,
+    current_admin=Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    teacher = (
+        db.query(models.Teacher)
+        .filter(models.Teacher.teacher_id == teacher_id)
+        .first()
+    )
+
+    if not teacher:
+        raise HTTPException(
+            status_code=404,
+            detail="Teacher not found"
+        )
+
+    teacher.is_active = False
+
+    db.commit()
+    db.refresh(teacher)
+
+    return {
+        "message": "Teacher blocked successfully"
+    }
+    
+    
+@router.patch("/teachers/{teacher_id}/unblock")
+def unblock_teacher(
+    teacher_id: int,
+    current_admin=Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    teacher = (
+        db.query(models.Teacher)
+        .filter(models.Teacher.teacher_id == teacher_id)
+        .first()
+    )
+
+    if not teacher:
+        raise HTTPException(
+            status_code=404,
+            detail="Teacher not found"
+        )
+
+    teacher.is_active = True
+
+    db.commit()
+    db.refresh(teacher)
+
+    return {
+        "message": "Teacher unblocked successfully"
+    }

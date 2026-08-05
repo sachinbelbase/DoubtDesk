@@ -7,6 +7,7 @@ import Button from "../../components/common/Button";
 
 import { useEffect, useState } from "react";
 import { getTeacherDashboard } from "../../api/dashboardService";
+import TeacherQuickActions from "../../components/teacher/TeacherQuickActions";
 
 function Dashboard() {
 
@@ -50,11 +51,7 @@ function Dashboard() {
                     <TeacherStatus stats={stats} />
                </div>
 
-               <div className="mt-8">
-                    <Button onClick={() => navigate("/teacher/questions")}>
-                         Go to Questions
-                    </Button>
-               </div>
+               <TeacherQuickActions />
 
           </DashboardLayout>
      );

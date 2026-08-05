@@ -8,9 +8,7 @@ import DashboardHeader from "../../components/dashboard/DashboardHeader";
 import WelcomeBanner from "../../components/dashboard/WelcomeBanner";
 import SearchSection from "../../components/dashboard/SearchSection";
 import QuickStats from "../../components/dashboard/QuickStats";
-import CategoryGrid from "../../components/dashboard/CategoryGrid";
 import RecentQuestions from "../../components/dashboard/RecentQuestions";
-import TrendingTopics from "../../components/dashboard/TrendingTopics";
 
 
 function StudentDashboard() {
@@ -143,10 +141,6 @@ function StudentDashboard() {
         setPage={setPage}
         totalPages={totalPages}
       />
-
-      <CategoryGrid />
-
-      <TrendingTopics />
 
     </DashboardLayout>
 

@@ -1,4 +1,4 @@
-function StudentTable({ students, loading }) {
+function StudentTable({ students, loading, onToggleStatus, }) {
 
      if (loading) {
           return <p>Loading students...</p>;
@@ -22,6 +22,8 @@ function StudentTable({ students, loading }) {
                               <th className="text-left py-3">Program</th>
                               <th className="text-left py-3">Semester</th>
                               <th className="text-left py-3">Section</th>
+                              <th className="text-left py-3">Status</th>
+                              <th className="text-left py-3">Actions</th>
 
                          </tr>
 
@@ -45,6 +47,30 @@ function StudentTable({ students, loading }) {
                                    <td>{student.semester}</td>
 
                                    <td>{student.section}</td>
+
+                                   <td>
+                                        {student.is_active ? (
+                                             <span className="text-green-600 font-medium">
+                                                  Active
+                                             </span>
+                                        ) : (
+                                             <span className="text-red-600 font-medium">
+                                                  Blocked
+                                             </span>
+                                        )}
+                                   </td>
+
+                                   <td className="text-center">
+                                        <button
+                                             onClick={() => onToggleStatus(student)}
+                                             className={`px-3 py-1 rounded-lg text-white ${student.is_active
+                                                       ? "bg-red-500 hover:bg-red-600"
+                                                       : "bg-green-600 hover:bg-green-700"
+                                                  }`}
+                                        >
+                                             {student.is_active ? "Block" : "Unblock"}
+                                        </button>
+                                   </td>
 
                               </tr>
 

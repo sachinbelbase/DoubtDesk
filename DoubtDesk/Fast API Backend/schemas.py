@@ -84,6 +84,7 @@ class StudentOut(BaseModel):
     program: str
     semester: int
     section: str
+    is_active: bool
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -135,6 +136,30 @@ class AdminStudentOut(BaseModel):
     program: str
     semester: int
     section: str
+    is_active: bool
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+    
+    
+class AdminTeacherOut(BaseModel):
+    teacher_id: int
+    name: str
+    email: str
+    department: Optional[str] = None
+    is_active: bool
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+    
+class AdminQuestionOut(BaseModel):
+    question_id: int
+    title: str
+    student_name: str
+    class_name: str
+    visibility: str
+    status: str
+    teacher_name: str | None = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)

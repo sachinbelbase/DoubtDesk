@@ -98,5 +98,6 @@ def get_my_profile(
         program=student_class.program,
         semester=student_class.semester,
         section=student_class.section,
+        is_active=current_student.is_active,
         created_at=current_student.created_at
     )

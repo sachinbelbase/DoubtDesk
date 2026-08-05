@@ -29,10 +29,15 @@ def student_dashboard(
         models.Question.status == "OPEN"
     ).count()
 
+    class_questions = db.query(models.Question).filter(
+        models.Question.visibility == "CLASS"
+    ).count()
+
     return {
         "total_questions": total_questions,
         "answered_questions": answered_questions,
-        "open_questions": open_questions
+        "open_questions": open_questions,
+        "class_questions": class_questions,
     }
     
 @router.get("/teacher")

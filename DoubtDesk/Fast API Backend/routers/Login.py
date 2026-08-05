@@ -61,8 +61,23 @@ def login(
 
 
 
-    if not user or not verify_password(credentials.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+    )
+
+    if not verify_password(credentials.password, user.password_hash):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+    )
+
+    if not user.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="Your account has been blocked by the administrator."
+    )
 
     access_token = create_access_token(data={"sub": str(user_id), "role": role})
     refresh_token = create_refresh_token(data={"sub": str(user_id), "role": role})
