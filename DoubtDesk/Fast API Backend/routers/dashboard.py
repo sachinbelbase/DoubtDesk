@@ -61,6 +61,31 @@ def teacher_dashboard(
         "pending_questions": pending_questions
     }
     
+@router.get("/teacher/recent")
+def teacher_recent_questions(
+    db: Session = Depends(get_db),
+    current=Depends(get_current_teacher)
+):
+    questions = (
+        db.query(models.Question)
+        .filter(models.Question.status == "OPEN")
+        .order_by(models.Question.created_at.desc())
+        .limit(5)
+        .all()
+    )
+
+    result = []
+
+    for question in questions:
+        result.append({
+            "question_id": question.question_id,
+            "title": question.title,
+            "visibility": question.visibility,
+            "created_at": question.created_at,
+        })
+
+    return result
+    
     
 @router.get("/admin")
 def get_admin_dashboard(

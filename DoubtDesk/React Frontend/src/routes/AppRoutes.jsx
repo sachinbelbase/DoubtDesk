@@ -32,6 +32,9 @@ import AdminStudents from "../pages/admin/Students";
 import AdminTeachers from "../pages/admin/Teachers";
 import AdminQuestions from "../pages/admin/Questions";
 
+//Question Details Page
+import QuestionDetailsPage from "../pages/shared/QuestionDetails";
+
 
 function AppRoutes() {
      return (
@@ -147,10 +150,51 @@ function AppRoutes() {
                />
 
                {/* Admin */}
-               <Route path="/admin/dashboard" element={<AdminDashboard />} />
-               <Route path="/admin/students" element={<AdminStudents />} />
-               <Route path="/admin/teachers" element={<AdminTeachers />} />
-               <Route path="/admin/questions" element={<AdminQuestions />} />
+               <Route path="/admin/dashboard"
+               element={
+               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+               <AdminDashboard />
+               </ProtectedRoute>
+               } 
+               />
+
+
+               <Route path="/admin/students" 
+               element={
+               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+               <AdminStudents />
+               </ProtectedRoute>
+               } 
+               />
+
+               <Route path="/admin/teachers" 
+               
+               element={
+               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+               <AdminTeachers />
+               </ProtectedRoute>
+               } 
+               
+               />
+               <Route path="/admin/questions" 
+               
+               element={
+               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+               <AdminQuestions />
+               </ProtectedRoute>
+               }
+               
+               />
+
+
+               {/* Question Details */}
+               <Route path="/questions/:id"
+                element={
+                <ProtectedRoute allowedRoles={[ROLES.STUDENT, ROLES.TEACHER, ROLES.ADMIN]}>
+                <QuestionDetailsPage />
+                </ProtectedRoute>
+                } 
+               />
 
                {/* 404 */}
                <Route path="*" element={<NotFound />} />

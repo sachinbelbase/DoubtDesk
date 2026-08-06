@@ -7,6 +7,7 @@ from database import get_db
 from auth import get_current_teacher, get_current_user, get_current_student
 import schemas
 import models
+from sqlalchemy import func
 
 router = APIRouter(
     prefix="/questions",
@@ -63,6 +64,18 @@ def get_questions(
 
     if sort == schemas.SortOption.oldest:
         query = query.order_by(models.Question.created_at.asc())
+
+    elif sort == schemas.SortOption.most_answered:
+        query = (
+            query
+            .outerjoin(
+                models.Answer,
+                models.Question.question_id == models.Answer.question_id
+            )
+            .group_by(models.Question.question_id)
+            .order_by(func.count(models.Answer.answer_id).desc())
+        )
+
     else:
         query = query.order_by(models.Question.created_at.desc())
         
@@ -131,15 +144,32 @@ def ask_question(
 
 @router.get("/me", response_model=List[schemas.QuestionOut])
 def get_my_questions(
+    sort: schemas.SortOption = schemas.SortOption.newest,
     current_student: models.Student = Depends(get_current_student),
     db: Session = Depends(get_db)
 ):
-    questions = (
-        db.query(models.Question)
-        .filter(models.Question.student_id == current_student.student_id)
-        .order_by(models.Question.created_at.desc())
-        .all()
-    )
+    query = db.query(models.Question).filter(
+    models.Question.student_id == current_student.student_id
+)
+
+    if sort == schemas.SortOption.oldest:
+        query = query.order_by(models.Question.created_at.asc())
+
+    elif sort == schemas.SortOption.most_answered:
+        query = (
+            query
+            .outerjoin(
+                models.Answer,
+                models.Question.question_id == models.Answer.question_id
+            )
+            .group_by(models.Question.question_id)
+            .order_by(func.count(models.Answer.answer_id).desc())
+        )
+
+    else:
+        query = query.order_by(models.Question.created_at.desc())
+
+    questions = query.all()
 
     result = []
 

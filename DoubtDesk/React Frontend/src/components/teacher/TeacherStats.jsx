@@ -36,13 +36,6 @@ function TeacherStats({ stats }) {
                     color="bg-yellow-500"
                />
 
-               <DashboardStatCard
-                    title="My Answers"
-                    value={stats.total_answers}
-                    icon={<MessageSquareText size={28} />}
-                    color="bg-purple-500"
-               />
-
           </div>
      );
 }

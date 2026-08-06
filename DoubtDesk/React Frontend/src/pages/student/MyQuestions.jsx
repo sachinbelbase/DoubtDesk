@@ -21,7 +21,7 @@ function MyQuestions() {
           try {
                setLoading(true);
                setError("");
-
+               
                const response = await getMyQuestions();
 
                setQuestions(response.data);
@@ -118,7 +118,7 @@ function MyQuestions() {
                <QuestionFeed
                     questions={questions}
                     title="Your Questions"
-                    emptyMessage="You haven't asked any questions yet."
+                    showFilter={false}
                     showActions={true}
                     showViewAnswers={true}
                     onViewAnswers={handleViewAnswers}

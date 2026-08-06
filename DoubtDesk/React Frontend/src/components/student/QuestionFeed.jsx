@@ -11,12 +11,12 @@ function QuestionFeed({
      onEdit,
      onDelete,
      onAnswer,
-     
+     showFilter = true,
 }) {
      return (
           <section className="mt-10">
 
-               <QuestionFilter title={title} />
+               {showFilter && <QuestionFilter title={title} />}
 
                {questions.length === 0 ? (
                     <div className="bg-white rounded-xl shadow p-10 text-center text-gray-500">

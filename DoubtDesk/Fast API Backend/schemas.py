@@ -112,6 +112,7 @@ class RefreshRequest(BaseModel):
 class SortOption(str, Enum):
     newest = "newest"
     oldest = "oldest"
+    most_answered = "most_answered"
 
 class StatusFilterOption(str, Enum):
     answered = "answered"

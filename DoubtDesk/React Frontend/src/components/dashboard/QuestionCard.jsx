@@ -39,17 +39,20 @@ function QuestionCard({
                     rounded-2xl
                     p-6
                     shadow-sm
-                    hover:shadow-md
+                    hover:shadow-lg
                     hover:-translate-y-1
-                    transition
+                    transition-all
+                    duration-300
                     cursor-pointer 
+                    active:scale-[0.99]
+                    select-none
                "
           >
 
                {/* Top */}
                <div className="flex justify-between items-center flex-wrap gap-3">
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
 
                          <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
 
@@ -70,7 +73,7 @@ function QuestionCard({
                          <span
                               className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[question.status]}`}
                          >
-                              {question.status}
+                              {question.status.charAt(0) + question.status.slice(1).toLowerCase()}
                          </span>
 
                          {/* Future difficulty */}
@@ -86,15 +89,17 @@ function QuestionCard({
 
                {/* Title */}
 
-               <h2 className="text-xl font-semibold mt-5">
+               <h2 className="text-xl font-bold text-gray-900 mt-5 leading-snug">
                     {question.title}
                </h2>
 
                {/* Description */}
 
-               <p className="text-gray-600 mt-3 whitespace-pre-line">
+               <p className="text-gray-600 mt-3 whitespace-pre-line line-clamp-3">
                     {question.question_text}
                </p>
+               
+               <hr className="my-5 border-gray-100" />
 
                {/* Footer */}
 
@@ -117,7 +122,7 @@ function QuestionCard({
 
                                    <Clock size={14} />
 
-                                   {new Date(question.created_at).toLocaleString()}
+                                   {new Date(question.created_at).toLocaleDateString()}
 
                               </div>
 
@@ -125,7 +130,7 @@ function QuestionCard({
 
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
 
                          {showViewAnswers && (
                               <button
@@ -133,7 +138,7 @@ function QuestionCard({
                                         e.stopPropagation();
                                         onViewAnswers(question);
                                    }}
-                                   className="p-2 rounded-lg hover:bg-gray-100"
+                                   className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
                               >
                                    <Eye
                                         size={18}
@@ -150,7 +155,7 @@ function QuestionCard({
                                                   e.stopPropagation();
                                                   onAnswer(question);
                                              }}
-                                             className="p-2 rounded-lg hover:bg-green-100"
+                                             className="p-2 rounded-lg hover:bg-green-100 transition-colors"
                                         >
                                              <MessageSquareReply
                                                   size={18}
@@ -165,7 +170,7 @@ function QuestionCard({
                                                   e.stopPropagation();
                                                   onEdit(question);
                                              }}
-                                             className="p-2 rounded-lg hover:bg-blue-100"
+                                             className="p-2 rounded-lg hover:bg-blue-100 transition-colors"
                                         >
                                              <Pencil
                                                   size={18}
@@ -174,13 +179,13 @@ function QuestionCard({
                                         </button>
                                    )}
 
-                                   {onDelete &&  (
+                                   {onDelete && question.status === "OPEN" && (
                                         <button
                                              onClick={(e) => {
                                                   e.stopPropagation();
                                                   onDelete(question);
                                              }}
-                                             className="p-2 rounded-lg hover:bg-red-100"
+                                             className="p-2 rounded-lg hover:bg-red-100 transition-colors"
                                         >
                                              <Trash2
                                                   size={18}

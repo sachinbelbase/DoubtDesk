@@ -5,3 +5,6 @@ export const getStudentDashboard = () => {
 };
 
 export const getTeacherDashboard = () => axiosClient.get("/dashboard/teacher");
+
+export const getRecentTeacherQuestions = () =>
+  axiosClient.get("/dashboard/teacher/recent");

@@ -4,29 +4,54 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import QuestionFeed from "../../components/student/QuestionFeed";
 
 import { getQuestions } from "../../api/questionService";
+import SearchBar from "../../components/common/SearchBar";
+import Button from "../../components/common/Button";
+import Select from "../../components/common/Select";
+import { statusFilters } from "../../data/statusFilters";
+import { sorts } from "../../data/sorts";
 
 function Questions() {
      const [questions, setQuestions] = useState([]);
      const [loading, setLoading] = useState(true);
      const [error, setError] = useState("");
      const [selectedQuestion, setSelectedQuestion] = useState(null);
+     const [search, setSearch] = useState("");
+     const [statusFilter, setStatusFilter] = useState("");
+     const [sort, setSort] = useState("newest");
 
      const handleAnswer = (question) => {
           setSelectedQuestion(question);
      };
 
+     const handleSearch = () => {
+          fetchQuestions();
+     };
+
      const fetchQuestions = async () => {
           try {
-               const response = await getQuestions();
+               const params = {
+                    search,
+                    sort,
+               };
+
+               if (statusFilter) {
+                    params.status_filter = statusFilter;
+               }
+
+               const response = await getQuestions(params);
                setQuestions(response.data.items);
 
           } catch (err) {
                console.error(err);
 
-               setError(
-                    err.response?.data?.detail ||
-                    "Failed to load questions."
-               );
+               const detail = err.response?.data?.detail;
+
+               if (Array.isArray(detail)) {
+                    setError(detail[0].msg);
+               } else {
+                    setError(detail || "Failed to load questions.");
+               }
+
           } finally {
                setLoading(false);
           }
@@ -35,6 +60,10 @@ function Questions() {
      useEffect(() => {
           fetchQuestions();
      }, []);
+
+     useEffect(() => {
+          fetchQuestions();
+     }, [sort, statusFilter]);
 
      if (loading) {
           return (
@@ -65,11 +94,54 @@ function Questions() {
                     </p>
                </div>
 
+               <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-6">
+
+                    <div className="flex flex-col lg:flex-row gap-4 items-center">
+
+                         {/* Search */}
+                         <div className="flex-1 w-full">
+                              <SearchBar
+                                   value={search}
+                                   onChange={(e) => setSearch(e.target.value)}
+                                   placeholder="Search questions..."
+                              />
+                         </div>
+
+                         {/* Search Button */}
+                         <Button onClick={handleSearch}>
+                              Search
+                         </Button>
+
+                         {/* Status */}
+                         <div className="w-full lg:w-48">
+                              <Select
+                                   name="status"
+                                   value={statusFilter}
+                                   onChange={(e) => setStatusFilter(e.target.value)}
+                                   options={statusFilters}
+                              />
+                         </div>
+
+                         {/* Sort */}
+                         <div className="w-full lg:w-48">
+                              <Select
+                                   name="sort"
+                                   value={sort}
+                                   onChange={(e) => setSort(e.target.value)}
+                                   options={sorts}
+                              />
+                         </div>
+
+                    </div>
+
+               </div>
+
                <QuestionFeed
                     questions={questions}
                     title="All Questions"
                     emptyMessage="No questions available."
                     showActions={true}
+                    showFilter={false}
                     onAnswer={handleAnswer}
                />
 

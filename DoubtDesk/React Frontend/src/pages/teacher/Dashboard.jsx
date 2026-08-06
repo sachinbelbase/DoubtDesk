@@ -6,13 +6,15 @@ import TeacherStatus from "../../components/teacher/TeacherStats";
 import Button from "../../components/common/Button";
 
 import { useEffect, useState } from "react";
-import { getTeacherDashboard } from "../../api/dashboardService";
-import TeacherQuickActions from "../../components/teacher/TeacherQuickActions";
+import { getTeacherDashboard,getRecentTeacherQuestions } from "../../api/dashboardService";
+import TeacherQuickActions from "../../components/teacher/TeacherQuickActions"; 
+import RecentQuestionsPreview from "../../components/teacher/RecentQuestionsPreview";  
 
 function Dashboard() {
 
      const navigate = useNavigate();
      const [stats, setStats] = useState(null);
+     const [recentQuestions, setRecentQuestions] = useState([]);
 
      useEffect(() => {
 
@@ -21,12 +23,12 @@ function Dashboard() {
                try {
 
                     const response = await getTeacherDashboard();
-                    console.log("Teacher Dashboard:", response.data);
-
                     setStats(response.data);
 
+                    const recentResponse = await getRecentTeacherQuestions();
+                    setRecentQuestions(recentResponse.data);
+
                } catch (err) {
-                    console.error("Teacher dashboard error:", err);
                     console.error(err);
 
                }
@@ -49,7 +51,12 @@ function Dashboard() {
 
                <div className="mt-8">
                     <TeacherStatus stats={stats} />
+                    <RecentQuestionsPreview questions={recentQuestions} />
+                    
+
                </div>
+
+               
 
                <TeacherQuickActions />
 

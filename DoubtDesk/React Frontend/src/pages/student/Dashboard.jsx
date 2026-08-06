@@ -27,7 +27,7 @@ function StudentDashboard() {
   const [sort, setSort] = useState("newest");
   const [statusFilter, setStatusFilter] = useState("");
 
-  const limit = 10;
+  const limit = 5;
 
 
   const fetchQuestions = async () => {

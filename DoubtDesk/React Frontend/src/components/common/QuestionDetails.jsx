@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import AnswerForm from "../../components/teacher/AnswerForm";
 import { getQuestion, getQuestionAnswers, } from "../../api/questionService";
 import { useAuth } from "../../hooks/useAuth";
+import QuestionHeader from "../../components/teacher/QuestionHeader";
+import AnswerCard from "./AnswerCard";
 
 function QuestionDetails() {
      const { questionId } = useParams();
@@ -58,18 +60,7 @@ function QuestionDetails() {
 
      return (
           <div className="max-w-4xl mx-auto p-6">
-               <h1 className="text-3xl font-bold mb-4">
-                    {question.title}
-               </h1>
-
-               <p className="text-gray-700 mb-6">
-                    {question.question_text}
-               </p>
-
-               <div className="space-y-2 text-sm text-gray-500">
-                    <p>Status: {question.status}</p>
-                    <p>Asked by: {question.asked_by}</p>
-               </div>
+               <QuestionHeader question={question} />
 
                <div className="mt-10">
                     <h2 className="text-2xl font-bold mb-5">
@@ -81,35 +72,24 @@ function QuestionDetails() {
                               No answers yet.
                          </p>
                     ) : (
-                         <div className="space-y-5">
-                              {answers.map((answer) => (
-                                   <div
-                                        key={answer.answer_id}
-                                        className="border rounded-xl p-5 bg-white shadow-sm"
-                                   >
-                                        <div className="flex justify-between mb-2">
-                                             <h3 className="font-semibold">
-                                                  {answer.teacher_name}
-                                             </h3>
-
-                                             <span className="text-sm text-gray-500">
-                                                  {new Date(answer.created_at).toLocaleString()}
-                                             </span>
-                                        </div>
-
-                                        <p className="whitespace-pre-line text-gray-700">
-                                             {answer.answer_text}
-                                        </p>
-                                   </div>
-                              ))}
-                         </div>
+                         
+                              <div className="space-y-5">
+                                   {answers.map((answer) => (
+                                        <AnswerCard
+                                             key={answer.answer_id}
+                                             answer={answer}
+                                        />
+                                   ))}
+                              </div>
                     )}
                </div>
 
-               <AnswerForm
-                    questionId={question.question_id}
-                    onSuccess={fetchAnswers}
-               />
+               {isTeacher && (
+                    <AnswerForm
+                         questionId={question.question_id}
+                         onSuccess={fetchAnswers}
+                    />
+               )}
                
           </div>
      );
