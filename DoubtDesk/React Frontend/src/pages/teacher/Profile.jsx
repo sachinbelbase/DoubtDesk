@@ -1,11 +1,29 @@
+import { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import ProfileHeader from "../../components/common/ProfileHeader";
 import TeacherStatus from "../../components/teacher/TeacherStats";
 import { useAuth } from "../../hooks/useAuth";
+import { getTeacherDashboard } from "../../api/dashboardService";
+import ProfileCard from "../../components/common/ProfileCard";
 
 function Profile() {
 
   const { user } = useAuth();
+
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await getTeacherDashboard();
+        setStats(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <DashboardLayout role="teacher">
@@ -24,12 +42,10 @@ function Profile() {
 
       <div className="space-y-6">
 
-        <ProfileHeader
-          name={user?.name || "Teacher"}
-          role={user?.role || "teacher"}
+        <ProfileCard
+          role="teacher"
+          stats={stats}
         />
-
-        <TeacherStatus />
 
       </div>
 

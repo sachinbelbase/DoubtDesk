@@ -13,7 +13,7 @@ function TeacherStats({ stats }) {
      }
 
      return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                <DashboardStatCard
                     title="Total Questions"

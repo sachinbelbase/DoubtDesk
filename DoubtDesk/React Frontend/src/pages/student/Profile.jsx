@@ -1,6 +1,5 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import StudentProfileCard from "../../components/student/StudentProfileCard";
-import stats from "../../components/student/StudentProfileStats";
+import ProfileCard from "../../components/common/ProfileCard";
 import { useEffect, useState } from "react";
 import { getStudentDashboard } from "../../api/dashboardService";
 
@@ -23,7 +22,18 @@ function Profile() {
 
      return (
           <DashboardLayout role="student">
-               <StudentProfileCard stats={stats} />
+
+               <div className="mb-4">
+                    <p className="text-gray-500">
+                         Manage your profile and view your activity.
+                    </p>
+               </div>
+
+               <ProfileCard
+                    role="student"
+                    stats={stats}
+               />
+
           </DashboardLayout>
      );
 }

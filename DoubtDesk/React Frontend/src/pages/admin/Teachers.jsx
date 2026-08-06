@@ -4,7 +4,7 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import DashboardHeader from "../../components/dashboard/DashboardHeader";
 
 import TeacherTable from "../../components/admin/TeacherTable";
-
+import Button from "../../components/common/Button";
 import { getTeachers, blockTeacher, unblockTeacher, } from "../../api/adminService";
 import SearchBar from "../../components/common/SearchBar";
 
@@ -59,17 +59,30 @@ function Teachers() {
     (teacher.department ?? "").toLowerCase().includes(searchText)
   );
 
+  const handleSearch = () => {
+  };
+
   return (
     <DashboardLayout role="admin">
       <DashboardHeader />
 
       <div className="bg-white rounded-xl shadow p-4 mb-6">
 
-        <SearchBar
-          placeholder="Search teachers..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+
+          <div className="flex-1 w-full">
+            <SearchBar
+              placeholder="Search students..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <Button onClick={handleSearch}>
+            Search
+          </Button>
+
+        </div>
 
       </div>
 

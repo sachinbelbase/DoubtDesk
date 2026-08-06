@@ -1,10 +1,22 @@
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../common/Button";
 
 const WelcomeBanner = () => {
-     const navigate = useNavigate();
      const { user } = useAuth();
+
+     const role = user?.role;
+
+     let defaultName = "Student";
+     let message = "Ready to ask or explore another doubt today?";
+
+     if (role === "teacher") {
+          defaultName = "Teacher";
+          message = "Help students by answering their questions today.";
+     }
+
+     if (role === "admin") {
+          defaultName = "Admin";
+          message = "Manage users, teachers, and questions efficiently.";
+     }
 
      return (
           <section className="bg-blue-500 text-white rounded-2xl px-8 py-5 mb-6">
@@ -13,17 +25,13 @@ const WelcomeBanner = () => {
 
                     <div>
                          <h1 className="text-2xl font-bold">
-                              Welcome back, {user?.name || "Student"}!
+                              Welcome back, {user?.name || defaultName}!
                          </h1>
 
                          <p className="text-blue-100 mt-1">
-                              Ready to solve another doubt today?
+                              {message}
                          </p>
                     </div>
-
-                    <Button onClick={() => navigate("/student/ask-question")}>
-                         Ask Question
-                    </Button>
 
                </div>
 

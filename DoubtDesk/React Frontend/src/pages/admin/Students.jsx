@@ -5,6 +5,7 @@ import DashboardHeader from "../../components/dashboard/DashboardHeader";
 
 import StudentTable from "../../components/admin/StudentTable";
 import SearchBar from "../../components/common/SearchBar";
+import Button from "../../components/common/Button";
 
 import { getStudents, blockStudent, unblockStudent } from "../../api/adminService";
 
@@ -60,17 +61,30 @@ function Students() {
     student.program.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleSearch = () => {
+  };
+
   return (
     <DashboardLayout role="admin">
       <DashboardHeader />
 
       <div className="bg-white rounded-xl shadow p-4 mb-6">
 
-        <SearchBar
-          placeholder="Search students..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+
+          <div className="flex-1 w-full">
+            <SearchBar
+              placeholder="Search students..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <Button onClick={handleSearch}>
+            Search
+          </Button>
+
+        </div>
 
       </div>
       

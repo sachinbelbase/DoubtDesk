@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getTeacherDashboard,getRecentTeacherQuestions } from "../../api/dashboardService";
 import TeacherQuickActions from "../../components/teacher/TeacherQuickActions"; 
 import RecentQuestionsPreview from "../../components/teacher/RecentQuestionsPreview";  
+import WelcomeBanner from "../../components/dashboard/WelcomeBanner";
 
 function Dashboard() {
 
@@ -41,6 +42,8 @@ function Dashboard() {
 
      return (
           <DashboardLayout role="teacher">
+
+               <WelcomeBanner />
 
                <DashboardHeader
                     title="Teacher Dashboard"

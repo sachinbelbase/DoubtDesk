@@ -5,6 +5,7 @@ import DashboardHeader from "../../components/dashboard/DashboardHeader";
 
 import QuestionTable from "../../components/admin/QuestionTable";
 import SearchBar from "../../components/common/SearchBar";
+import Button from "../../components/common/Button";
 
 import {
      getQuestions,
@@ -61,17 +62,30 @@ function Questions() {
           (question.teacher_name ?? "").toLowerCase().includes(searchText)
      );
 
+     const handleSearch = () => {
+     };
+
      return (
           <DashboardLayout role="admin">
                <DashboardHeader />
 
                <div className="bg-white rounded-xl shadow p-4 mb-6">
 
-                    <SearchBar
-                         placeholder="Search questions..."
-                         value={search}
-                         onChange={(e) => setSearch(e.target.value)}
-                    />
+                    <div className="flex flex-col md:flex-row gap-4 items-center">
+
+                         <div className="flex-1 w-full">
+                              <SearchBar
+                                   placeholder="Search students..."
+                                   value={search}
+                                   onChange={(e) => setSearch(e.target.value)}
+                              />
+                         </div>
+
+                         <Button onClick={handleSearch}>
+                              Search
+                         </Button>
+
+                    </div>
 
                </div>
 

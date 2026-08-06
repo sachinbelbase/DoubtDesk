@@ -2,15 +2,9 @@ import {
   Home,
   PlusCircle,
   FileQuestion,
-  Bookmark,
-  Users,
-  BookOpen,
-  Settings,
   Bell,
   User,
-  Shield,
   ClipboardList,
-  BarChart3,
   MessageSquare,
   GraduationCap,
   LayoutDashboard,
@@ -37,12 +31,6 @@ export const menus = {
     },
 
     {
-      label: "Bookmarks",
-      icon: Bookmark,
-      path: "/student/bookmarks",
-    },
-
-    {
       label: "Notifications",
       icon: Bell,
       path: "/student/notifications",
@@ -52,12 +40,6 @@ export const menus = {
       label: "Profile",
       icon: User,
       path: "/student/profile",
-    },
-
-    {
-      label: "Settings",
-      icon: Settings,
-      path: "/student/settings",
     },
   ],
 
@@ -78,12 +60,6 @@ export const menus = {
       label: "Profile",
       icon: User,
       path: "/teacher/profile",
-    },
-
-    {
-      label: "Settings",
-      icon: Settings,
-      path: "/teacher/settings",
     },
   ],
 
