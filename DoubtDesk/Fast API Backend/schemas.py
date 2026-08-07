@@ -3,7 +3,6 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 from enum import Enum
-from typing import Optional
 
 class CreateStudent(BaseModel):
     name: str
@@ -164,3 +163,21 @@ class AdminQuestionOut(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+    
+class NotificationCreate(BaseModel):
+    user_id: int
+    role: str
+    question_id: Optional[int] = None
+    message: str
+
+
+class NotificationOut(BaseModel):
+    notification_id: int
+    user_id: int
+    role: str
+    question_id: Optional[int]
+    message: str
+    is_read: bool
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True) 

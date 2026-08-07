@@ -14,17 +14,14 @@ import QuestionDetails from "../components/common/QuestionDetails";
 import StudentDashboard from "../pages/student/Dashboard";
 import AskQuestion from "../pages/student/AskQuestion";
 import MyQuestions from "../pages/student/MyQuestions";
-import Bookmarks from "../pages/student/Bookmarks";
-import Notifications from "../pages/student/Notifications";
 import StudentProfile from "../pages/student/Profile";
-import Settings from "../pages/student/Settings";
+
 
 // Teacher Pages
 import TeacherDashboard from "../pages/teacher/Dashboard";
 import TeacherQuestions from "../pages/teacher/Questions";
-import TeacherAnalytics from "../pages/teacher/Analytics";
 import TeacherProfile from "../pages/teacher/Profile";
-import TeacherSettings from "../pages/teacher/Settings";
+
 
 // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
@@ -74,35 +71,12 @@ function AppRoutes() {
                          </ProtectedRoute>
                     }
                />
-               <Route
-                    path="/student/bookmarks"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-                              <Bookmarks />
-                         </ProtectedRoute>
-                    }
-               />
-               <Route
-                    path="/student/notifications"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-                              <Notifications />
-                         </ProtectedRoute>
-                    }
-               />
+ 
                <Route
                     path="/student/profile"
                     element={
                          <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
                               <StudentProfile />
-                         </ProtectedRoute>
-                    }
-               />
-               <Route
-                    path="/student/settings"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-                              <Settings />
                          </ProtectedRoute>
                     }
                />
@@ -124,14 +98,7 @@ function AppRoutes() {
                          </ProtectedRoute>
                     }
                />
-               <Route
-                    path="/teacher/analytics"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.TEACHER]}>
-                              <TeacherAnalytics />
-                         </ProtectedRoute>
-                    }
-               />
+
                <Route
                     path="/teacher/profile"
                     element={
@@ -140,14 +107,7 @@ function AppRoutes() {
                          </ProtectedRoute>
                     }
                />
-               <Route
-                    path="/teacher/settings"
-                    element={
-                         <ProtectedRoute allowedRoles={[ROLES.TEACHER]}>
-                              <TeacherSettings />
-                         </ProtectedRoute>
-                    }
-               />
+               
 
                {/* Admin */}
                <Route path="/admin/dashboard"

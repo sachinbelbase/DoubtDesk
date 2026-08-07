@@ -35,6 +35,15 @@ def answer_question(
     
     # Change question status
     question.status = "ANSWERED"
+    
+    notification = models.Notification(
+        user_id=question.student_id,
+        role="student",
+        question_id=question.question_id,
+        message=f"Your question '{question.title}' has been answered."
+    )
+
+    db.add(notification)
 
     db.add(new_answer)
     db.commit()

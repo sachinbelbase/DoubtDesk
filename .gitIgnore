@@ -4,6 +4,11 @@ logs
 **/*.backup.*
 **/*.back.*
 
+
+source venv/Scripts/activate
+uvicorn main:app --reload
+
+
 node_modules
 bower_components
 

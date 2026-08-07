@@ -135,6 +135,24 @@ def ask_question(
     db.add(new_question)
     db.commit()
     db.refresh(new_question)
+    
+    
+    # Find teachers assigned to this class
+    teachers = db.query(models.TeacherClass).filter(
+        models.TeacherClass.class_id == user.class_id
+    ).all()
+
+    # Create notification for each teacher
+    for teacher in teachers:
+        notification = models.Notification(
+            user_id=teacher.teacher_id,
+            role="teacher",
+            message=f"New question: {new_question.title}"
+        )
+
+        db.add(notification)
+
+    db.commit()
 
     return {
         "message": f"Question '{new_question.title}' has been asked successfully",

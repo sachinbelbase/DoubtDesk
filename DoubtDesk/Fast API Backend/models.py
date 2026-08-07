@@ -82,3 +82,24 @@ class TeacherClass(Base):
         ForeignKey("classes.class_id"),
         primary_key=True
     )
+    
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    notification_id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(Integer, nullable=False)
+
+    role = Column(String(20), nullable=False)
+
+    question_id = Column(
+        Integer,
+        ForeignKey("questions.question_id"),
+        nullable=True
+    )
+
+    message = Column(Text, nullable=False)
+
+    is_read = Column(Boolean, default=False)
+
+    created_at = Column(DateTime, default=func.now())

@@ -4,6 +4,7 @@ from routers import students , question , answer, Teachers, Login
 from fastapi.middleware.cors import CORSMiddleware
 from routers import dashboard
 from routers import admin
+from routers import notification
 
 
 
@@ -38,6 +39,7 @@ app.include_router(Teachers.router)
 app.include_router(Login.router)
 app.include_router(dashboard.router)
 app.include_router(admin.router)
+app.include_router(notification.router)
 
 #homepage
 @app.get("/")

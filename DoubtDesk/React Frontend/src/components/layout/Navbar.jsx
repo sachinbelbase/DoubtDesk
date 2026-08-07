@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NotificationDropdown from "../common/NotificationDropdown";
 import {
      Menu,
      Bell,
@@ -21,6 +22,7 @@ function Navbar({
 
      const { user, logout } = useAuth();
      const { unreadCount } = useNotifications();
+     const [showNotifications, setShowNotifications] = useState(false);
 
      const [showDropdown, setShowDropdown] = useState(false);
 
@@ -41,21 +43,6 @@ function Navbar({
           setShowDropdown(false);
      };
 
-     const handleSettings = () => {
-          navigate(`/${user.role}/settings`);
-          setShowDropdown(false);
-     };
-
-     const handleNotification = () => {
-          if (user?.role === "student")
-               navigate("/student/notifications");
-
-          else if (user?.role === "teacher")
-               navigate("/teacher/notifications");
-
-          else
-               navigate("/admin/reports");
-     };
 
      return (
           <header className="sticky top-0 z-50 h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between">
@@ -96,41 +83,24 @@ function Navbar({
 
                     {/* Notification */}
 
-                    <button
-                         onClick={handleNotification}
-                         className="
-                              relative
-                              p-2
-                              rounded-lg
-                              hover:bg-gray-100
-                              transition
-                         "
-                    >
+                    <div className="relative">
+                         <button
+                              onClick={() => setShowNotifications(!showNotifications)}
+                              className="relative p-2 rounded-lg hover:bg-gray-100 transition"
+                         >
+                              <Bell size={20} />
 
-                         <Bell size={20} />
+                              {unreadCount > 0 && (
+                                   <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                        {unreadCount}
+                                   </span>
+                              )}
+                         </button>
 
-                         {unreadCount > 0 && (
-                              <span
-                                   className="
-                                        absolute
-                                        -top-1
-                                        -right-1
-                                        w-5
-                                        h-5
-                                        rounded-full
-                                        bg-red-500
-                                        text-white
-                                        text-xs
-                                        flex
-                                        items-center
-                                        justify-center
-                                   "
-                              >
-                                   {unreadCount}
-                              </span>
+                         {showNotifications && (
+                              <NotificationDropdown />
                          )}
-
-                    </button>
+                    </div>
 
                     {/* Theme */}
 
@@ -218,14 +188,6 @@ function Navbar({
                                    >
                                         <User size={18} />
                                         Profile
-                                   </button>
-
-                                   <button
-                                        onClick={handleSettings}
-                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
-                                   >
-                                        <Settings size={18} />
-                                        Settings
                                    </button>
 
                                    <hr />

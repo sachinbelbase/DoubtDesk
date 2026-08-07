@@ -1,39 +1,45 @@
-import { createContext, useEffect, useState } from "react";
-import { notifications as seedNotifications } from "../data/notifications";
+import { createContext, useEffect, useState, useContext } from "react";
+import { getNotifications } from "../api/notificationService";
 
 export const NotificationsContext = createContext(null);
 
 export function NotificationsProvider({ children }) {
   const [notifications, setNotifications] = useState([]);
 
-  // Load saved state, or fall back to the seed data on first run
   useEffect(() => {
-    const stored = localStorage.getItem("doubtdesk_notifications");
-    setNotifications(stored ? JSON.parse(stored) : seedNotifications);
+    fetchNotifications();
   }, []);
 
-  const persist = (next) => {
-    setNotifications(next);
-    localStorage.setItem("doubtdesk_notifications", JSON.stringify(next));
+  const fetchNotifications = async () => {
+    try {
+      const response = await getNotifications();
+      setNotifications(response.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const markAsRead = (id) => {
-    persist(
-      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-  };
-
-  const markAllAsRead = () => {
-    persist(notifications.map((n) => ({ ...n, read: true })));
-  };
-
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = notifications.filter(
+    (n) => !n.is_read
+  ).length;
 
   return (
     <NotificationsContext.Provider
-      value={{ notifications, markAsRead, markAllAsRead, unreadCount }}
+      value={{
+        notifications,
+        unreadCount,
+        refreshNotifications: fetchNotifications,
+      }}
     >
       {children}
     </NotificationsContext.Provider>
   );
+}
+
+export function useNotifications() {
+  const context = useContext(NotificationsContext);
+  if (!context) {
+    throw new Error("useNotifications must be used within a NotificationsProvider");
+  }
+  return context;
 }

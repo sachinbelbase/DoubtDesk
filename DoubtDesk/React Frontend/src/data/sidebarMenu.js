@@ -31,12 +31,6 @@ export const menus = {
     },
 
     {
-      label: "Notifications",
-      icon: Bell,
-      path: "/student/notifications",
-    },
-
-    {
       label: "Profile",
       icon: User,
       path: "/student/profile",
