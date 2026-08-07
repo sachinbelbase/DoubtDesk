@@ -17,32 +17,32 @@ function RecentQuestions({
      const [answeringQuestion, setAnsweringQuestion] = useState(null);
 
      if (loading) {
-          return <p>Loading questions...</p>;
+          return <p className="text-gray-600 dark:text-gray-300">Loading questions...</p>;
      }
 
      if (error) {
-          return <p className="text-red-600">{error}</p>;
+          return <p className="text-red-600 dark:text-red-400">{error}</p>;
      }
 
      return (
 
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-10">
+          <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 mb-10">
 
                <div className="flex items-center justify-between mb-6">
 
                     <div>
 
-                         <h2 className="text-2xl font-bold text-gray-900">
+                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                               Recent Questions
                          </h2>
 
-                         <p className="text-sm text-gray-500 mt-1">
+                         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                               Browse the latest questions from your class and college.
                          </p>
 
                     </div>
 
-                    <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium">
+                    <span className="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-sm font-medium">
                          {questions.length} Questions
                     </span>
 
@@ -52,7 +52,7 @@ function RecentQuestions({
 
                     <div className="py-16 text-center">
 
-                         <p className="text-gray-500">
+                         <p className="text-gray-500 dark:text-gray-400">
                               No questions found.
                          </p>
 
@@ -103,7 +103,11 @@ function RecentQuestions({
                                    rounded-lg
                                    border
                                    border-gray-300
+                                   dark:border-gray-700
+                                   text-gray-900
+                                   dark:text-gray-100
                                    hover:bg-gray-50
+                                   dark:hover:bg-gray-800
                                    disabled:opacity-40
                                    disabled:cursor-not-allowed
                                    transition
@@ -112,7 +116,7 @@ function RecentQuestions({
                          Previous
                     </button>
 
-                    <span className="font-medium">
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
                          Page {page} of {totalPages}
                     </span>
 
@@ -125,7 +129,11 @@ function RecentQuestions({
                                    rounded-lg
                                    border
                                    border-gray-300
+                                   dark:border-gray-700
+                                   text-gray-900
+                                   dark:text-gray-100
                                    hover:bg-gray-50
+                                   dark:hover:bg-gray-800
                                    disabled:opacity-40
                                    disabled:cursor-not-allowed
                                    transition
@@ -137,8 +145,6 @@ function RecentQuestions({
                </div>
 
           </section>
-
-          
 
      );
 }

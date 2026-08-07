@@ -68,7 +68,7 @@ function Students() {
     <DashboardLayout role="admin">
       <DashboardHeader />
 
-      <div className="bg-white rounded-xl shadow p-4 mb-6">
+      <div className="bg-white rounded-xl shadow p-4 mb-6 dark:bg-gray-950">
 
         <div className="flex flex-col md:flex-row gap-4 items-center">
 

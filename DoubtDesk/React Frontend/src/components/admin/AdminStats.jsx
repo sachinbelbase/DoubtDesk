@@ -52,14 +52,14 @@ function AdminStats({ stats }) {
                {cards.map((card) => (
                     <div
                          key={card.title}
-                         className="bg-white rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                         className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                     >
                          <div className="flex items-center justify-between">
                               <div>
-                                   <h3 className="text-gray-500 text-sm font-medium">
+                                   <h3 className="text-gray-500 text-sm font-medium dark:text-white">
                                         {card.title}
                                    </h3>
-                                   <p className="text-3xl font-bold mt-1 text-gray-900">
+                                   <p className="text-3xl font-bold mt-1 text-gray-900 dark:text-white">
                                         {card.value ?? 0}
                                    </p>
                               </div>

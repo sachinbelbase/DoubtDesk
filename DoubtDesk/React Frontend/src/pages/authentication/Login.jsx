@@ -68,14 +68,14 @@ function Login() {
      };
 
      return (
-          <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+          <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 px-4">
                <div className="w-full max-w-md">
                     <Card>
-                         <h1 className="text-2xl font-bold text-center mb-1">
+                         <h1 className="text-2xl font-bold text-center mb-1 text-gray-900 dark:text-white">
                               Welcome Back
                          </h1>
 
-                         <p className="text-gray-500 text-center mb-6">
+                         <p className="text-gray-500 dark:text-gray-400 text-center mb-6">
                               Log in to DoubtDesk
                          </p>
 
@@ -100,7 +100,7 @@ function Login() {
                               />
 
                               {error && (
-                                   <p className="text-sm text-red-500 text-center">
+                                   <p className="text-sm text-red-500 dark:text-red-400 text-center">
                                         {error}
                                    </p>
                               )}
@@ -114,11 +114,11 @@ function Login() {
                               </Button>
                          </form>
 
-                         <p className="text-center text-sm text-gray-500 mt-5">
+                         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
                               Don't have an account?{" "}
                               <Link
                                    to="/register"
-                                   className="text-blue-600 font-semibold hover:underline"
+                                   className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
                               >
                                    Sign up
                               </Link>

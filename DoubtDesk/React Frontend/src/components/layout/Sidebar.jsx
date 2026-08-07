@@ -8,7 +8,10 @@ function Sidebar({ role, sidebarOpen }) {
           <aside
                className={`
                     bg-white
+                    dark:bg-gray-900
                     border-r
+                    border-gray-200
+                    dark:border-gray-800
                     shadow-sm
                     transition-all
                     duration-300
@@ -24,6 +27,8 @@ function Sidebar({ role, sidebarOpen }) {
                     className={`
                          h-16
                          border-b
+                         border-gray-200
+                         dark:border-gray-800
                          flex
                          items-center
                          ${sidebarOpen ? "px-6" : "justify-center"}
@@ -52,11 +57,11 @@ function Sidebar({ role, sidebarOpen }) {
 
                          <div className="ml-3">
 
-                              <h1 className="font-bold text-gray-900">
+                              <h1 className="font-bold text-gray-900 dark:text-white">
                                    DoubtDesk
                               </h1>
 
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                    Anonymous Platform
                               </p>
 
@@ -96,7 +101,7 @@ function Sidebar({ role, sidebarOpen }) {
 
                                         ${isActive
                                              ? "bg-blue-600 text-white shadow"
-                                             : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"}
+                                             : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-700 dark:hover:text-blue-400"}
                                    `
                                    }
                               >

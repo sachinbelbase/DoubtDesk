@@ -5,12 +5,12 @@ function RecentQuestionsPreview({ questions }) {
      const navigate = useNavigate();
 
      return (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mt-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mt-8 dark:bg-gray-900">
 
-               <div className="flex items-center justify-between mb-6">
+               <div className="flex items-center justify-between mb-6 ">
 
                     <div>
-                         <h2 className="text-xl font-bold">
+                         <h2 className="text-xl font-bold dark:text-white">
                               Recent Open Questions
                          </h2>
 
@@ -30,32 +30,33 @@ function RecentQuestionsPreview({ questions }) {
                </div>
 
                {questions.length === 0 ? (
-                    <div className="py-10 text-center text-gray-500">
+                    <div className="py-10 text-center text-gray-500 dark:text-white">
                          No open questions.
                     </div>
                ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-4 ">
 
                          {questions.map((question) => (
                               <div
                                    key={question.question_id}
                                    onClick={() => navigate(`/questions/${question.question_id}`)}
                                    className="
-                border
-                rounded-xl
-                p-4
-                hover:bg-gray-50
-                hover:border-blue-300
-                cursor-pointer
-                transition-all
-              "
+                                             border
+                                             rounded-xl
+                                             p-4
+                                             hover:bg-gray-50
+                                             dark:hover:bg-gray-800
+                                             hover:border-blue-300
+                                             cursor-pointer
+                                             transition-all
+                                        "
                               >
 
                                    <div className="flex justify-between items-start gap-4">
 
                                         <div>
 
-                                             <h3 className="font-semibold text-gray-900">
+                                             <h3 className="font-semibold text-gray-900 dark:text-white">
                                                   {question.title}
                                              </h3>
 

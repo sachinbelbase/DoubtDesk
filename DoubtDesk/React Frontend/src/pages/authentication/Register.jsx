@@ -29,7 +29,7 @@ function Register() {
           department: "",
      });
      const [errors, setErrors] = useState({});
-     
+
      const navigate = useNavigate();
 
      const handleChange = (e) => {
@@ -122,13 +122,13 @@ function Register() {
      };
 
      return (
-          <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+          <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 px-4">
                <div className="w-full max-w-md">
                     <Card>
-                         <h1 className="text-2xl font-bold text-center mb-1">
+                         <h1 className="text-2xl font-bold text-center mb-1 text-gray-900 dark:text-white">
                               Create Account
                          </h1>
-                         <p className="text-gray-500 text-center mb-6">
+                         <p className="text-gray-500 dark:text-gray-400 text-center mb-6">
                               Join DoubtDesk to start asking and answering
                          </p>
 
@@ -248,9 +248,9 @@ function Register() {
                               </Button>
                          </form>
 
-                         <p className="text-center text-sm text-gray-500 mt-5">
+                         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
                               Already have an account?{" "}
-                              <Link to="/login" className="text-blue-600 font-semibold">
+                              <Link to="/login" className="text-blue-600 dark:text-blue-400 font-semibold">
                                    Log in
                               </Link>
                          </p>

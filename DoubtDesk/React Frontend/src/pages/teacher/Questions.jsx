@@ -9,6 +9,7 @@ import Button from "../../components/common/Button";
 import Select from "../../components/common/Select";
 import { statusFilters } from "../../data/statusFilters";
 import { sorts } from "../../data/sorts";
+import SearchSection from "../../components/dashboard/SearchSection";
 
 function Questions() {
      const [questions, setQuestions] = useState([]);
@@ -25,6 +26,10 @@ function Questions() {
 
      const handleSearch = () => {
           fetchQuestions();
+     };
+
+     const handleSearchChange = (e) => {
+          setSearch(e.target.value);
      };
 
      const fetchQuestions = async () => {
@@ -94,47 +99,22 @@ function Questions() {
                     </p>
                </div>
 
-               <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-6">
 
-                    <div className="flex flex-col lg:flex-row gap-4 items-center">
-
-                         {/* Search */}
-                         <div className="flex-1 w-full">
-                              <SearchBar
-                                   value={search}
-                                   onChange={(e) => setSearch(e.target.value)}
-                                   placeholder="Search questions..."
-                              />
-                         </div>
-
-                         {/* Search Button */}
-                         <Button onClick={handleSearch}>
-                              Search
-                         </Button>
-
-                         {/* Status */}
-                         <div className="w-full lg:w-48">
-                              <Select
-                                   name="status"
-                                   value={statusFilter}
-                                   onChange={(e) => setStatusFilter(e.target.value)}
-                                   options={statusFilters}
-                              />
-                         </div>
-
-                         {/* Sort */}
-                         <div className="w-full lg:w-48">
-                              <Select
-                                   name="sort"
-                                   value={sort}
-                                   onChange={(e) => setSort(e.target.value)}
-                                   options={sorts}
-                              />
-                         </div>
-
-                    </div>
-
-               </div>
+                    <SearchSection
+                         search={search}
+                         sort={sort}
+                         onSearchChange={handleSearchChange}
+                         onSortChange={(e) => {
+                              setSort(e.target.value);
+                              setPage(1);
+                         }}
+                         onSearch={handleSearch}
+                         statusFilter={statusFilter}
+                         onStatusFilterChange={(e) => {
+                              setStatusFilter(e.target.value);
+                              setPage(1);
+                         }}
+                    />
 
                <QuestionFeed
                     questions={questions}

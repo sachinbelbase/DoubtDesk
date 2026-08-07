@@ -4,9 +4,9 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import DashboardHeader from "../../components/dashboard/DashboardHeader";
 
 import TeacherTable from "../../components/admin/TeacherTable";
-import Button from "../../components/common/Button";
 import { getTeachers, blockTeacher, unblockTeacher, } from "../../api/adminService";
 import SearchBar from "../../components/common/SearchBar";
+import Button from "../../components/common/Button";
 
 function Teachers() {
   const [teachers, setTeachers] = useState([]);
@@ -66,9 +66,9 @@ function Teachers() {
     <DashboardLayout role="admin">
       <DashboardHeader />
 
-      <div className="bg-white rounded-xl shadow p-4 mb-6">
+      <div className="bg-white rounded-xl shadow p-4 mb-6 dark:bg-gray-950">
 
-        <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex flex-col md:flex-row gap-4 items-center ">
 
           <div className="flex-1 w-full">
             <SearchBar

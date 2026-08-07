@@ -6,7 +6,7 @@ function DashboardLayout({ children, role }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-950">
 
       {/* Sidebar */}
       <Sidebar

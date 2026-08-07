@@ -9,8 +9,8 @@ function Button({
 }) {
      const variants = {
           primary: "bg-blue-600 text-white hover:bg-blue-700",
-          secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
-          outline: "border border-blue-600 text-blue-600 hover:bg-blue-50",
+          secondary: "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600",
+          outline: "border border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950",
           danger: "bg-red-600 text-white hover:bg-red-700",
      };
 

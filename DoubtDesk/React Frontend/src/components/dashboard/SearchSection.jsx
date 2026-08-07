@@ -17,15 +17,15 @@ function SearchSection({
      onStatusFilterChange,
 }) {
      return (
-          <div className="bg-white rounded-xl shadow p-6 mb-8">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 mb-8">
 
                {/* Heading */}
                <div className="mb-5">
-                    <h2 className="text-xl font-bold text-gray-900">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                          Search Questions
                     </h2>
 
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                          Find questions by title or content.
                     </p>
                </div>
@@ -53,6 +53,7 @@ function SearchSection({
             top-1/2
             -translate-y-1/2
             text-gray-400
+            dark:text-gray-500
             pointer-events-none
           "
                     />

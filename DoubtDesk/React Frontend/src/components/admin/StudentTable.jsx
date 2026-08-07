@@ -1,13 +1,37 @@
-function StudentTable({ students, loading, onToggleStatus, }) {
+function StudentTable({
+     students,
+     loading,
+     onToggleStatus,
+}) {
 
      if (loading) {
-          return <p>Loading students...</p>;
+          return (
+               <p className="text-gray-600 dark:text-gray-300">
+                    Loading students...
+               </p>
+          );
      }
 
      return (
-          <div className="bg-white rounded-xl shadow p-6">
+          <div
+               className="
+                    bg-white
+                    dark:bg-gray-900
 
-               <h2 className="text-2xl font-bold mb-6">
+                    border
+                    border-gray-200
+                    dark:border-gray-700
+
+                    rounded-xl
+                    shadow
+                    p-6
+
+                    transition-colors
+                    duration-300
+               "
+          >
+
+               <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
                     Students
                </h2>
 
@@ -15,15 +39,35 @@ function StudentTable({ students, loading, onToggleStatus, }) {
 
                     <thead>
 
-                         <tr className="border-b">
+                         <tr className="border-b border-gray-200 dark:border-gray-700">
 
-                              <th className="text-left py-3">Name</th>
-                              <th className="text-left py-3">Email</th>
-                              <th className="text-left py-3">Program</th>
-                              <th className="text-left py-3">Semester</th>
-                              <th className="text-left py-3">Section</th>
-                              <th className="text-left py-3">Status</th>
-                              <th className="text-left py-3">Actions</th>
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Name
+                              </th>
+
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Email
+                              </th>
+
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Program
+                              </th>
+
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Semester
+                              </th>
+
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Section
+                              </th>
+
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Status
+                              </th>
+
+                              <th className="text-left py-3 text-gray-900 dark:text-white">
+                                   Actions
+                              </th>
 
                          </tr>
 
@@ -35,41 +79,72 @@ function StudentTable({ students, loading, onToggleStatus, }) {
 
                               <tr
                                    key={student.student_id}
-                                   className="border-b hover:bg-gray-50"
+                                   className="
+                                        border-b
+                                        border-gray-200
+                                        dark:border-gray-700
+
+                                        hover:bg-gray-50
+                                        dark:hover:bg-gray-800
+
+                                        transition-colors
+                                   "
                               >
 
-                                   <td className="py-3">{student.name}</td>
+                                   <td className="py-3 text-gray-900 dark:text-white">
+                                        {student.name}
+                                   </td>
 
-                                   <td>{student.email}</td>
+                                   <td className="text-gray-700 dark:text-gray-300">
+                                        {student.email}
+                                   </td>
 
-                                   <td>{student.program}</td>
+                                   <td className="text-gray-700 dark:text-gray-300">
+                                        {student.program}
+                                   </td>
 
-                                   <td>{student.semester}</td>
+                                   <td className="text-gray-700 dark:text-gray-300">
+                                        {student.semester}
+                                   </td>
 
-                                   <td>{student.section}</td>
+                                   <td className="text-gray-700 dark:text-gray-300">
+                                        {student.section}
+                                   </td>
 
                                    <td>
                                         {student.is_active ? (
-                                             <span className="text-green-600 font-medium">
+                                             <span className="text-green-600 dark:text-green-400 font-medium">
                                                   Active
                                              </span>
                                         ) : (
-                                             <span className="text-red-600 font-medium">
+                                             <span className="text-red-600 dark:text-red-400 font-medium">
                                                   Blocked
                                              </span>
                                         )}
                                    </td>
 
                                    <td className="text-center">
+
                                         <button
                                              onClick={() => onToggleStatus(student)}
-                                             className={`px-3 py-1 rounded-lg text-white ${student.is_active
+                                             className={`
+                                                  px-3
+                                                  py-1
+                                                  rounded-lg
+                                                  text-white
+                                                  transition-colors
+
+                                                  ${student.is_active
                                                        ? "bg-red-500 hover:bg-red-600"
                                                        : "bg-green-600 hover:bg-green-700"
-                                                  }`}
+                                                  }
+                                             `}
                                         >
-                                             {student.is_active ? "Block" : "Unblock"}
+                                             {student.is_active
+                                                  ? "Block"
+                                                  : "Unblock"}
                                         </button>
+
                                    </td>
 
                               </tr>

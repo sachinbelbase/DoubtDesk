@@ -24,9 +24,9 @@ function QuestionCard({
      const navigate = useNavigate();
 
      const statusColors = {
-          OPEN: "bg-yellow-100 text-yellow-700",
-          ANSWERED: "bg-green-100 text-green-700",
-          CLOSED: "bg-red-100 text-red-700",
+          OPEN: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
+          ANSWERED: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+          CLOSED: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
      };
 
      return (
@@ -34,15 +34,23 @@ function QuestionCard({
                onClick={() => navigate(`/questions/${question.question_id}`)}
                className="
                     bg-white
+                    dark:bg-gray-900
+
                     border
                     border-gray-200
+                    dark:border-gray-700
+                    
                     rounded-2xl
                     p-6
+
                     shadow-sm
                     hover:shadow-lg
-                    hover:-translate-y-1
+                    dark:hover:border-blue-500
+
                     transition-all
+                    `transition-colors`
                     duration-300
+
                     cursor-pointer 
                     active:scale-[0.99]
                     select-none
@@ -89,17 +97,17 @@ function QuestionCard({
 
                {/* Title */}
 
-               <h2 className="text-xl font-bold text-gray-900 mt-5 leading-snug">
+               <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-5 leading-snug">
                     {question.title}
                </h2>
 
                {/* Description */}
 
-               <p className="text-gray-600 mt-3 whitespace-pre-line line-clamp-3">
+               <p className="text-gray-600 dark:text-gray-300 mt-3 whitespace-pre-line line-clamp-3">
                     {question.question_text}
                </p>
                
-               <hr className="my-5 border-gray-100" />
+               <hr className="my-5 border-gray-200 dark:border-gray-700" />
 
                {/* Footer */}
 
@@ -108,17 +116,17 @@ function QuestionCard({
                     <div className="flex items-center gap-3">
 
                          <UserCircle
-                              className="text-gray-500"
+                              className="text-gray-500 dark:text-gray-400"
                               size={28}
                          />
 
                          <div>
 
-                              <p className="text-sm font-medium">
+                              <p className="text-sm font-medium text-gray-900 dark:text-white">
                                    {question.asked_by}
                               </p>
 
-                              <div className="flex items-center gap-1 text-xs text-gray-500">
+                              <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
 
                                    <Clock size={14} />
 
@@ -138,11 +146,11 @@ function QuestionCard({
                                         e.stopPropagation();
                                         onViewAnswers(question);
                                    }}
-                                   className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                                   className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                               >
                                    <Eye
                                         size={18}
-                                        className="text-gray-600"
+                                        className="text-gray-600 dark:text-gray-300"
                                    />
                               </button>
                          )}
@@ -155,7 +163,7 @@ function QuestionCard({
                                                   e.stopPropagation();
                                                   onAnswer(question);
                                              }}
-                                             className="p-2 rounded-lg hover:bg-green-100 transition-colors"
+                                             className="p-2 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30transition-colors"
                                         >
                                              <MessageSquareReply
                                                   size={18}
@@ -170,7 +178,7 @@ function QuestionCard({
                                                   e.stopPropagation();
                                                   onEdit(question);
                                              }}
-                                             className="p-2 rounded-lg hover:bg-blue-100 transition-colors"
+                                             className="p-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30transition-colors"
                                         >
                                              <Pencil
                                                   size={18}
@@ -185,7 +193,7 @@ function QuestionCard({
                                                   e.stopPropagation();
                                                   onDelete(question);
                                              }}
-                                             className="p-2 rounded-lg hover:bg-red-100 transition-colors"
+                                             className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
                                         >
                                              <Trash2
                                                   size={18}

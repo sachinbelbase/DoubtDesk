@@ -15,7 +15,7 @@ function Select({
                {label && (
                     <label
                          htmlFor={name}
-                         className="block text-sm font-medium text-gray-700"
+                         className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                          {label}
                          {required && <span className="text-red-500"> *</span>}
@@ -32,18 +32,23 @@ function Select({
           rounded-xl
           border
           border-gray-300
+          dark:border-gray-700
           px-4
           py-3
           text-sm
           bg-white
+          dark:bg-gray-800
+          text-gray-900
+          dark:text-gray-100
           outline-none
           transition-all
           duration-200
           focus:border-blue-500
           focus:ring-2
           focus:ring-blue-200
+          dark:focus:ring-blue-900
           ${error
-                              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                              ? "border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900"
                               : ""
                          }
           ${className}
