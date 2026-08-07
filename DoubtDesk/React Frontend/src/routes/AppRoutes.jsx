@@ -29,9 +29,6 @@ import AdminStudents from "../pages/admin/Students";
 import AdminTeachers from "../pages/admin/Teachers";
 import AdminQuestions from "../pages/admin/Questions";
 
-//Question Details Page
-import QuestionDetailsPage from "../pages/shared/QuestionDetails";
-
 
 function AppRoutes() {
      return (
@@ -43,7 +40,11 @@ function AppRoutes() {
                <Route path="/register" element={<Register />} />
                <Route
                     path="/questions/:questionId"
-                    element={<QuestionDetails />}
+                    element={
+                         <ProtectedRoute allowedRoles={[ROLES.STUDENT, ROLES.TEACHER, ROLES.ADMIN]}>
+                              <QuestionDetails />
+                         </ProtectedRoute>
+                    }
                />
 
                {/* Student */}
@@ -144,16 +145,6 @@ function AppRoutes() {
                </ProtectedRoute>
                }
                
-               />
-
-
-               {/* Question Details */}
-               <Route path="/questions/:id"
-                element={
-                <ProtectedRoute allowedRoles={[ROLES.STUDENT, ROLES.TEACHER, ROLES.ADMIN]}>
-                <QuestionDetailsPage />
-                </ProtectedRoute>
-                } 
                />
 
                {/* 404 */}

@@ -1,20 +1,9 @@
-import { useEffect, useState } from "react";
 import {
-     getNotifications,
      markNotificationAsRead,
 } from "../../api/notificationService";
 import { useNotifications } from "../../context/NotificationsContext";
 
 function NotificationDropdown() {
-
-     const fetchNotifications = async () => {
-          try {
-               const response = await getNotifications();
-               setNotifications(response.data);
-          } catch (err) {
-               console.error(err);
-          }
-     };
 
      const {
           notifications,
@@ -25,14 +14,6 @@ function NotificationDropdown() {
           if (!notification.is_read) {
                await markNotificationAsRead(notification.notification_id);
                refreshNotifications();
-
-               setNotifications((prev) =>
-                    prev.map((item) =>
-                         item.notification_id === notification.notification_id
-                              ? { ...item, is_read: true }
-                              : item
-                    )
-               );
           }
      };
 

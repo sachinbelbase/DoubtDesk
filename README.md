@@ -6,15 +6,22 @@ The platform allows students to ask questions they hesitate to ask in a classroo
 
 ## Features
 
-- Student, Teacher, and Admin authentication
-- College email-based access
+- Student, Teacher, and Admin authentication (JWT-based, with refresh tokens)
+- College email-based access (`@ncit.edu.np` required at registration)
 - Anonymous question posting
 - Teacher-based answer system
-- Subject-wise question routing
+- Class-wide vs. college-wide question visibility
+- Admin controls to block/unblock students and teachers, and remove questions
+- Notification system (in-app, on new questions and new answers)
+
+## Planned Features
+
+These are on the roadmap but not implemented yet — listed here so the project's direction is clear, not because they exist in the code today.
+
 - AI-powered content moderation
-- Warning and ban system for inappropriate content
+- Warning and ban system for inappropriate content (currently only a manual block/unblock exists)
+- Subject/category-based question routing (currently routing is class-wide vs. college-wide only)
 - Feedback and rating system
-- Notification system
 
 ## Tech Stack
 
@@ -29,7 +36,4 @@ Database:
 - MySQL
 
 Security:
-- JWT Authentication
-
-AI:
-- LLM-based content validation
+- JWT Authentication (access + refresh tokens)

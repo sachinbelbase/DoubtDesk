@@ -47,30 +47,24 @@ def get_current_user(
     )
 
     try:
-        print("=" * 50)
-        print("TOKEN:", token)
-
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print("PAYLOAD:", payload)
 
         user_id = payload.get("sub")
         role = payload.get("role")
 
-        print("USER ID:", user_id)
-        print("ROLE:", role)
+        if user_id is None or role is None:
+            raise credentials_exception
 
         if role == "student":
             user = db.query(models.Student).filter(
                 models.Student.student_id == int(user_id)
             ).first()
-            print("FOUND STUDENT:", user)
 
         elif role == "teacher":
             user = db.query(models.Teacher).filter(
                 models.Teacher.teacher_id == int(user_id)
             ).first()
-            print("FOUND TEACHER:", user)
-            
+
         elif role == "admin":
             user = {
                 "admin_id": 0,
@@ -78,62 +72,16 @@ def get_current_user(
                 "email": "admin@doubtdesk.com"
             }
 
-            print("FOUND ADMIN:", user)
-
         else:
-            print("INVALID ROLE")
             raise credentials_exception
 
-    except Exception as e:
-        print("ERROR:", e)
+    except JWTError:
         raise credentials_exception
 
     if user is None:
-        print("USER IS NONE")
         raise credentials_exception
 
     return user, role
-
-    # credentials_exception = HTTPException(
-    #     status_code=status.HTTP_401_UNAUTHORIZED,
-    #     detail="Could not validate credentials",
-    #     headers={"WWW-Authenticate": "Bearer"},
-    # )
-
-    # try:
-    #     payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    #     print("TOKEN PAYLOAD:", payload)
-    #     user_id = payload.get("sub")
-    #     role = payload.get("role")
-
-    #     print("USER ID:", user_id)
-    #     print("ROLE:", role)
-
-    #     if user_id is None or role is None:
-    #         raise credentials_exception
-
-    #     if role == "student":
-    #         user = db.query(models.Student).filter(
-    #             models.Student.student_id == int(user_id)
-    #         ).first()
-            
-    #         print("FOUND STUDENT:", user)
-    #     elif role == "teacher":
-    #         user = db.query(models.Teacher).filter(
-    #             models.Teacher.teacher_id == int(user_id)
-    #         ).first()
-            
-    #         print("FOUND TEACHER:", user)
-    #     else:
-    #         raise credentials_exception
-
-    # except (JWTError, ValueError):
-    #     raise credentials_exception
-
-    # if user is None:
-    #     raise credentials_exception
-
-    # return user, role
 
 
 def get_current_student(current=Depends(get_current_user)):

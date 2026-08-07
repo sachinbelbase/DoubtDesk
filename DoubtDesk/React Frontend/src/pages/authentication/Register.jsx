@@ -10,7 +10,6 @@ import Input from "../../components/common/Input";
 import Select from "../../components/common/Select";
 import Button from "../../components/common/Button";
 
-import { useAuth } from "../../hooks/useAuth";
 import { ROLES } from "../../constants/roles";
 
 function Register() {

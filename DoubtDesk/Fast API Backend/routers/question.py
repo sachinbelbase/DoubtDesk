@@ -52,15 +52,10 @@ def get_questions(
                 models.Question.question_text.ilike(search_pattern)
             )
         )
-    print("status_filter:", status_filter)
-    print("type:", type(status_filter))
     if status_filter == schemas.StatusFilterOption.answered:
-        
         query = query.filter(models.Question.status == "ANSWERED")
     elif status_filter == schemas.StatusFilterOption.unanswered:
         query = query.filter(models.Question.status == "OPEN")
-        
-    print("Questions found:", query.count())
 
     if sort == schemas.SortOption.oldest:
         query = query.order_by(models.Question.created_at.asc())

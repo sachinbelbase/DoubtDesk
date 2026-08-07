@@ -6,11 +6,14 @@ import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 
 import { useAuth } from "../../hooks/useAuth";
+import { useNotifications } from "../../hooks/useNotifications";
 import { loginUser } from "../../api/authService";
 
 function Login() {
+
      const navigate = useNavigate();
      const { login } = useAuth();
+     const { refreshNotifications } = useNotifications();
 
      const [formData, setFormData] = useState({
           email: "",
@@ -46,6 +49,7 @@ function Login() {
                });
 
                login(authData);
+               refreshNotifications();
 
                navigate(`/${authData.user.role}/dashboard`, {
                     replace: true,

@@ -7,7 +7,10 @@ export function NotificationsProvider({ children }) {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    fetchNotifications();
+    const token = localStorage.getItem("doubtdesk_access_token");
+    if (token) {
+      fetchNotifications();
+    }
   }, []);
 
   const fetchNotifications = async () => {
