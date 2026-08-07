@@ -34,7 +34,7 @@ function TextArea({
                               border
                               px-4
                               py-3
-                              text-white
+                              text-black
                               outline-none
                               resize-none
                               transition
