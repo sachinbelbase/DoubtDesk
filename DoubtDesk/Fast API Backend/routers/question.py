@@ -331,6 +331,31 @@ def get_question_answers(
     current=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    user, role = current
+
+    question = (
+        db.query(models.Question)
+        .filter(models.Question.question_id == question_id)
+        .first()
+    )
+
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    # Same visibility rule as /answers/{question_id}: teachers and admins
+    # see everything, students only see COLLEGE-wide or their own class.
+    if role == "student":
+        is_college_wide = question.visibility == "COLLEGE"
+        is_own_class = (
+            question.visibility == "CLASS"
+            and question.class_id == user.class_id
+        )
+        if not (is_college_wide or is_own_class):
+            raise HTTPException(
+                status_code=403,
+                detail="You don't have access to this question",
+            )
+
     answers = (
         db.query(models.Answer)
         .filter(models.Answer.question_id == question_id)

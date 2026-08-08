@@ -13,6 +13,22 @@ router = APIRouter(
 )
 
 
+def _resolve_user_id(user, role: str) -> int:
+    """Map the current (user, role) pair to the id used on Notification.user_id.
+
+    Handles all three roles explicitly instead of assuming every user object
+    has a .teacher_id — the admin identity doesn't, and previously crashed
+    this endpoint with a 500 error.
+    """
+    if role == "student":
+        return user.student_id
+    if role == "teacher":
+        return user.teacher_id
+    if role == "admin":
+        return user.admin_id
+    raise HTTPException(status_code=400, detail="Unknown role")
+
+
 @router.get("/", response_model=list[schemas.NotificationOut])
 def get_notifications(
     current_user=Depends(get_current_user),
@@ -21,11 +37,7 @@ def get_notifications(
 
     user, role = current_user
 
-    user_id = (
-        user.student_id
-        if role == "student"
-        else user.teacher_id
-    )
+    user_id = _resolve_user_id(user, role)
 
     notifications = (
         db.query(models.Notification)
@@ -49,11 +61,7 @@ def mark_as_read(
 
     user, role = current_user
 
-    user_id = (
-        user.student_id
-        if role == "student"
-        else user.teacher_id
-    )
+    user_id = _resolve_user_id(user, role)
 
     notification = (
         db.query(models.Notification)

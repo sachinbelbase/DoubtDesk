@@ -1,4 +1,5 @@
 import os
+from types import SimpleNamespace
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
@@ -14,13 +15,28 @@ load_dotenv()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="Auth")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError(
+        "SECRET_KEY is not set. Add it to your .env file, e.g.\n"
+        "SECRET_KEY=<run: python -c \"import secrets; print(secrets.token_hex(32))\">"
+    )
+
 ALGORITHM = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
-ADMIN_EMAIL = "admin@doubtdesk.com"
-ADMIN_PASSWORD = "Admin@123"
+# Admin credentials now come from the environment, never from source.
+# ADMIN_PASSWORD_HASH must be a bcrypt hash, generated once with:
+#   python -c "from security import hash_password; print(hash_password('your-password'))"
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+
+if not ADMIN_EMAIL or not ADMIN_PASSWORD_HASH:
+    raise RuntimeError(
+        "ADMIN_EMAIL and ADMIN_PASSWORD_HASH must be set in .env. "
+        "Generate a hash with security.hash_password(), never store the plain password."
+    )
 
 
 def create_access_token(data: dict):
@@ -59,18 +75,33 @@ def get_current_user(
             user = db.query(models.Student).filter(
                 models.Student.student_id == int(user_id)
             ).first()
+            if user is not None and not user.is_active:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Your account has been blocked by the administrator.",
+                )
 
         elif role == "teacher":
             user = db.query(models.Teacher).filter(
                 models.Teacher.teacher_id == int(user_id)
             ).first()
+            if user is not None and not user.is_active:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Your account has been blocked by the administrator.",
+                )
 
         elif role == "admin":
-            user = {
-                "admin_id": 0,
-                "name": "Administrator",
-                "email": "admin@doubtdesk.com"
-            }
+            # SimpleNamespace (not a dict) so admin exposes attributes just
+            # like Student/Teacher, keeping downstream code consistent.
+            user = SimpleNamespace(
+                admin_id=0,
+                student_id=None,
+                teacher_id=None,
+                name="Administrator",
+                email=ADMIN_EMAIL,
+                is_active=True,
+            )
 
         else:
             raise credentials_exception

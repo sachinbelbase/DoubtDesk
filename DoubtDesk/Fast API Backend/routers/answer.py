@@ -106,9 +106,14 @@ def update_answer(
     if not answer:
         raise HTTPException(status_code=404, detail="Answer not found")
 
-    # Only the original author (student or teacher) can update their answer
-    if (role == "student" and answer.student_id != user.student_id) or \
-       (role == "teacher" and answer.teacher_id != user.teacher_id):
+    # Only the original author (student or teacher) can update their own
+    # answer. Admins are handled explicitly, not by falling through the
+    # checks below (that previously let ANY admin edit ANY answer silently).
+    is_owner = (
+        (role == "student" and answer.student_id == user.student_id)
+        or (role == "teacher" and answer.teacher_id == user.teacher_id)
+    )
+    if role != "admin" and not is_owner:
         raise HTTPException(status_code=403, detail="You can only edit your own answers")
 
     answer.answer_text = updated_answer.answer_text
@@ -132,9 +137,14 @@ def delete_answer(
     if not answer:
         raise HTTPException(status_code=404, detail="Answer not found")
 
-    # Only the original author (student or teacher) can delete their answer
-    if (role == "student" and answer.student_id != user.student_id) or \
-       (role == "teacher" and answer.teacher_id != user.teacher_id):
+    # Only the original author (student or teacher) can delete their own
+    # answer. Admins are allowed for moderation, but explicitly — not as a
+    # fallthrough of unrelated conditions.
+    is_owner = (
+        (role == "student" and answer.student_id == user.student_id)
+        or (role == "teacher" and answer.teacher_id == user.teacher_id)
+    )
+    if role != "admin" and not is_owner:
         raise HTTPException(status_code=403, detail="You can only delete your own answers")
 
     db.delete(answer)
