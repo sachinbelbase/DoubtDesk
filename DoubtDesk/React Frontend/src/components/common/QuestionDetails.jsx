@@ -76,7 +76,7 @@ function QuestionDetails() {
                     max-w-4xl
                     mx-auto
                     p-6
-
+                    dark:bg-gray-950
                     text-gray-900
                     dark:text-white
 

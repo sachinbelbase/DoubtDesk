@@ -39,13 +39,13 @@ function ViewAnswersModal({ question, onClose }) {
           >
                <div className="space-y-6">
 
-                    <div className="border rounded-xl p-5 bg-white">
+                    <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-white dark:bg-gray-900">
 
-                         <h2 className="text-xl font-semibold">
+                         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                               {question.title}
                          </h2>
 
-                         <p className="mt-3 text-gray-600 whitespace-pre-line">
+                         <p className="mt-3 text-gray-600 dark:text-gray-300 whitespace-pre-line">
                               {question.question_text}
                          </p>
 
@@ -53,14 +53,14 @@ function ViewAnswersModal({ question, onClose }) {
 
                     <div>
 
-                         <h3 className="text-lg font-semibold mb-4">
+                         <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
                               Answers
                          </h3>
 
                          {loading ? (
-                              <p>Loading answers...</p>
+                              <p className="text-gray-600 dark:text-gray-300">Loading answers...</p>
                          ) : error ? (
-                              <p className="text-red-600">{error}</p>
+                              <p className="text-red-600 dark:text-red-400">{error}</p>
                          ) : (
                               <AnswerList answers={answers} />
                          )}

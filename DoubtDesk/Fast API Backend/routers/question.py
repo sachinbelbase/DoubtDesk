@@ -142,6 +142,7 @@ def ask_question(
         notification = models.Notification(
             user_id=teacher.teacher_id,
             role="teacher",
+            question_id=new_question.question_id,
             message=f"New question: {new_question.title}"
         )
 

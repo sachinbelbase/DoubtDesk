@@ -13,7 +13,7 @@ function QuestionHeader({ question }) {
      };
 
      return (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 dark:bg-gray-900">
 
                {/* Badges */}
                <div className="flex flex-wrap gap-3 mb-5">
@@ -44,7 +44,7 @@ function QuestionHeader({ question }) {
                </div>
 
                {/* Title */}
-               <h1 className="text-3xl font-bold text-gray-900 leading-tight">
+               <h1 className="text-3xl font-bold text-gray-900 leading-tight dark:text-white">
                     {question.title}
                </h1>
 
@@ -72,7 +72,7 @@ function QuestionHeader({ question }) {
 
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-500 text-sm">
+                    <div className="flex items-center gap-2 text-gray-500 text-sm dark:text-white">
 
                          <Clock size={16} />
 

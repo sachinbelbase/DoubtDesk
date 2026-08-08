@@ -46,7 +46,7 @@ function AnswerForm({ questionId, onSuccess }) {
      };
 
      return (
-          <form onSubmit={handleSubmit} className="space-y-3 mt-6">
+          <form onSubmit={handleSubmit} className="space-y-3 mt-6 dark:bg-gray-900">
                <TextArea
                     name="answer"
                     rows={4}
@@ -56,7 +56,7 @@ function AnswerForm({ questionId, onSuccess }) {
                     error={error}
                />
 
-               <div className="flex justify-end">
+               <div className="flex justify-end dark:bg-gray-950">
                     <Button type="submit" disabled={loading}>
                          {loading ? "Posting..." : "Post Answer"}
                     </Button>

@@ -11,6 +11,16 @@ export function NotificationsProvider({ children }) {
     if (token) {
       fetchNotifications();
     }
+
+    // Keep notifications (and the unread badge) live without needing a
+    // manual reload — poll every 20s while a user is logged in.
+    const intervalId = setInterval(() => {
+      if (localStorage.getItem("doubtdesk_access_token")) {
+        fetchNotifications();
+      }
+    }, 20000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const fetchNotifications = async () => {

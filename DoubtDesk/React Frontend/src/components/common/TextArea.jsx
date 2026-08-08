@@ -14,7 +14,7 @@ function TextArea({
                {label && (
                     <label
                          htmlFor={name}
-                         className="block text-sm font-semibold text-white"
+                         className="block text-sm font-semibold text-black dark:text-white"
                     >
                          {label}
                          {required && <span className="text-red-500"> *</span>}
@@ -34,15 +34,19 @@ function TextArea({
                               border
                               px-4
                               py-3
+                              bg-white
+                              dark:bg-gray-800
                               text-black
                               dark:text-white
+                              placeholder:text-gray-400
+                              dark:placeholder:text-gray-500
                               outline-none
                               resize-none
                               transition
                               ${error
                               ? "border-red-500 focus:ring-2 focus:ring-red-400"
-                              : "border-gray-300 focus:ring-2 focus:ring-blue-500"
-                           }
+                              : "border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500"
+                         }
                     `}
                />
 

@@ -5,8 +5,10 @@ function AnswerCard({ answer }) {
           <div
                className="
         bg-white
+        dark:bg-gray-900
         border
         border-gray-200
+        dark:border-gray-700
         rounded-2xl
         p-6
         shadow-sm
@@ -27,7 +29,7 @@ function AnswerCard({ answer }) {
 
                               <div className="flex items-center gap-2">
 
-                                   <h3 className="font-semibold text-gray-900">
+                                   <h3 className="font-semibold text-gray-900 dark:text-white">
                                         {answer.teacher_name}
                                    </h3>
 
@@ -38,7 +40,7 @@ function AnswerCard({ answer }) {
 
                               </div>
 
-                              <p className="text-sm text-gray-500">
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
                                    Teacher
                               </p>
 
@@ -46,7 +48,7 @@ function AnswerCard({ answer }) {
 
                     </div>
 
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
+                    <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
 
                          <Clock size={15} />
 
@@ -58,11 +60,11 @@ function AnswerCard({ answer }) {
 
                {/* Divider */}
 
-               <hr className="my-5 border-gray-100" />
+               <hr className="my-5 border-gray-100 dark:border-gray-800" />
 
                {/* Answer */}
 
-               <p className="text-gray-700 whitespace-pre-line leading-8">
+               <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line leading-8">
                     {answer.answer_text}
                </p>
 

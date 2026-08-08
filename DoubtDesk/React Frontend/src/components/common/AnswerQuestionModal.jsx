@@ -67,11 +67,11 @@ function AnswerQuestionModal({
 
                     <div>
 
-                         <h3 className="text-xl font-semibold">
+                         <h3 className="text-xl font-semibold text-black dark:text-white">
                               {question.title}
                          </h3>
 
-                         <p className="text-gray-600 mt-2 whitespace-pre-line">
+                         <p className="dark:text-white text-black mt-2 whitespace-pre-line">
                               {question.question_text}
                          </p>
 
@@ -89,7 +89,7 @@ function AnswerQuestionModal({
 
                     <form
                          onSubmit={handleSubmit}
-                         className="space-y-6"
+                         className="space-y-6 dark:text-white text-black"
                     >
 
                          <TextArea

@@ -45,6 +45,14 @@ def answer_question(
 
     db.add(notification)
 
+    # Clear out the "new question" notifications sent to every teacher of
+    # this class when it was asked — the question is answered now, so those
+    # are stale for whichever teachers didn't answer it themselves.
+    db.query(models.Notification).filter(
+        models.Notification.question_id == question.question_id,
+        models.Notification.role == "teacher"
+    ).update({"is_read": True})
+
     db.add(new_answer)
     db.commit()
     db.refresh(new_answer)
